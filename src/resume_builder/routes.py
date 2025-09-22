@@ -20,11 +20,3 @@ def about():
 def contact():
     return "<h1>Contact</h1>"
 
-def register():
-    return render_template("register.html")
-
-def login():
-    return render_template("login.html")
-
-def logout():
-    return render_template("logout.html")

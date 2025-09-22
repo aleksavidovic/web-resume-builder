@@ -22,9 +22,12 @@
                     <li><a href="{{ url_for('main.index') }}">Home</a></li>
                     <li><a href="{{ url_for('main.my_resume') }}">My Resume</a></li>
                     <li><a href="{{ url_for('main.about') }}">About</a></li>
+                    {% if not current_user.is_authenticated %}
                     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
                     <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                    {% else %}
                     <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
