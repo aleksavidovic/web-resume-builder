@@ -1,0 +1,66 @@
+# ----------------------------------------------------------------
+# Pydo directory
+# ----------------------------------------------------------------
+.pydo
+# ----------------------------------------------------------------
+# Virtual Environments
+# ----------------------------------------------------------------
+# The virtual environment directory created by uv
+.venv
+# Other common names for virtual environments
+venv/
+env/
+.python-version
+*.log
+logs
+logs/
+instance
+# ----------------------------------------------------------------
+# Python Artifacts
+# ----------------------------------------------------------------
+# Bytecode and cache
+__pycache__/
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+build/
+dist/
+downloads/
+eggs/
+*.egg-info/
+wheels/
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+
+# ----------------------------------------------------------------
+# Secrets & Configuration
+# ----------------------------------------------------------------
+# Environment variables and secrets file
+*.env
+*.env.*
+
+
+# ----------------------------------------------------------------
+# Testing
+# ----------------------------------------------------------------
+# Test reports and cache
+.coverage
+.pytest_cache/
+htmlcov/
+
+
+# ----------------------------------------------------------------
+# IDE / Editor Files
+# ----------------------------------------------------------------
+.idea/
+.vscode/
+*.swp
+
+
