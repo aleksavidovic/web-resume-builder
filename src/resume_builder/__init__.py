@@ -12,6 +12,7 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI", "sqlite:///resume_builder.db")
     from .routes import main_bp
     from .auth import auth_bp
+    from .resume_builder_core import resume_bp
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
@@ -25,4 +26,5 @@ def create_app():
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp, url_prefix="/auth")
+    app.register_blueprint(resume_bp, url_prefix="/resume")
     return app
