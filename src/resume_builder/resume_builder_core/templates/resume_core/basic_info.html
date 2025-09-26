@@ -47,9 +47,13 @@
                 <footer>
                     <!-- Note: You will need to create these routes in your routes.py -->
                     <a href="{{url_for('resume.edit_basic_info', info_id=info.id)}}"><button>Edit</button></a>
+                    <a href="{{url_for('resume.delete_basic_info', info_id=info.id)}}"><button>Delete</button></a>
+
+                    <!--
                     <form action="#" method="POST" style="display:inline;">
                         <button type="submit" disabled>Delete</button>
                     </form>
+                    -->
                 </footer>
             </article>
         {% endfor %}

@@ -23,6 +23,25 @@ def basic_info():
     users_basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
     return render_template("resume_core/basic_info.html", basic_infos=users_basic_info)
 
+@login_required
+@resume_bp.route("/basic_info/<int:info_id>/delete", methods=["GET"])
+def delete_basic_info(info_id):
+    """
+    Handles deleting an existing BasicInfo entry.
+    """
+    try:
+        info_to_delete = BasicInfo.query.filter_by(
+            id=info_id, user_id=current_user.id
+        ).first()
+        if not info_to_delete:
+            raise NotFound()
+        db.session.delete(info_to_delete)
+        db.session.commit()
+        flash("Successfully deleted Basic Info entry.", "danger")
+    except Exception as e:
+            flash(f"Error while deleting Basic Info entry: {e}", "danger")
+
+    return redirect(url_for("resume.basic_info"))
 
 @login_required
 @resume_bp.route("/basic_info/<int:info_id>/edit", methods=["GET", "POST"])
@@ -46,10 +65,12 @@ def edit_basic_info(info_id):
             form.populate_obj(info_to_edit)
             db.session.commit()
             flash("Your 'Basic Info' section has been updated!", "success")
-            return redirect(url_for("resume.basic_info"))
         except Exception as e:
             db.session.rollback()
             flash(f"An error occurred while updating: {e}", "danger")
+        finally:
+            return redirect(url_for("resume.basic_info"))
+
 
     # For a GET request, render the template with the pre-filled form
     return render_template(
