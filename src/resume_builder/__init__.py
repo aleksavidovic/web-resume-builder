@@ -1,24 +1,30 @@
 import os
 from flask import Flask
 from dotenv import load_dotenv
-from .extensions import db, bcrypt, login_manager, migrate 
+from .extensions import db, bcrypt, login_manager, migrate
 from .models import User
 
 load_dotenv()
 
+
 def create_app():
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "ASDAJSDOIASJDOAJOISADOASJDOASIDJASODJ")
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI", "sqlite:///resume_builder.db")
+    app.config["SECRET_KEY"] = os.getenv(
+        "SECRET_KEY", "ASDAJSDOIASJDOAJOISADOASJDOASIDJASODJ"
+    )
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+        "SQLALCHEMY_DATABASE_URI", "sqlite:///resume_builder.db"
+    )
     from .main import main_bp
     from .auth import auth_bp
     from .resume_builder_core import resume_bp
+
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
     login_manager.init_app(app)
-    login_manager.login_view = 'auth.login'
-    login_manager.login_message_category = 'info'
+    login_manager.login_view = "auth.login"
+    login_manager.login_message_category = "info"
 
     @login_manager.user_loader
     def load_user(user_id):

@@ -2,6 +2,7 @@ from flask_login import UserMixin
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True, nullable=False)
@@ -17,6 +18,7 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username}')"
 
+
 class BasicInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     full_name = db.Column(db.String(50), nullable=True, default="")
@@ -27,14 +29,11 @@ class BasicInfo(db.Model):
     linkedin_url = db.Column(db.String(100), nullable=True, default="")
     github_url = db.Column(db.String(100), nullable=True, default="")
 
-
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
 
 class Summary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     summary_name = db.Column(db.String(50), nullable=False, default="")
     summary_content = db.Column(db.Text, nullable=True, default="")
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-
-
-

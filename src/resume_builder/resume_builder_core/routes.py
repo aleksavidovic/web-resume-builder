@@ -6,18 +6,23 @@ from ..models import BasicInfo, Summary
 from .. import db
 from werkzeug.exceptions import NotFound
 
+
 @login_required
 @resume_bp.route("/", methods=["GET", "POST"])
 def home():
     basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
     summaries = Summary.query.filter_by(user_id=current_user.id).all()
-    return render_template("resume_core/home.html", basic_info=basic_info, summaries=summaries)
+    return render_template(
+        "resume_core/home.html", basic_info=basic_info, summaries=summaries
+    )
+
 
 @login_required
 @resume_bp.route("/basic_info", methods=["GET", "POST"])
 def basic_info():
     users_basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
     return render_template("resume_core/basic_info.html", basic_infos=users_basic_info)
+
 
 @login_required
 @resume_bp.route("/basic_info/<int:info_id>/edit", methods=["GET", "POST"])
@@ -27,7 +32,9 @@ def edit_basic_info(info_id):
     """
     # Query for the specific BasicInfo object or raise a 404 error.
     # The filter also ensures a user can only edit their own entries.
-    info_to_edit = BasicInfo.query.filter_by(id=info_id, user_id=current_user.id).first()
+    info_to_edit = BasicInfo.query.filter_by(
+        id=info_id, user_id=current_user.id
+    ).first()
     if not info_to_edit:
         raise NotFound()
 
@@ -45,7 +52,10 @@ def edit_basic_info(info_id):
             flash(f"An error occurred while updating: {e}", "danger")
 
     # For a GET request, render the template with the pre-filled form
-    return render_template("resume_core/edit_basic_info.html", form=form, info_id=info_id)
+    return render_template(
+        "resume_core/edit_basic_info.html", form=form, info_id=info_id
+    )
+
 
 @login_required
 @resume_bp.route("/basic_info/create", methods=["GET", "POST"])
@@ -61,20 +71,22 @@ def create_basic_info():
             contact_phone = form.contact_phone.data
             linkedin_url = form.linkedin_url.data
             github_url = form.github_url.data
-            new_basic_info = BasicInfo( full_name=full_name, 
-                                        job_title=job_title, 
-                                        address=address,     
-                                        contact_email=contact_email, 
-                                        contact_phone=contact_phone, 
-                                        linkedin_url=linkedin_url,   
-                                        github_url=github_url,
-                                        user_id=current_user.id)
+            new_basic_info = BasicInfo(
+                full_name=full_name,
+                job_title=job_title,
+                address=address,
+                contact_email=contact_email,
+                contact_phone=contact_phone,
+                linkedin_url=linkedin_url,
+                github_url=github_url,
+                user_id=current_user.id,
+            )
             db.session.add(new_basic_info)
             db.session.commit()
             flash("New Basic Info Created!", "success")
-            return(redirect(url_for("resume.basic_info")))
+            return redirect(url_for("resume.basic_info"))
         except Exception as e:
             flash(f"Error while saving Basic Info: {e}")
-            return(redirect(url_for("resume.create_basic_info")))
-        
+            return redirect(url_for("resume.create_basic_info"))
+
     return render_template("resume_core/create_basic_info.html", form=form)
