@@ -18,3 +18,9 @@ class BasicInfoForm(FlaskForm):
     linkedin_url = StringField("Linkedin URL:", validators=[Length(max=100)])
     github_url = StringField("Github URL:", validators=[Length(max=100)])
     submit = SubmitField("Save Basic Info")
+
+
+class SummaryForm(FlaskForm):
+    summary_name = StringField("Summary Name", validators=[DataRequired(), Length(max=50)])
+    summary_content = StringField("Summary Content", validators=[DataRequired(), Length(max=50)])
+    submit = SubmitField("Save Summary")

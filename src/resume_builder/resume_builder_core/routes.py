@@ -1,4 +1,4 @@
-from resume_builder.resume_builder_core.forms import BasicInfoForm
+from resume_builder.resume_builder_core.forms import BasicInfoForm, SummaryForm
 from . import resume_bp
 from flask import flash, redirect, render_template, url_for
 from flask_login import login_required, current_user
@@ -114,12 +114,38 @@ def create_basic_info():
     return render_template("resume_core/basic_info/create_basic_info.html", form=form)
 
 
+######################
+######  SUMMARY ######
+######################
 @login_required
 @resume_bp.route("/summary", methods=["GET", "POST"])
 def summary():
-    return "<h3>Summary page</h3>"
+    summaries = Summary.query.filter_by(user_id=current_user.id).all()
+    return render_template("resume_core/summary/summary.html", summaries=summaries)
+
+@login_required
+@resume_bp.route("/summary/create", methods=["GET", "POST"])
+def create_summary():
+    form = SummaryForm()
+    if form.validate_on_submit():
+        try:
+            summary_name = form.summary_name.data
+            summary_content = form.summary_content.data
+            new_summary = Summary(summary_name=summary_name, summary_content=summary_content, user_id=current_user.id)
+            db.session.add(new_summary)
+            db.session.commit()
+            flash("Successfully saved a new `Summary` section.", "success")
+        except Exception as e:
+            flash(f"Error while creating `Summary` section: {e}", "dangeer")
+        finally:
+            return redirect(url_for('resume.home'))   
+    
+    return render_template("resume_core/summary/create_summary.html", form=form)
 
 
+#########################
+######  EXPERIENCE ######
+#########################
 @login_required
 @resume_bp.route("/experience", methods=["GET", "POST"])
 def experience():

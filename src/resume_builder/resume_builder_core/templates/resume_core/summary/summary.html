@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}My Basic Info Sections{% endblock %}
+
+{% block content %}
+<section>
+    <header style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h2>Summary Sections</h2>
+            <p>Manage the different "Summary" sections for your resumes.</p>
+        </div>
+        <a href="{{ url_for('resume.create_summary') }}">
+            <button>+ Create New</button>
+        </a>
+    </header>
+
+    <hr>
+
+    {% if summaries %}
+        <div>
+        {% for summary in summaries %}
+            <article style="border: 1px solid #eee; padding: 1.5rem; margin-bottom: 1rem;">
+                <header>
+                    <h3>{{ summary.summary_name }}</h3>
+                </header>
+                
+                <h4>Summary content</h4>
+                <p>{{ summary.summary_content }}</p>
+                
+                <footer>
+                    <!-- Note: You will need to create these routes in your routes.py -->
+                    <a href="{{url_for('resume.create_summary', summary_id=summary.id)}}"><button>Edit</button></a>
+                    <a href="{{url_for('resume.create_summary', summary_id=summary.id)}}"><button>Delete</button></a>
+
+                    <!--
+                    <form action="#" method="POST" style="display:inline;">
+                        <button type="submit" disabled>Delete</button>
+                    </form>
+                    -->
+                </footer>
+            </article>
+        {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 2rem;">
+            <h3>No "Summary" Sections Found</h3>
+            <p>You haven't created any sections yet. Click the button above to get started!</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

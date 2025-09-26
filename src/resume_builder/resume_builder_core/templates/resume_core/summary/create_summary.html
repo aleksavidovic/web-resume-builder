@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Create New Basic Info{% endblock %}
+
+{% block content %}
+<section>
+    <h2>Create a New "Basic Info" Section</h2>
+    <p>Fill out the form below to create a new version of your personal details.</p>
+    <hr>
+
+    <form method="POST" action="{{ url_for('resume.create_summary') }}" novalidate>
+        {{ form.hidden_tag() }} {# Renders CSRF token #}
+        
+            <h3>Summary Name</h3>
+            {{ form.summary_name() }}
+            <h3>Summary Content</h3>
+            {{ form.summary_content() }}
+        <hr>
+
+        <div>
+            {{ form.submit() }}
+            <a href="{{ url_for('resume.basic_info') }}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
