@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}My Basic Info{% endblock %}
+
+{% block content %}
+<h3>Create Basic Info</h3>
+<p>Here you can create a new version of your "Basic Info" resume section.</p>
+
+<form method="POST">
+    {{ form.hidden_tag() }} {# Renders CSRF token #}
+    {% for field in form %}
+        {# This check prevents rendering the CSRF token and submit button in the loop #}
+        {% if field.type != 'CSRFTokenField' and field.type != 'SubmitField' %}
+            <p>
+                {{ field.label }}<br>
+                {{ field() }} {# This renders the input tag itself #}
+                {% for error in field.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+        {% endif %}
+    {% endfor %}
+    <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

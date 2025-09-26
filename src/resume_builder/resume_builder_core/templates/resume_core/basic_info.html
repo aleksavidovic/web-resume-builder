@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}My Basic Info{% endblock %}
+
+{% block content %}
+<h3>My Basic Info</h3>
+<a href="{{ url_for('resume.create_basic_info')}}"><button>Create New</button></a>
+<p>Here you can view, create, edit, and delete different version of your "Basic Info" resume section.</p>
+{% for basic_info in basic_infos %}
+<h4>{{basic_info.full_name}}</h4>
+<h4>{{basic_info.contact_email}}</h4>
+<hr>
+{% endfor %}
+{% endblock %}

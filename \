@@ -15,7 +15,7 @@ def home():
 @login_required
 @resume_bp.route("/basic_info", methods=["GET", "POST"])
 def basic_info():
-    users_basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
+    users_basic_info = BasicInfo.query.filter_by(user_id=current_user.user_id).all()
     return render_template("resume_core/basic_info.html", basic_infos=users_basic_info)
 
 
@@ -27,20 +27,8 @@ def create_basic_info():
         print("Form submitted for validation")
         try:
             full_name = form.full_name.data
-            job_title = form.job_title.data
-            address = form.address.data
-            contact_email = form.contact_email.data
-            contact_phone = form.contact_phone.data
-            linkedin_url = form.linkedin_url.data
-            github_url = form.github_url.data
-            new_basic_info = BasicInfo( full_name=full_name, 
-                                        job_title=job_title, 
-                                        address=address,     
-                                        contact_email=contact_email, 
-                                        contact_phone=contact_phone, 
-                                        linkedin_url=linkedin_url,   
-                                        github_url=github_url,
-                                        user_id=current_user.id)
+            email = form.email.data
+            new_basic_info = BasicInfo(full_name=full_name, email=email)
             db.session.add(new_basic_info)
             db.session.commit()
             flash("New Basic Info Created!", "success")
