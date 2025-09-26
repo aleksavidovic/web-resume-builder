@@ -23,6 +23,7 @@ def basic_info():
     users_basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
     return render_template("resume_core/basic_info.html", basic_infos=users_basic_info)
 
+
 @login_required
 @resume_bp.route("/basic_info/<int:info_id>/delete", methods=["GET"])
 def delete_basic_info(info_id):
@@ -39,9 +40,10 @@ def delete_basic_info(info_id):
         db.session.commit()
         flash("Successfully deleted Basic Info entry.", "danger")
     except Exception as e:
-            flash(f"Error while deleting Basic Info entry: {e}", "danger")
+        flash(f"Error while deleting Basic Info entry: {e}", "danger")
 
     return redirect(url_for("resume.basic_info"))
+
 
 @login_required
 @resume_bp.route("/basic_info/<int:info_id>/edit", methods=["GET", "POST"])
@@ -70,7 +72,6 @@ def edit_basic_info(info_id):
             flash(f"An error occurred while updating: {e}", "danger")
         finally:
             return redirect(url_for("resume.basic_info"))
-
 
     # For a GET request, render the template with the pre-filled form
     return render_template(
@@ -111,3 +112,33 @@ def create_basic_info():
             return redirect(url_for("resume.create_basic_info"))
 
     return render_template("resume_core/create_basic_info.html", form=form)
+
+
+@login_required
+@resume_bp.route("/summary", methods=["GET", "POST"])
+def summary():
+    return "<h3>Summary page</h3>"
+
+
+@login_required
+@resume_bp.route("/experience", methods=["GET", "POST"])
+def experience():
+    return "<h3>Experience page</h3>"
+
+
+@login_required
+@resume_bp.route("/education", methods=["GET", "POST"])
+def education():
+    return "<h3>Education page</h3>"
+
+
+@login_required
+@resume_bp.route("/skills", methods=["GET", "POST"])
+def skills():
+    return "<h3>Skills page</h3>"
+
+
+@login_required
+@resume_bp.route("/languages", methods=["GET", "POST"])
+def languages():
+    return "<h3>Languages page</h3>"
