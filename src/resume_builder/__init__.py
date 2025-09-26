@@ -10,7 +10,7 @@ def create_app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "ASDAJSDOIASJDOAJOISADOASJDOASIDJASODJ")
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI", "sqlite:///resume_builder.db")
-    from .routes import main_bp
+    from .main import main_bp
     from .auth import auth_bp
     from .resume_builder_core import resume_bp
     db.init_app(app)
@@ -24,7 +24,7 @@ def create_app():
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    app.register_blueprint(main_bp)
+    app.register_blueprint(main_bp, url_prefix="")
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(resume_bp, url_prefix="/resume")
     return app
