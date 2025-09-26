@@ -39,8 +39,22 @@ class BasicInfo(db.Model):
 
 class Summary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    summary_name = db.Column(db.String(50), nullable=False, default="")
-    summary_content = db.Column(db.Text, nullable=True, default="")
+    name = db.Column(db.String(50), nullable=False, default="")
+    content = db.Column(db.Text, nullable=True, default="")
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
+
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
+
+class Experience(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50), nullable=False, default="")
+    job_title = db.Column(db.String(50), nullable=False, default="")
+    company_name = db.Column(db.String(50), nullable=False, default="")
+    date_started = db.Column(db.Date, nullable=False, default=datetime.now(timezone.utc))
+    date_finished = db.Column(db.Date, nullable=False, default=datetime.now(timezone.utc))
+    descritpion = db.Column(db.Text, nullable=True, default="")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
