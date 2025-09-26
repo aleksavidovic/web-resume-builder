@@ -21,7 +21,7 @@ def home():
 @resume_bp.route("/basic_info", methods=["GET", "POST"])
 def basic_info():
     users_basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
-    return render_template("resume_core/basic_info.html", basic_infos=users_basic_info)
+    return render_template("resume_core/basic_info/basic_info.html", basic_infos=users_basic_info)
 
 
 @login_required
@@ -75,7 +75,7 @@ def edit_basic_info(info_id):
 
     # For a GET request, render the template with the pre-filled form
     return render_template(
-        "resume_core/edit_basic_info.html", form=form, info_id=info_id
+        "resume_core/basic_info/edit_basic_info.html", form=form, info_id=info_id
     )
 
 
@@ -111,7 +111,7 @@ def create_basic_info():
             flash(f"Error while saving Basic Info: {e}")
             return redirect(url_for("resume.create_basic_info"))
 
-    return render_template("resume_core/create_basic_info.html", form=form)
+    return render_template("resume_core/basic_info/create_basic_info.html", form=form)
 
 
 @login_required
