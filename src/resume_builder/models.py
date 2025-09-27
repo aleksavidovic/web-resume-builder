@@ -49,7 +49,7 @@ class TimeStampMixin:
     updated_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
 class EntryTitleMixin:
-    entry_title = db.Column(db.String(50), unique=True, nullable=False)
+    entry_title = db.Column(db.String(50), nullable=False)
 
 
 class User(db.Model, UserMixin, TimeStampMixin):
@@ -84,6 +84,10 @@ class BasicInfo(db.Model, EntryTitleMixin, TimeStampMixin):
 
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
 
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'entry_title', name='_user_entry_title_uc'),
+    )
+
 
 class Summary(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
@@ -91,6 +95,9 @@ class Summary(db.Model, EntryTitleMixin, TimeStampMixin):
 
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
 
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'entry_title', name='_user_summary_title_uc'),
+    )
 
 class Experience(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
@@ -101,3 +108,7 @@ class Experience(db.Model, EntryTitleMixin, TimeStampMixin):
     description = db.Column(db.Text, nullable=True, default="")
 
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+    
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'entry_title', name='_user_experience_title_uc'),
+    )
