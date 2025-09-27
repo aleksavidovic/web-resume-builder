@@ -1,4 +1,5 @@
 import os
+import uuid
 from flask import Flask
 from dotenv import load_dotenv
 from .extensions import db, bcrypt, login_manager, migrate
@@ -28,7 +29,14 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(int(user_id))
+        try:
+            # First, try to convert the user_id to a UUID object.
+            # This will catch any values that are not valid UUIDs.
+            uuid.UUID(user_id)
+        except ValueError:
+            return None
+
+        return User.query.get(user_id)
 
     app.register_blueprint(main_bp, url_prefix="")
     app.register_blueprint(auth_bp, url_prefix="/auth")

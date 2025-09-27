@@ -1,9 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, validators
 from wtforms.validators import DataRequired, Email, Length
 
 
 class BasicInfoForm(FlaskForm):
+    entry_title = StringField(
+        "Entry Title", validators=[DataRequired(), Length(max=50)]
+    )
     full_name = StringField(
         "Full Name", validators=[DataRequired(), Length(min=2, max=50)]
     )

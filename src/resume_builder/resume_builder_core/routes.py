@@ -1,3 +1,4 @@
+import uuid
 from resume_builder.resume_builder_core.forms import BasicInfoForm, SummaryForm
 from . import resume_bp
 from flask import flash, redirect, render_template, url_for
@@ -25,7 +26,7 @@ def basic_info():
 
 
 @login_required
-@resume_bp.route("/basic_info/<int:info_id>/delete", methods=["GET"])
+@resume_bp.route("/basic_info/<string:info_id>/delete", methods=["GET"])
 def delete_basic_info(info_id):
     """
     Handles deleting an existing BasicInfo entry.
@@ -46,11 +47,16 @@ def delete_basic_info(info_id):
 
 
 @login_required
-@resume_bp.route("/basic_info/<int:info_id>/edit", methods=["GET", "POST"])
+@resume_bp.route("/basic_info/<string:info_id>/edit", methods=["GET", "POST"])
 def edit_basic_info(info_id):
     """
     Handles editing an existing BasicInfo entry.
     """
+    try:
+        info_id_uuid = uuid.UUID(info_id)
+    except ValueError:
+        raise NotFound()
+
     # Query for the specific BasicInfo object or raise a 404 error.
     # The filter also ensures a user can only edit their own entries.
     info_to_edit = BasicInfo.query.filter_by(
@@ -86,6 +92,7 @@ def create_basic_info():
     if form.validate_on_submit():
         print("Form submitted for validation")
         try:
+            entry_title = form.entry_title.data
             full_name = form.full_name.data
             job_title = form.job_title.data
             address = form.address.data
@@ -94,6 +101,7 @@ def create_basic_info():
             linkedin_url = form.linkedin_url.data
             github_url = form.github_url.data
             new_basic_info = BasicInfo(
+                entry_title=entry_title,
                 full_name=full_name,
                 job_title=job_title,
                 address=address,

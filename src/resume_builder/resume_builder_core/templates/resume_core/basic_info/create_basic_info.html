@@ -10,6 +10,17 @@
 
     <form method="POST" action="{{ url_for('resume.create_basic_info') }}" novalidate>
         {{ form.hidden_tag() }} {# Renders CSRF token #}
+
+        <fieldset>
+            <legend><h3>Basic Info - Entry Title</h3></legend>
+            <div style="margin-bottom: 1rem;">
+                {{ form.entry_title.label }}<br>
+                {{ form.entry_title(size=50) }}
+                {% for error in form.entry_title.errors %}
+                    <br><span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </fieldset>
         
         <fieldset>
             <legend><h3>Personal Details</h3></legend>

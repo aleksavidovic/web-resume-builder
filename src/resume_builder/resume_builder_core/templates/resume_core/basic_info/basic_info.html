@@ -21,7 +21,8 @@
         {% for info in basic_infos %}
             <article style="border: 1px solid #eee; padding: 1.5rem; margin-bottom: 1rem;">
                 <header>
-                    <h3>{{ info.full_name }}</h3>
+                    <h3>{{ info.entry_title }}</h3>
+                    <p><strong>Full Name:</strong> {{ info.full_name }}</p>
                     <p><strong>Job Title:</strong> {{ info.job_title }}</p>
                 </header>
                 
