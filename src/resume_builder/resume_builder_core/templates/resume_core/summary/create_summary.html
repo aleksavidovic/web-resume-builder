@@ -4,22 +4,37 @@
 
 {% block content %}
 <section>
-    <h2>Create a New "Basic Info" Section</h2>
+    <h2>Create a New "Summary" Section</h2>
     <p>Fill out the form below to create a new version of your personal details.</p>
     <hr>
 
     <form method="POST" action="{{ url_for('resume.create_summary') }}" novalidate>
         {{ form.hidden_tag() }} {# Renders CSRF token #}
         
-            <h3>Summary Name</h3>
-            {{ form.summary_name() }}
-            <h3>Summary Content</h3>
-            {{ form.summary_content() }}
+        <fieldset>
+            <legend><h3>Summary - Entry Title</h3></legend>
+            <div style="margin-bottom: 1rem;">
+                {{ form.entry_title.label }}<br>
+                {{ form.entry_title(size=50) }}
+                {% for error in form.entry_title.errors %}
+                    <br><span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </fieldset>
+        
+        <fieldset>
+            <legend><h3>Content</h3></legend>
+            <div style="margin-bottom: 1rem;">
+                {{ form.content(cols=60, rows=15) }}
+                {% for error in form.content.errors %}
+                    <br><span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
         <hr>
 
         <div>
             {{ form.submit() }}
-            <a href="{{ url_for('resume.basic_info') }}">Cancel</a>
+            <a href="{{ url_for('resume.create_summary') }}">Cancel</a>
         </div>
     </form>
 </section>

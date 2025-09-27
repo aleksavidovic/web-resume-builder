@@ -10,8 +10,7 @@
 {% endfor %}
 <a href="{{url_for('resume.summary')}}"><h2>Summary</h2></a>
 {% for summary in summaries %}
-<p>{{ summary.title }}</p>
-<p>{{ summary.summary_name }}</p>
+<p> - <strong>{{ summary.entry_title }}</strong>: {{ summary.content[:30] }}...</p>
 {% endfor %}
 <a href="{{url_for('resume.experience')}}"><h2>Experience</h2></a>
 <a href="{{url_for('resume.education')}}"><h2>Education</h2></a>

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, validators
+from wtforms import StringField, SubmitField, TextAreaField, validators
 from wtforms.validators import DataRequired, Email, Length
 
 
@@ -24,6 +24,8 @@ class BasicInfoForm(FlaskForm):
 
 
 class SummaryForm(FlaskForm):
-    summary_name = StringField("Summary Name", validators=[DataRequired(), Length(max=50)])
-    summary_content = StringField("Summary Content", validators=[DataRequired(), Length(max=50)])
+    entry_title = StringField(
+        "Entry Title", validators=[DataRequired(), Length(max=50)]
+    )
+    content = TextAreaField("Summary Content", validators=[DataRequired(), Length(max=500)])
     submit = SubmitField("Save Summary")

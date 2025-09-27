@@ -137,9 +137,9 @@ def create_summary():
     form = SummaryForm()
     if form.validate_on_submit():
         try:
-            summary_name = form.summary_name.data
-            summary_content = form.summary_content.data
-            new_summary = Summary(summary_name=summary_name, summary_content=summary_content, user_id=current_user.id)
+            entry_title = form.entry_title.data
+            content = form.content.data
+            new_summary = Summary(entry_title=entry_title, content=content, user_id=current_user.id)
             db.session.add(new_summary)
             db.session.commit()
             flash("Successfully saved a new `Summary` section.", "success")
