@@ -3,7 +3,7 @@ from resume_builder.resume_builder_core.forms import BasicInfoForm, SummaryForm
 from . import resume_bp
 from flask import flash, redirect, render_template, url_for
 from flask_login import login_required, current_user
-from ..models import BasicInfo, Summary
+from ..models import BasicInfo, Summary, Experience
 from .. import db
 from werkzeug.exceptions import NotFound
 
@@ -13,8 +13,9 @@ from werkzeug.exceptions import NotFound
 def home():
     basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
     summaries = Summary.query.filter_by(user_id=current_user.id).all()
+    experiences = Experience.query.filter_by(user_id=current_user.id).all()
     return render_template(
-        "resume_core/home.html", basic_info=basic_info, summaries=summaries
+        "resume_core/home.html", basic_info=basic_info, summaries=summaries, experiences=experiences
     )
 
 
