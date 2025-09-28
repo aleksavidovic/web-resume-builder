@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}My Basic Info Sections{% endblock %}
+{% block title %}My Work Experiences{% endblock %}
 
 {% block content %}
 <section>
@@ -10,7 +10,7 @@
             <p>Manage how your past jobs show up in Experiences section of your resume.</p>
             <p>You can have multiple versions of the same work experience.</p>
         </div>
-        <a href="{{ url_for('resume.create_summary') }}">
+        <a href="{{ url_for('resume.create_experience') }}">
             <button>+ Create New</button>
         </a>
     </header>
@@ -19,33 +19,41 @@
 
     {% if experiences %}
         <div>
-        {% for summary in summaries %}
+        {% for experience in experiences %}
             <article style="border: 1px solid #eee; padding: 1.5rem; margin-bottom: 1rem;">
                 <header>
-                    <h3>{{ summary.summary_name }}</h3>
+                    <h3>{{ experience.entry_title }}</h3>
                 </header>
+
+                <div>
+                    {% if experience.date_started %}
+                    <strong>Date Started: </strong>
+                    <span>{{ experience.date_started }}</span>
+                    {% endif %}
+                    {% if experience.date_finished %}
+                    <strong>Date Finished: </strong>
+                    <span>{{ experience.date_finished }}</span>
+                    {% else %}
+                    <strong>Ongoing</strong>
+                    {% endif %}
+                </div>
                 
-                <h4>Summary content</h4>
-                <p>{{ summary.summary_content }}</p>
+                {% if experience.description %}
+                <h4>Experiecne description</h4>
+                <p>{{ experience.description }}</p>
+                {% endif %}
                 
                 <footer>
-                    <!-- Note: You will need to create these routes in your routes.py -->
-                    <a href="{{url_for('resume.create_summary', summary_id=summary.id)}}"><button>Edit</button></a>
-                    <a href="{{url_for('resume.create_summary', summary_id=summary.id)}}"><button>Delete</button></a>
-
-                    <!--
-                    <form action="#" method="POST" style="display:inline;">
-                        <button type="submit" disabled>Delete</button>
-                    </form>
-                    -->
+                    <a href=""><button>Edit</button></a>
+                    <a href=""><button>Delete</button></a>
                 </footer>
             </article>
         {% endfor %}
         </div>
     {% else %}
         <div style="text-align: center; padding: 2rem;">
-            <h3>No "Summary" Sections Found</h3>
-            <p>You haven't created any sections yet. Click the button above to get started!</p>
+            <h3>No Work Experiences Found</h3>
+            <p>You haven't created any experiences. Click the button above to get started!</p>
         </div>
     {% endif %}
 </section>

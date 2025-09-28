@@ -1,5 +1,5 @@
 import uuid
-from resume_builder.resume_builder_core.forms import BasicInfoForm, SummaryForm
+from resume_builder.resume_builder_core.forms import BasicInfoForm, ExperienceForm, SummaryForm
 from . import resume_bp
 from flask import flash, redirect, render_template, url_for
 from flask_login import login_required, current_user
@@ -19,11 +19,16 @@ def home():
     )
 
 
+###########################
+## BASIC INFO: LIST VIEW ##
+###########################
+
 @login_required
 @resume_bp.route("/basic_info", methods=["GET", "POST"])
 def basic_info():
     users_basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
     return render_template("resume_core/basic_info/basic_info.html", basic_infos=users_basic_info)
+
 
 ########################
 ## BASIC INFO: CREATE ##
@@ -80,8 +85,6 @@ def edit_basic_info(info_id):
     except ValueError:
         raise NotFound()
 
-    # Query for the specific BasicInfo object or raise a 404 error.
-    # The filter also ensures a user can only edit their own entries.
     info_to_edit = BasicInfo.query.filter_by(
         id=info_id, user_id=current_user.id
     ).first()
@@ -134,14 +137,16 @@ def delete_basic_info(info_id):
 
 
 
-######################
-###### SUMMARY #######
-######################
+#########################
+## SUMMARY: LIST VIEW  ##
+#########################
+
 @login_required
 @resume_bp.route("/summary", methods=["GET", "POST"])
 def summary():
     summaries = Summary.query.filter_by(user_id=current_user.id).all()
     return render_template("resume_core/summary/summary.html", summaries=summaries)
+
 
 #####################
 ## SUMMARY: CREATE ##
@@ -165,6 +170,7 @@ def create_summary():
             return redirect(url_for('resume.home'))   
     
     return render_template("resume_core/summary/create_summary.html", form=form)
+
 
 ####################
 ## SUMMARY: EDIT  ##
@@ -237,23 +243,80 @@ def delete_summary(summary_id):
 #########################
 ######  EXPERIENCE ######
 #########################
+
+###########################
+## EXPERIENCE: LIST VIEW ##
+###########################
+
 @login_required
 @resume_bp.route("/experience", methods=["GET", "POST"])
 def experience():
-    return "<h3>Experience page</h3>"
+    experiences = Experience.query.filter_by(user_id=current_user.id).all()
+    return render_template("resume_core/experience/experience.html", experiences=experiences)
 
 
+########################
+## EXPERIENCE: CREATE ##
+########################
+
+@login_required
+@resume_bp.route("/experience/create", methods=["GET", "POST"])
+def create_experience():
+    form = ExperienceForm()
+    if form.validate_on_submit():
+        print("Form submitted for validation")
+        try:
+            entry_title = form.entry_title.data
+            company_name = form.company_name.data
+            job_title = form.job_title.data
+            description = form.description.data
+            date_started = form.date_started.data
+            date_finished = form.date_finished.data
+            new_experience = Experience(
+                entry_title=entry_title,
+                company_name=company_name,
+                job_title=job_title,
+                description=description,
+                date_started=date_started,
+                date_finished=date_finished,
+                user_id=current_user.id
+            )
+            db.session.add(new_experience)
+            db.session.commit()
+            flash("New Experience Entry Created!", "success")
+            return redirect(url_for("resume.home"))
+        except Exception as e:
+            flash(f"Error while creating Experience: {e}")
+            return redirect(url_for("resume.create_experience"))
+
+    return render_template("resume_core/experience/create_experience.html", form=form)
+
+
+
+
+
+
+###############
+## EDUCATION ##
+###############
 @login_required
 @resume_bp.route("/education", methods=["GET", "POST"])
 def education():
     return "<h3>Education page</h3>"
 
+############
+## SKILLS ##
+############
 
 @login_required
 @resume_bp.route("/skills", methods=["GET", "POST"])
 def skills():
     return "<h3>Skills page</h3>"
 
+
+###############
+## LANGUAGES ##
+###############
 
 @login_required
 @resume_bp.route("/languages", methods=["GET", "POST"])

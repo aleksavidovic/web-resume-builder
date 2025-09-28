@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Create New Basic Info{% endblock %}
+
+{% block content %}
+<section>
+    <h2>Create a New "Experience" Entry</h2>
+    <p>Fill out the form below to create a new version of your personal details.</p>
+    <hr>
+
+    <form method="POST" action="{{ url_for('resume.create_experience') }}" novalidate>
+        {{ form.hidden_tag() }} {# Renders CSRF token #}
+
+        <fieldset>
+            <legend><h3>Experience - Entry Title</h3></legend>
+            <div style="margin-bottom: 1rem;">
+                {{ form.entry_title.label }}<br>
+                {{ form.entry_title(size=50) }}
+                {% for error in form.entry_title.errors %}
+                    <br><span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </fieldset>
+        
+        <fieldset>
+            <legend><h3>Experience Details</h3></legend>
+            <div style="margin-bottom: 1rem;">
+                {{ form.company_name.label }}<br>
+                {{ form.company_name(size=40) }}
+                {% for error in form.company_name.errors %}
+                    <br><span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div style="margin-bottom: 1rem;">
+                {{ form.job_title.label }}<br>
+                {{ form.job_title(size=40) }}
+                {% for error in form.job_title.errors %}
+                    <br><span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div style="margin-bottom: 1rem;">
+                {{ form.date_started.label }}<br>
+                {{ form.date_started() }}
+                {% for error in form.date_started.errors %}
+                    <br><span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div style="margin-bottom: 1rem;">
+                {{ form.date_finished.label }}<br>
+                {{ form.date_finished() }}
+                {% for error in form.date_finished.errors %}
+                    <br><span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </fieldset>
+        
+        <br>
+
+        <fieldset>
+            <legend><h3>Experience Description</h3></legend>
+            <div style="margin-bottom: 1rem;">
+                {{ form.description.label }}<br>
+                {{ form.description(cols=60, rows=20) }}
+                 {% for error in form.description.errors %}
+                    <br><span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </fieldset>
+        <br>
+        <hr>
+        <div>
+            {{ form.submit() }}
+            <a href="{{ url_for('resume.experience') }}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
