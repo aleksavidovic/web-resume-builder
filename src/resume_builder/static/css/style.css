@@ -170,6 +170,26 @@ article.post {
 }
 
 /* ----------------------------------------------------------------
+   List Section
+   ---------------------------------------------------------------- */
+.basic-info-list-header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.entry_item {
+    border: 1px solid #eee; 
+    padding: 1.5rem; 
+    margin-bottom: 1rem;
+}
+
+.no-entries-found {
+    text-align: center; 
+    padding: 2rem;
+}
+
+/* ----------------------------------------------------------------
    Footer
    ---------------------------------------------------------------- */
 
