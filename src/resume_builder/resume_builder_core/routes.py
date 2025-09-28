@@ -24,10 +24,10 @@ def home():
 ###########################
 
 @login_required
-@resume_bp.route("/basic_info", methods=["GET", "POST"])
-def basic_info():
+@resume_bp.route("/basic_info_list", methods=["GET", "POST"])
+def list_basic_info():
     users_basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
-    return render_template("resume_core/basic_info/basic_info.html", basic_infos=users_basic_info)
+    return render_template("resume_core/basic_info/list_basic_info.html", basic_infos=users_basic_info)
 
 
 ########################
@@ -63,7 +63,7 @@ def create_basic_info():
             db.session.add(new_basic_info)
             db.session.commit()
             flash("New Basic Info Created!", "success")
-            return redirect(url_for("resume.basic_info"))
+            return redirect(url_for("resume.list_basic_info"))
         except Exception as e:
             flash(f"Error while saving Basic Info: {e}")
             return redirect(url_for("resume.create_basic_info"))
@@ -103,7 +103,7 @@ def edit_basic_info(info_id):
             db.session.rollback()
             flash(f"An error occurred while updating basic info entry: {e}", "danger")
         finally:
-            return redirect(url_for("resume.basic_info"))
+            return redirect(url_for("resume.list_basic_info"))
 
     # For a GET request, render the template with the pre-filled form
     return render_template(
@@ -132,7 +132,7 @@ def delete_basic_info(info_id):
     except Exception as e:
         flash(f"Error while deleting Basic Info entry: {e}", "danger")
 
-    return redirect(url_for("resume.basic_info"))
+    return redirect(url_for("resume.list_basic_info"))
 
 
 

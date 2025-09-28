@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1> Resume sections </h1>
-<a href="{{url_for('resume.basic_info')}}"><h2>Basic Info</h2></a>
+<a href="{{url_for('resume.list_basic_info')}}"><h2>Basic Info</h2></a>
 {% for info in basic_info %}
 <p> - <strong>{{ info.entry_title }}</strong> - {{ info.job_title }}</p>
 {% endfor %}
