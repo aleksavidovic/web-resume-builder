@@ -101,7 +101,7 @@ def edit_basic_info(info_id):
             flash("Your 'Basic Info' section has been updated!", "success")
         except Exception as e:
             db.session.rollback()
-            flash(f"An error occurred while updating: {e}", "danger")
+            flash(f"An error occurred while updating basic info entry: {e}", "danger")
         finally:
             return redirect(url_for("resume.basic_info"))
 
@@ -318,10 +318,10 @@ def edit_experience(experience_id):
         try:
             form.populate_obj(experience_to_edit)
             db.session.commit()
-            flash("Your 'Summary' entry has been updated!", "success")
+            flash("Your work experience entry has been updated!", "success")
         except Exception as e:
             db.session.rollback()
-            flash(f"An error occurred while updating: {e}", "danger")
+            flash(f"An error occurred while updating work experience: {e}", "danger")
         finally:
             return redirect(url_for("resume.experience"))
 
