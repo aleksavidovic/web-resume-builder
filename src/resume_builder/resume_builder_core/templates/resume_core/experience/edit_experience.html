@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Create New Basic Info{% endblock %}
+{% block title %}Edit Experience{% endblock %}
 
 {% block content %}
 <section>
-    <h2>Create a New "Experience" Entry</h2>
-    <p>Fill out the form below to create a new version of your personal details.</p>
+    <h2>Edit an "Experience" Entry</h2>
+    <p>Fill out the form below to edit work experience entry.</p>
     <hr>
 
-    <form method="POST" action="{{ url_for('resume.create_experience') }}" novalidate>
+    <form method="POST" action="{{ url_for('resume.edit_experience', experience_id=experience_id) }}" novalidate>
         {{ form.hidden_tag() }} {# Renders CSRF token #}
 
         <fieldset>

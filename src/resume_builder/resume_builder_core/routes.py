@@ -199,10 +199,7 @@ def edit_summary(summary_id):
 
     if form.validate_on_submit():
         try:
-            # Update the object's attributes from the submitted form data
             form.populate_obj(summary_to_edit)
-            # summary_to_edit.entry_title = form.entry_title.data
-            # summary_to_edit.content = form.content.data
             db.session.commit()
             flash("Your 'Summary' entry has been updated!", "success")
         except Exception as e:
