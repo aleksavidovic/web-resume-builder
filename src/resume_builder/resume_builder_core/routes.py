@@ -18,6 +18,9 @@ def home():
         "resume_core/home.html", basic_info=basic_info, summaries=summaries, experiences=experiences
     )
 
+##########################
+######  BASIC INFO  ######
+##########################
 
 ###########################
 ## BASIC INFO: LIST VIEW ##
@@ -136,6 +139,9 @@ def delete_basic_info(info_id):
 
 
 
+#######################
+######  SUMMARY  ######
+#######################
 
 #########################
 ## SUMMARY: LIST VIEW  ##
@@ -143,9 +149,9 @@ def delete_basic_info(info_id):
 
 @login_required
 @resume_bp.route("/summary", methods=["GET", "POST"])
-def summary():
+def list_summary():
     summaries = Summary.query.filter_by(user_id=current_user.id).all()
-    return render_template("resume_core/summary/summary.html", summaries=summaries)
+    return render_template("resume_core/summary/list_summary.html", summaries=summaries)
 
 
 #####################
@@ -167,7 +173,7 @@ def create_summary():
         except Exception as e:
             flash(f"Error while creating `Summary` section: {e}", "dangeer")
         finally:
-            return redirect(url_for('resume.home'))   
+            return redirect(url_for('resume.list_summary'))   
     
     return render_template("resume_core/summary/create_summary.html", form=form)
 
@@ -206,11 +212,11 @@ def edit_summary(summary_id):
             db.session.rollback()
             flash(f"An error occurred while updating: {e}", "danger")
         finally:
-            return redirect(url_for("resume.summary"))
+            return redirect(url_for("resume.list_summary"))
 
     # For a GET request, render the template with the pre-filled form
     return render_template(
-        "resume_core/summary/edit_summary.html", form=form, summary=summary, summary_id=summary_id 
+        "resume_core/summary/edit_summary.html", form=form, summary_id=summary_id 
     )
 
 #####################
@@ -233,7 +239,7 @@ def delete_summary(summary_id):
     except Exception as e:
         flash(f"Error while deleting Summary entry: {e}", "danger")
 
-    return redirect(url_for("resume.summary"))
+    return redirect(url_for("resume.list_summary"))
 
 
 
@@ -327,13 +333,14 @@ def edit_experience(experience_id):
 
     # For a GET request, render the template with the pre-filled form
     return render_template(
-        "resume_core/experience/edit_experience.html", form=form, summary=summary, experience_id=experience_id
+        "resume_core/experience/edit_experience.html", form=form, experience_id=experience_id
     )
 
 
 ########################
 ## EXPERIENCE: DELETE ##
 ########################
+
 @login_required
 @resume_bp.route("/experience/<string:experience_id>/delete")
 def delete_experience(experience_id):
@@ -354,6 +361,7 @@ def delete_experience(experience_id):
 ###############
 ## EDUCATION ##
 ###############
+
 @login_required
 @resume_bp.route("/education", methods=["GET", "POST"])
 def education():

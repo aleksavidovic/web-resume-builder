@@ -8,7 +8,7 @@
 {% for info in basic_info %}
 <p> - <strong>{{ info.entry_title }}</strong> - {{ info.job_title }}</p>
 {% endfor %}
-<a href="{{url_for('resume.summary')}}"><h2>Summary</h2></a>
+<a href="{{url_for('resume.list_summary')}}"><h2>Summary</h2></a>
 {% for summary in summaries %}
 <p> - <strong>{{ summary.entry_title }}</strong>: {{ summary.content[:30] }}...</p>
 {% endfor %}
