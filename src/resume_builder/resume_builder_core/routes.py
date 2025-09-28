@@ -148,7 +148,7 @@ def delete_basic_info(info_id):
 #########################
 
 @login_required
-@resume_bp.route("/summary", methods=["GET", "POST"])
+@resume_bp.route("/summary_list", methods=["GET", "POST"])
 def list_summary():
     summaries = Summary.query.filter_by(user_id=current_user.id).all()
     return render_template("resume_core/summary/list_summary.html", summaries=summaries)

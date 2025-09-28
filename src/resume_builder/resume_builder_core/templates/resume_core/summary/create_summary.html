@@ -4,30 +4,30 @@
 
 {% block content %}
 <section>
-    <h2>Create a New "Summary" Section</h2>
-    <p>Fill out the form below to create a new version of your personal details.</p>
+    <h2>New Summary</h2>
+    <p>Fill out the form below to create a new summary.</p>
     <hr>
 
     <form method="POST" action="{{ url_for('resume.create_summary') }}" novalidate>
         {{ form.hidden_tag() }} {# Renders CSRF token #}
         
-        <fieldset>
-            <legend><h3>Summary - Entry Title</h3></legend>
-            <div style="margin-bottom: 1rem;">
+        <fieldset class="form-section">
+            <legend><h3>Summary</h3></legend>
+            <div>
                 {{ form.entry_title.label }}<br>
                 {{ form.entry_title(size=50) }}
                 {% for error in form.entry_title.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
         </fieldset>
         
-        <fieldset>
+        <fieldset class="form-section">
             <legend><h3>Content</h3></legend>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.content(cols=60, rows=15) }}
                 {% for error in form.content.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
         <hr>

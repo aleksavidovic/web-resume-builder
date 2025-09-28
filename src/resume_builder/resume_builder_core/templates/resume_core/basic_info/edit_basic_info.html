@@ -10,7 +10,7 @@
     <form method="POST" action="#" novalidate>
         {{ form.hidden_tag() }}
         
-        <fieldset style="form-section">
+        <fieldset class="form-section">
             <legend><h3>Basic Info</h3></legend>
             <div>
                 {{ form.entry_title.label }}<br>
@@ -21,7 +21,7 @@
             </div>
         </fieldset>
 
-        <fieldset style="form-section">
+        <fieldset class="form-section">
             <legend><h3>Personal Details</h3></legend>
             <div>
                 {{ form.full_name.label }}<br>
@@ -41,7 +41,7 @@
         
         <br>
 
-        <fieldset style="form-section">
+        <fieldset class="form-section">
             <legend><h3>Contact Information</h3></legend>
             <div>
                 {{ form.address.label }}<br>
@@ -68,7 +68,7 @@
 
         <br>
 
-        <fieldset style="form-section">
+        <fieldset class="form-section">
             <legend><h3>Online Profiles (Optional)</h3></legend>
             <div>
                 {{ form.linkedin_url.label }}<br>
