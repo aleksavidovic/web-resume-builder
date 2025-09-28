@@ -4,85 +4,85 @@
 
 {% block content %}
 <section>
-    <h2>Create a New "Basic Info" Section</h2>
-    <p>Fill out the form below to create a new version of your personal details.</p>
+    <h2>New Basic Info</h2>
+    <p>Fill out the form below to create a Basic Info entry.</p>
     <hr>
 
     <form method="POST" action="{{ url_for('resume.create_basic_info') }}" novalidate>
         {{ form.hidden_tag() }} {# Renders CSRF token #}
 
-        <fieldset>
-            <legend><h3>Basic Info - Entry Title</h3></legend>
-            <div style="margin-bottom: 1rem;">
+        <fieldset class="form-section">
+            <legend><h3>Basic Info</h3></legend>
+            <div class="fields">
                 {{ form.entry_title.label }}<br>
                 {{ form.entry_title(size=50) }}
                 {% for error in form.entry_title.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
         </fieldset>
         
-        <fieldset>
+        <fieldset class="form-section">
             <legend><h3>Personal Details</h3></legend>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.full_name.label }}<br>
                 {{ form.full_name(size=40) }}
                 {% for error in form.full_name.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.job_title.label }}<br>
                 {{ form.job_title(size=40) }}
                 {% for error in form.job_title.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
         </fieldset>
         
         <br>
 
-        <fieldset>
+        <fieldset class="form-section">
             <legend><h3>Contact Information</h3></legend>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.address.label }}<br>
                 {{ form.address(size=40) }}
                  {% for error in form.address.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.contact_email.label }}<br>
                 {{ form.contact_email(size=40) }}
                  {% for error in form.contact_email.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.contact_phone.label }}<br>
                 {{ form.contact_phone(size=40) }}
                  {% for error in form.contact_phone.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
         </fieldset>
 
         <br>
 
-        <fieldset>
+        <fieldset class="form-section">
             <legend><h3>Online Profiles (Optional)</h3></legend>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.linkedin_url.label }}<br>
                 {{ form.linkedin_url(size=40) }}
                  {% for error in form.linkedin_url.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class=form-error-text"">{{ error }}</span>
                 {% endfor %}
             </div>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.github_url.label }}<br>
                 {{ form.github_url(size=40) }}
                  {% for error in form.github_url.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
         </fieldset>

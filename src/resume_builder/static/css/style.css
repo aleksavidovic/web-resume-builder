@@ -157,6 +157,17 @@ article.post {
     border: 1px solid black;
     */
 }
+/* ----------------------------------------------------------------
+   Forms (Create & Edit)
+   ---------------------------------------------------------------- */
+.form-error-text {
+    color: red;
+    border: 1px solid red;
+}
+
+.form-section div {
+    margin-bottom: 1rem;
+}
 
 /* ----------------------------------------------------------------
    Footer

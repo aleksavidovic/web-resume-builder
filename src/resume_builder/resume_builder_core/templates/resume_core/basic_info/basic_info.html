@@ -6,8 +6,8 @@
 <section>
     <header style="display: flex; justify-content: space-between; align-items: center;">
         <div>
-            <h2>Basic Info Sections</h2>
-            <p>Manage the different "Basic Info" sections for your resumes.</p>
+            <h2>Basic Info Section</h2>
+            <p>Manage your "Basic Info" entries.</p>
         </div>
         <a href="{{ url_for('resume.create_basic_info') }}">
             <button>+ Create New</button>
@@ -46,15 +46,8 @@
                 {% endif %}
                 
                 <footer>
-                    <!-- Note: You will need to create these routes in your routes.py -->
                     <a href="{{url_for('resume.edit_basic_info', info_id=info.id)}}"><button>Edit</button></a>
                     <a href="{{url_for('resume.delete_basic_info', info_id=info.id)}}"><button>Delete</button></a>
-
-                    <!--
-                    <form action="#" method="POST" style="display:inline;">
-                        <button type="submit" disabled>Delete</button>
-                    </form>
-                    -->
                 </footer>
             </article>
         {% endfor %}

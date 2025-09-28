@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired, Email, Length, Optional
 
 class BasicInfoForm(FlaskForm):
     entry_title = StringField(
-        "Entry Title", validators=[DataRequired(), Length(max=50)]
+        "A name for your Basic Info entry", validators=[DataRequired(), Length(max=50)]
     )
     full_name = StringField(
         "Full Name", validators=[DataRequired(), Length(min=2, max=50)]
