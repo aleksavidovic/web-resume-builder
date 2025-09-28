@@ -37,6 +37,6 @@ class ExperienceForm(FlaskForm):
     company_name = StringField("Company Name", validators=[DataRequired(), Length(max=50)])
     date_started = DateField("Date Started", validators=[DataRequired()])
     date_finished = DateField("Date Finished", validators=[Optional()])
-    description = TextAreaField("Description", validators=[DataRequired(), Length(max=500)])
+    description = TextAreaField("Description", validators=[Optional(), Length(max=500)])
     submit = SubmitField("Save Experience")
 

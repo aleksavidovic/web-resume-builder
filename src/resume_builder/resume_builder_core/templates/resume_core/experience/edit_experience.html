@@ -4,65 +4,65 @@
 
 {% block content %}
 <section>
-    <h2>Edit an "Experience" Entry</h2>
-    <p>Fill out the form below to edit work experience entry.</p>
+    <h2>Edit Experience</h2>
+    <p>Fill out the form to edit experience.</p>
     <hr>
 
     <form method="POST" action="{{ url_for('resume.edit_experience', experience_id=experience_id) }}" novalidate>
         {{ form.hidden_tag() }} {# Renders CSRF token #}
 
-        <fieldset>
-            <legend><h3>Experience - Entry Title</h3></legend>
-            <div style="margin-bottom: 1rem;">
+        <fieldset class="form-section">
+            <legend><h3>Experience</h3></legend>
+            <div>
                 {{ form.entry_title.label }}<br>
                 {{ form.entry_title(size=50) }}
                 {% for error in form.entry_title.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
         </fieldset>
         
-        <fieldset>
+        <fieldset class="form-section">
             <legend><h3>Experience Details</h3></legend>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.company_name.label }}<br>
                 {{ form.company_name(size=40) }}
                 {% for error in form.company_name.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.job_title.label }}<br>
                 {{ form.job_title(size=40) }}
                 {% for error in form.job_title.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.date_started.label }}<br>
                 {{ form.date_started() }}
                 {% for error in form.date_started.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.date_finished.label }}<br>
                 {{ form.date_finished() }}
                 {% for error in form.date_finished.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
         </fieldset>
         
         <br>
 
-        <fieldset>
+        <fieldset class="form-section">
             <legend><h3>Experience Description</h3></legend>
-            <div style="margin-bottom: 1rem;">
+            <div>
                 {{ form.description.label }}<br>
                 {{ form.description(cols=60, rows=20) }}
                  {% for error in form.description.errors %}
-                    <br><span style="color: red;">{{ error }}</span>
+                    <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
         </fieldset>
@@ -70,7 +70,7 @@
         <hr>
         <div>
             {{ form.submit(value='Update Experience') }}
-            <a href="{{ url_for('resume.experience') }}">Cancel</a>
+            <a href="{{ url_for('resume.list_experience') }}">Cancel</a>
         </div>
     </form>
 </section>

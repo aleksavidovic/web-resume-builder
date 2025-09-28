@@ -12,7 +12,7 @@
 {% for summary in summaries %}
 <p> - <strong>{{ summary.entry_title }}</strong>: {{ summary.content[:30] }}...</p>
 {% endfor %}
-<a href="{{url_for('resume.experience')}}"><h2>Experience</h2></a>
+<a href="{{url_for('resume.list_experience')}}"><h2>Experience</h2></a>
 {% for experience in experiences %}
 <p> - <strong>{{ experience.entry_title }}</strong>: {{ experience.description[:30] }}...</p>
 {% endfor %}

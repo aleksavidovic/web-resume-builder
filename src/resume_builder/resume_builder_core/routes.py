@@ -169,9 +169,9 @@ def create_summary():
             new_summary = Summary(entry_title=entry_title, content=content, user_id=current_user.id)
             db.session.add(new_summary)
             db.session.commit()
-            flash("Successfully saved a new `Summary` section.", "success")
+            flash("New Summary created.", "success")
         except Exception as e:
-            flash(f"Error while creating `Summary` section: {e}", "dangeer")
+            flash(f"Error while creating Summary: {e}", "danger")
         finally:
             return redirect(url_for('resume.list_summary'))   
     
@@ -193,10 +193,8 @@ def edit_summary(summary_id):
     except ValueError:
         raise NotFound()
 
-    # Query for the specific BasicInfo object or raise a 404 error.
-    # The filter also ensures a user can only edit their own entries.
     summary_to_edit = Summary.query.filter_by(
-        id=summary_id, user_id=current_user.id
+        id=summary_id_uuid, user_id=current_user.id
     ).first()
     if not summary_to_edit:
         raise NotFound()
@@ -207,14 +205,13 @@ def edit_summary(summary_id):
         try:
             form.populate_obj(summary_to_edit)
             db.session.commit()
-            flash("Your 'Summary' entry has been updated!", "success")
+            flash("Summary updated.", "success")
         except Exception as e:
             db.session.rollback()
-            flash(f"An error occurred while updating: {e}", "danger")
+            flash(f"An error occurred while updating summary: {e}", "danger")
         finally:
             return redirect(url_for("resume.list_summary"))
 
-    # For a GET request, render the template with the pre-filled form
     return render_template(
         "resume_core/summary/edit_summary.html", form=form, summary_id=summary_id 
     )
@@ -227,7 +224,6 @@ def edit_summary(summary_id):
 @resume_bp.route("/summary/<string:summary_id>/delete", methods=["GET", "POST"])
 def delete_summary(summary_id):
     try:
-        # summary_id = uuid.UUID(summary_id)
         summary_to_delete = Summary.query.filter_by(
             id=summary_id, user_id=current_user.id
         ).first()
@@ -235,9 +231,9 @@ def delete_summary(summary_id):
             raise NotFound()
         db.session.delete(summary_to_delete)
         db.session.commit()
-        flash("Successfully deleted Summary entry.", "danger")
+        flash("Summary deleted successfully.", "success")
     except Exception as e:
-        flash(f"Error while deleting Summary entry: {e}", "danger")
+        flash(f"Error while deleting summary: {e}", "danger")
 
     return redirect(url_for("resume.list_summary"))
 
@@ -252,10 +248,10 @@ def delete_summary(summary_id):
 ###########################
 
 @login_required
-@resume_bp.route("/experience", methods=["GET", "POST"])
-def experience():
+@resume_bp.route("/experience_list", methods=["GET", "POST"])
+def list_experience():
     experiences = Experience.query.filter_by(user_id=current_user.id).all()
-    return render_template("resume_core/experience/experience.html", experiences=experiences)
+    return render_template("resume_core/experience/list_experience.html", experiences=experiences)
 
 
 ########################
@@ -269,6 +265,10 @@ def create_experience():
     if form.validate_on_submit():
         print("Form submitted for validation")
         try:
+            new_experience = Experience()
+            form.populate_obj(new_experience)
+            new_experience.user_id = current_user.id
+            """
             entry_title = form.entry_title.data
             company_name = form.company_name.data
             job_title = form.job_title.data
@@ -284,10 +284,11 @@ def create_experience():
                 date_finished=date_finished,
                 user_id=current_user.id
             )
+            """
             db.session.add(new_experience)
             db.session.commit()
-            flash("New Experience Entry Created!", "success")
-            return redirect(url_for("resume.home"))
+            flash("New Experience created.", "success")
+            return redirect(url_for("resume.list_experience"))
         except Exception as e:
             flash(f"Error while creating Experience: {e}")
             return redirect(url_for("resume.create_experience"))
@@ -324,12 +325,12 @@ def edit_experience(experience_id):
         try:
             form.populate_obj(experience_to_edit)
             db.session.commit()
-            flash("Your work experience entry has been updated!", "success")
+            flash("Experience updated.", "success")
         except Exception as e:
             db.session.rollback()
-            flash(f"An error occurred while updating work experience: {e}", "danger")
+            flash(f"An error occurred while updating experience: {e}", "danger")
         finally:
-            return redirect(url_for("resume.experience"))
+            return redirect(url_for("resume.list_experience"))
 
     # For a GET request, render the template with the pre-filled form
     return render_template(
@@ -351,10 +352,10 @@ def delete_experience(experience_id):
         db.session.delete(exp_to_delete)
         db.session.commit()
         flash("Successfully deleted work experience entry.", "success")
-        return redirect(url_for("resume.experience"))
+        return redirect(url_for("resume.list_experience"))
     except Exception as e:
         flash(f"Error while deleting experience: {e}", "danger")
-        return redirect(url_for("resume.experience"))
+        return redirect(url_for("resume.list_experience"))
     
 
 
