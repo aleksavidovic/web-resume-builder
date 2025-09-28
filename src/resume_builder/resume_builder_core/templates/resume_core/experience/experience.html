@@ -44,8 +44,8 @@
                 {% endif %}
                 
                 <footer>
-                    <a href=""><button>Edit</button></a>
-                    <a href=""><button>Delete</button></a>
+                    <a href="{{ url_for('resume.edit_experience', experience_id=experience.id) }}"><button>Edit</button></a>
+                    <a href="{{ url_for('resume.delete_experience', experience_id=experience.id) }}"><button>Delete</button></a>
                 </footer>
             </article>
         {% endfor %}

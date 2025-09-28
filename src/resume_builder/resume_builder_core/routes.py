@@ -1,7 +1,7 @@
 import uuid
 from resume_builder.resume_builder_core.forms import BasicInfoForm, ExperienceForm, SummaryForm
 from . import resume_bp
-from flask import flash, redirect, render_template, url_for
+from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 from ..models import BasicInfo, Summary, Experience
 from .. import db
@@ -292,8 +292,66 @@ def create_experience():
     return render_template("resume_core/experience/create_experience.html", form=form)
 
 
+########################
+## EXPERIENCE: EDIT   ##
+########################
+
+@login_required
+@resume_bp.route("/experience/<string:experience_id>/edit", methods=["GET", "POST"])
+def edit_experience(experience_id):
+    """
+    Handles editing an existing Experience entry.
+    """
+    try:
+        experience_id_uuid = uuid.UUID(experience_id)
+    except ValueError:
+        raise NotFound()
+
+    # Query for the specific BasicInfo object or raise a 404 error.
+    # The filter also ensures a user can only edit their own entries.
+    experience_to_edit = Experience.query.filter_by(
+        id=experience_id_uuid, user_id=current_user.id
+    ).first()
+    if not experience_to_edit:
+        raise NotFound()
+
+    form = ExperienceForm(obj=experience_to_edit)
+
+    if form.validate_on_submit():
+        try:
+            form.populate_obj(experience_to_edit)
+            db.session.commit()
+            flash("Your 'Summary' entry has been updated!", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"An error occurred while updating: {e}", "danger")
+        finally:
+            return redirect(url_for("resume.experience"))
+
+    # For a GET request, render the template with the pre-filled form
+    return render_template(
+        "resume_core/experience/edit_experience.html", form=form, summary=summary, experience_id=experience_id
+    )
 
 
+########################
+## EXPERIENCE: DELETE ##
+########################
+@login_required
+@resume_bp.route("/experience/<string:experience_id>/delete")
+def delete_experience(experience_id):
+    try:
+        exp_to_delete = Experience.query.filter_by(id=experience_id, user_id=current_user.id).first()
+        if not exp_to_delete:
+            return NotFound()
+        db.session.delete(exp_to_delete)
+        db.session.commit()
+        flash("Successfully deleted work experience entry.", "success")
+        return redirect(url_for("resume.experience"))
+    except Exception as e:
+        flash(f"Error while deleting experience: {e}", "danger")
+        return redirect(url_for("resume.experience"))
+    
 
 
 ###############
