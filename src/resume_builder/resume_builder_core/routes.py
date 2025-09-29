@@ -1,5 +1,7 @@
 import uuid
-from resume_builder.resume_builder_core.forms import BasicInfoForm, ExperienceForm, SummaryForm
+
+from sqlalchemy import delete
+from resume_builder.resume_builder_core.forms import BasicInfoForm, EducationForm, ExperienceForm, SummaryForm
 from . import resume_bp
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
@@ -351,11 +353,79 @@ def delete_experience(experience_id):
 ###############
 ## EDUCATION ##
 ###############
+##########################
+## EDUCATION: LIST VIEW ##
+##########################
 
 @login_required
 @resume_bp.route("/education_list", methods=["GET", "POST"])
 def list_education():
-    return "<h3>Education page</h3>"
+    educations = Education.query.filter_by(user_id=current_user.id).all()
+    return render_template("resume_core/education/list_education.html", educations=educations)
+
+
+#######################
+## EDUCATION: CREATE ##
+#######################
+
+@login_required
+@resume_bp.route("/create_education", methods=["GET", "POST"])
+def create_education():
+    form = EducationForm()
+    if form.validate_on_submit():
+        new_education = Education()
+        form.populate_obj(new_education)
+        new_education.user_id = current_user.id
+        db.session.add(new_education)
+        db.session.commit()
+        flash("New education created.", "success")
+        return redirect(url_for('resume.list_education'))
+    return render_template("resume_core/education/create_education.html", form=form)
+
+
+#####################
+## EDUCATION: EDIT ##
+#####################
+
+@login_required
+@resume_bp.route("/education/<string:education_id>/edit", methods=["GET", "POST"])
+def edit_education(education_id):
+    education_to_edit = Education.query.filter_by(id=education_id, user_id=current_user.id).first()
+    if not education_to_edit:
+        return NotFound()
+    form = EducationForm(obj=education_to_edit)
+    if form.validate_on_submit():
+        try:
+            form.populate_obj(education_to_edit)
+            db.session.commit()
+            flash("Education edited successfully", "success")
+        except Exception as e:
+            flash(f"Error while editing education: {e}", "danger")
+        finally:
+            return redirect(url_for('resume.list_education'))
+    return render_template("resume_core/education/edit_education.html", form=form, education_id=education_id)
+
+#######################
+## EDUCATION: DELETE ##
+#######################
+
+@login_required
+@resume_bp.route("/education/<string:education_id>/delete")
+def delete_education(education_id):
+    try:
+        education_to_delete = Education.query.filter_by(id=education_id, user_id=current_user.id).first()
+        if not education_to_delete:
+            return NotFound()
+        db.session.delete(education_to_delete)
+        db.session.commit()
+        flash("Education deleted.", "success")
+    except Exception as e:
+        flash(f"Error deleting education: {e}", "danger")
+    finally:
+        return redirect(url_for("resume.list_education"))
+
+
+
 
 ############
 ## SKILLS ##
