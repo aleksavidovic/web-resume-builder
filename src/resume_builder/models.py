@@ -112,3 +112,16 @@ class Experience(db.Model, EntryTitleMixin, TimeStampMixin):
     __table_args__ = (
         db.UniqueConstraint('user_id', 'entry_title', name='_user_experience_title_uc'),
     )
+
+class Education(db.Model, EntryTitleMixin, TimeStampMixin):
+    id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
+    degree_name = db.Column(db.String(50), nullable=False)
+    school_name = db.Column(db.String(50), nullable=False)
+    date_started = db.Column(db.Date, nullable=False)
+    date_finished = db.Column(db.Date, nullable=True)
+
+    user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+    
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'entry_title', name='_user_experience_title_uc'),
+    )
