@@ -28,7 +28,7 @@
                 <p>{{ skill.description }}</p>
                 
                 <footer>
-                    <a href=""><button>Edit</button></a>
+                    <a href="{{ url_for('resume.edit_skill', skill_id=skill.id) }}"><button>Edit</button></a>
                     <a href="{{ url_for('resume.delete_skills', skills_id=skill.id) }}"><button>Delete</button></a>
                 </footer>
             </article>

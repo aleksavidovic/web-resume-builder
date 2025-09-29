@@ -510,6 +510,20 @@ def create_skills():
 ## SKILLS: EDIT ##
 ##################
 
+
+@login_required
+@resume_bp.route("/skills/<string:skill_id>/edit", methods=["GET", "POST"])
+def edit_skill(skill_id):
+    skill_to_edit = Skills.query.filter_by(id=skill_id, user_id=current_user.id).first_or_404()
+    form = SkillsForm()
+    if form.validate_on_submit():
+        form.populate_obj(skill_to_edit)
+        db.session.commit()
+        flash("Skill updated.", "success")
+        return redirect(url_for("resume.list_skills"))
+    form = SkillsForm(obj=skill_to_edit)
+    return render_template("resume_core/skills/edit_skill.html", form=form, skill_id=skill_id)
+
 ####################
 ## SKILLS: DELETE ##
 ####################
