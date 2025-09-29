@@ -3,7 +3,7 @@ from resume_builder.resume_builder_core.forms import BasicInfoForm, ExperienceFo
 from . import resume_bp
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
-from ..models import BasicInfo, Summary, Experience
+from ..models import BasicInfo, Education, Summary, Experience
 from .. import db
 from werkzeug.exceptions import NotFound
 
@@ -14,8 +14,14 @@ def home():
     basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
     summaries = Summary.query.filter_by(user_id=current_user.id).all()
     experiences = Experience.query.filter_by(user_id=current_user.id).all()
+    educations = Education.query.filter_by(user_id=current_user.id).all()
+
     return render_template(
-        "resume_core/home.html", basic_info=basic_info, summaries=summaries, experiences=experiences
+        "resume_core/home.html", 
+        basic_info=basic_info, 
+        summaries=summaries, 
+        experiences=experiences,
+        educations=educations
     )
 
 ##########################
@@ -347,8 +353,8 @@ def delete_experience(experience_id):
 ###############
 
 @login_required
-@resume_bp.route("/education", methods=["GET", "POST"])
-def education():
+@resume_bp.route("/education_list", methods=["GET", "POST"])
+def list_education():
     return "<h3>Education page</h3>"
 
 ############
