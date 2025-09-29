@@ -70,3 +70,15 @@ class SkillsForm(FlaskForm):
         "Skill Description", validators=[DataRequired(), Length(max=500)]
     )
     submit = SubmitField("Save Skills")
+
+class LanguageForm(FlaskForm):
+    entry_title = StringField(
+        "Entry Title", validators=[DataRequired(), Length(max=50)]
+    )
+    name = StringField(
+        "Name", validators=[DataRequired(), Length(max=30)]
+    )
+    proficiency = StringField(
+        "Proficiency", validators=[DataRequired(), Length(max=30)]
+    )
+    submit = SubmitField("Save Skills")

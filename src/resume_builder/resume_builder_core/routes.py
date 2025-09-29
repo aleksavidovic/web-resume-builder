@@ -7,11 +7,12 @@ from resume_builder.resume_builder_core.forms import (
     ExperienceForm,
     SkillsForm,
     SummaryForm,
+    LanguageForm
 )
 from . import resume_bp
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
-from ..models import BasicInfo, Education, Summary, Experience, Skills
+from ..models import BasicInfo, Education, Language, Summary, Experience, Skills
 from .. import db
 from werkzeug.exceptions import NotFound
 
@@ -24,13 +25,15 @@ def home():
     experiences = Experience.query.filter_by(user_id=current_user.id).all()
     educations = Education.query.filter_by(user_id=current_user.id).all()
     skills = Skills.query.filter_by(user_id=current_user.id).all()
+    languages = Language.query.filter_by(user_id=current_user.id).all()
     return render_template(
         "resume_core/home.html",
         basic_info=basic_info,
         summaries=summaries,
         experiences=experiences,
         educations=educations,
-        skills=skills
+        skills=skills,
+        languages=languages
     )
 
 
@@ -528,9 +531,35 @@ def delete_skills(skills_id):
 ###############
 ## LANGUAGES ##
 ###############
-
+#####################
+## LANGUAGES: LIST ##
+#####################
 
 @login_required
-@resume_bp.route("/languages", methods=["GET", "POST"])
+@resume_bp.route("/languages_list", methods=["GET"])
 def list_languages():
-    return "<h3>Languages page</h3>"
+    languages = Language.query.filter_by(user_id=current_user.id)
+    return render_template('resume_core/languages/list_languages.html', languages=languages)
+
+
+#######################
+## LANGUAGES: CREATE ##
+#######################
+
+@login_required
+@resume_bp.route("/create_language", methods=["GET", "POST"])
+def create_language():
+    form = LanguageForm()
+    if form.validate_on_submit():
+        try:
+            new_language = Language()
+            form.populate_obj(new_language)
+            new_language.user_id = current_user.id
+            db.session.add(new_language)
+            db.session.commit()
+            flash("New language added.", "success")
+        except Exception as e:
+            flash(f"Error adding new language: {e}", "danger")
+        finally:
+            return redirect(url_for('resume.list_languages'))
+    return render_template("resume_core/languages/create_language.html", form=form)
