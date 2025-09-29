@@ -60,3 +60,13 @@ class EducationForm(FlaskForm):
     date_started = DateField("Date Started", validators=[DataRequired()])
     date_finished = DateField("Date Finished", validators=[Optional()])
     submit = SubmitField("Save Education")
+    
+
+class SkillsForm(FlaskForm):
+    entry_title = StringField(
+        "Entry Title", validators=[DataRequired(), Length(max=50)]
+    )
+    description = TextAreaField(
+        "Skill Description", validators=[DataRequired(), Length(max=500)]
+    )
+    submit = SubmitField("Save Skills")

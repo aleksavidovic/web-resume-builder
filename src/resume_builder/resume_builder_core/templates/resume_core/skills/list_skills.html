@@ -9,14 +9,14 @@
             <h2>Skills</h2>
             <p>Manage how your skills are presented.</p>
         </div>
-        <a href="">
+        <a href="{{ url_for('resume.create_skills') }}">
             <button>+ Create New</button>
         </a>
     </header>
 
     <hr>
 
-    {% if experiences %}
+    {% if skills %}
         <div>
         {% for skill in skills %}
             <article style="border: 1px solid #eee; padding: 1.5rem; margin-bottom: 1rem;">
@@ -29,7 +29,7 @@
                 
                 <footer>
                     <a href=""><button>Edit</button></a>
-                    <a href=""><button>Delete</button></a>
+                    <a href="{{ url_for('resume.delete_skills', skills_id=skill.id) }}"><button>Delete</button></a>
                 </footer>
             </article>
         {% endfor %}

@@ -152,3 +152,15 @@ class Skills(db.Model, EntryTitleMixin, TimeStampMixin):
     __table_args__ = (
         db.UniqueConstraint("user_id", "entry_title", name="_user_experience_title_uc"),
     )
+
+
+class Language(db.Model, EntryTitleMixin, TimeStampMixin):
+    id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
+    name = db.Column(db.String(30), nullable=False)
+    proficiency = db.Column(db.String(30), nullable=False)
+
+    user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+
+    __table_args__ = (
+        db.UniqueConstraint("user_id", "entry_title", name="_user_experience_title_uc"),
+    )

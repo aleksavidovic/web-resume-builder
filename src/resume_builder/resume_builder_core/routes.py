@@ -5,12 +5,13 @@ from resume_builder.resume_builder_core.forms import (
     BasicInfoForm,
     EducationForm,
     ExperienceForm,
+    SkillsForm,
     SummaryForm,
 )
 from . import resume_bp
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
-from ..models import BasicInfo, Education, Summary, Experience
+from ..models import BasicInfo, Education, Summary, Experience, Skills
 from .. import db
 from werkzeug.exceptions import NotFound
 
@@ -22,13 +23,14 @@ def home():
     summaries = Summary.query.filter_by(user_id=current_user.id).all()
     experiences = Experience.query.filter_by(user_id=current_user.id).all()
     educations = Education.query.filter_by(user_id=current_user.id).all()
-
+    skills = Skills.query.filter_by(user_id=current_user.id).all()
     return render_template(
         "resume_core/home.html",
         basic_info=basic_info,
         summaries=summaries,
         experiences=experiences,
         educations=educations,
+        skills=skills
     )
 
 
@@ -479,13 +481,28 @@ def delete_education(education_id):
 @login_required
 @resume_bp.route("/skills_list", methods=["GET", "POST"])
 def list_skills():
-    skills = []
+    skills = Skills.query.filter_by(user_id=current_user.id).all()
     return render_template("resume_core/skills/list_skills.html", skills=skills)
 
 
 ####################
 ## SKILLS: CREATE ##
 ####################
+
+
+@login_required
+@resume_bp.route("/create_skills", methods=["GET", "POST"])
+def create_skills():
+    form = SkillsForm()
+    if form.validate_on_submit():
+        new_skills = Skills()
+        form.populate_obj(new_skills)
+        new_skills.user_id = current_user.id
+        db.session.add(new_skills)
+        db.session.commit()
+        flash("New skills added", "success")
+        return redirect(url_for('resume.list_skills'))
+    return render_template("resume_core/skills/create_skills.html", form=form)
 
 ##################
 ## SKILLS: EDIT ##
@@ -495,6 +512,18 @@ def list_skills():
 ## SKILLS: DELETE ##
 ####################
 
+
+@login_required
+@resume_bp.route("/skills/<string:skills_id>/delete")
+def delete_skills(skills_id):
+    skills_to_delete = Skills.query.filter_by(id=skills_id, user_id=current_user.id).first()
+    if not skills_to_delete:
+        return NotFound()
+    db.session.delete(skills_to_delete)
+    db.session.commit()
+    flash("Skills deleted successfully", "success")
+    return redirect(url_for('resume.list_skills'))
+    
 
 ###############
 ## LANGUAGES ##

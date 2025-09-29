@@ -29,7 +29,7 @@
 
 <a href="{{url_for('resume.list_skills')}}"><h2>Skills</h2></a>
 {% for skill in skills %}
-    <p> - <strong>{{ skill.entry_name }}</strong>: <em>{{ skill.description }}</em></p>
+    <p> - <strong>{{ skill.entry_title }}</strong>: <em>{{ skill.description }}</em></p>
 {% endfor %}
 
 <a href="{{url_for('resume.list_languages')}}"><h2>Languages</h2></a>
