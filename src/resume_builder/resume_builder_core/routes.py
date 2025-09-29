@@ -1,6 +1,5 @@
 import uuid
 
-from sqlalchemy import delete
 from resume_builder.resume_builder_core.forms import (
     BasicInfoForm,
     EducationForm,
@@ -10,7 +9,7 @@ from resume_builder.resume_builder_core.forms import (
     LanguageForm
 )
 from . import resume_bp
-from flask import flash, redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, url_for
 from flask_login import login_required, current_user
 from ..models import BasicInfo, Education, Language, Summary, Experience, Skills
 from .. import db
@@ -563,3 +562,46 @@ def create_language():
         finally:
             return redirect(url_for('resume.list_languages'))
     return render_template("resume_core/languages/create_language.html", form=form)
+
+
+#####################
+## LANGUAGES: EDIT ##
+#####################
+
+
+@login_required
+@resume_bp.route("/languages/<string:language_id>/edit", methods=["GET", "POST"])
+def edit_language(language_id):
+    language_to_edit = Language.query.filter_by(id=language_id, user_id=current_user.id).first()
+    if not language_to_edit:
+        return NotFound()
+    form = LanguageForm(obj=language_to_edit)
+    if form.validate_on_submit():
+        try:
+            form.populate_obj(language_to_edit)
+            db.session.commit()
+            flash("Language updated.", "success")
+        except Exception as e:
+            flash(f"Error while updating language: {e}.", "danger")
+        finally:
+            return redirect(url_for('resume.list_languages'))
+    return render_template("resume_core/languages/edit_language.html", form=form, language_id=language_id)
+
+
+#######################
+## LANGUAGES: DELETE ##
+#########@#############
+
+
+@login_required
+@resume_bp.route("/languages/<string:language_id>/delete")
+def delete_language(language_id):
+    language_to_delete = Language.query.filter_by(id=language_id, user_id=current_user.id).first()
+    if not language_to_delete:
+        return NotFound()
+    db.session.delete(language_to_delete)
+    db.session.commit()
+    flash("Language deleted successfully", "success")
+    return redirect(url_for('resume.list_languages'))
+    
+
