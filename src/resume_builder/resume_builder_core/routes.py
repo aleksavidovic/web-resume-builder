@@ -268,23 +268,6 @@ def create_experience():
             new_experience = Experience()
             form.populate_obj(new_experience)
             new_experience.user_id = current_user.id
-            """
-            entry_title = form.entry_title.data
-            company_name = form.company_name.data
-            job_title = form.job_title.data
-            description = form.description.data
-            date_started = form.date_started.data
-            date_finished = form.date_finished.data
-            new_experience = Experience(
-                entry_title=entry_title,
-                company_name=company_name,
-                job_title=job_title,
-                description=description,
-                date_started=date_started,
-                date_finished=date_finished,
-                user_id=current_user.id
-            )
-            """
             db.session.add(new_experience)
             db.session.commit()
             flash("New Experience created.", "success")
