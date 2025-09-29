@@ -619,3 +619,13 @@ def delete_language(language_id):
     return redirect(url_for('resume.list_languages'))
     
 
+
+
+#########################
+## RESUME BUILD ROUTES ##
+#########################
+
+@login_required
+@resume_bp.route("/build_resume", methods=["GET", "POST"])
+def build_resume():
+    return render_template("resume_core/build_resume/build_resume.html")
