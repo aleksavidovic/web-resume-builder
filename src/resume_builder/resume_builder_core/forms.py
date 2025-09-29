@@ -27,23 +27,36 @@ class SummaryForm(FlaskForm):
     entry_title = StringField(
         "Entry Title", validators=[DataRequired(), Length(max=50)]
     )
-    content = TextAreaField("Summary Content", validators=[DataRequired(), Length(max=500)])
+    content = TextAreaField(
+        "Summary Content", validators=[DataRequired(), Length(max=500)]
+    )
     submit = SubmitField("Save Summary")
 
 
 class ExperienceForm(FlaskForm):
-    entry_title = StringField("Entry Title", validators=[DataRequired(), Length(max=50)])
+    entry_title = StringField(
+        "Entry Title", validators=[DataRequired(), Length(max=50)]
+    )
     job_title = StringField("Job Title", validators=[DataRequired(), Length(max=50)])
-    company_name = StringField("Company Name", validators=[DataRequired(), Length(max=50)])
+    company_name = StringField(
+        "Company Name", validators=[DataRequired(), Length(max=50)]
+    )
     date_started = DateField("Date Started", validators=[DataRequired()])
     date_finished = DateField("Date Finished", validators=[Optional()])
     description = TextAreaField("Description", validators=[Optional(), Length(max=500)])
     submit = SubmitField("Save Experience")
 
+
 class EducationForm(FlaskForm):
-    entry_title = StringField("Entry Title", validators=[DataRequired(), Length(max=50)])
-    degree_name = StringField("Degree Name", validators=[DataRequired(), Length(max=50)])
-    school_name = StringField("School Name", validators=[DataRequired(), Length(max=50)])
+    entry_title = StringField(
+        "Entry Title", validators=[DataRequired(), Length(max=50)]
+    )
+    degree_name = StringField(
+        "Degree Name", validators=[DataRequired(), Length(max=50)]
+    )
+    school_name = StringField(
+        "School Name", validators=[DataRequired(), Length(max=50)]
+    )
     date_started = DateField("Date Started", validators=[DataRequired()])
     date_finished = DateField("Date Finished", validators=[Optional()])
     submit = SubmitField("Save Education")

@@ -27,7 +27,11 @@
     <p> - <strong>{{ education.degree_name }}</strong> @ <em>{{ education.school_name }}</em></p>
 {% endfor %}
 
-<a href="{{url_for('resume.skills')}}"><h2>Skills</h2></a>
-<a href="{{url_for('resume.languages')}}"><h2>Languages</h2></a>
+<a href="{{url_for('resume.list_skills')}}"><h2>Skills</h2></a>
+{% for skill in skills %}
+    <p> - <strong>{{ skill.entry_name }}</strong>: <em>{{ skill.description }}</em></p>
+{% endfor %}
+
+<a href="{{url_for('resume.list_languages')}}"><h2>Languages</h2></a>
 
 {% endblock %}

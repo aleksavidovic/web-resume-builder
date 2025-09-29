@@ -1,7 +1,12 @@
 import uuid
 
 from sqlalchemy import delete
-from resume_builder.resume_builder_core.forms import BasicInfoForm, EducationForm, ExperienceForm, SummaryForm
+from resume_builder.resume_builder_core.forms import (
+    BasicInfoForm,
+    EducationForm,
+    ExperienceForm,
+    SummaryForm,
+)
 from . import resume_bp
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
@@ -19,12 +24,13 @@ def home():
     educations = Education.query.filter_by(user_id=current_user.id).all()
 
     return render_template(
-        "resume_core/home.html", 
-        basic_info=basic_info, 
-        summaries=summaries, 
+        "resume_core/home.html",
+        basic_info=basic_info,
+        summaries=summaries,
         experiences=experiences,
-        educations=educations
+        educations=educations,
     )
+
 
 ##########################
 ######  BASIC INFO  ######
@@ -34,16 +40,20 @@ def home():
 ## BASIC INFO: LIST VIEW ##
 ###########################
 
+
 @login_required
 @resume_bp.route("/basic_info_list", methods=["GET", "POST"])
 def list_basic_info():
     users_basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
-    return render_template("resume_core/basic_info/list_basic_info.html", basic_infos=users_basic_info)
+    return render_template(
+        "resume_core/basic_info/list_basic_info.html", basic_infos=users_basic_info
+    )
 
 
 ########################
 ## BASIC INFO: CREATE ##
 ########################
+
 
 @login_required
 @resume_bp.route("/basic_info/create", methods=["GET", "POST"])
@@ -81,9 +91,11 @@ def create_basic_info():
 
     return render_template("resume_core/basic_info/create_basic_info.html", form=form)
 
+
 #######################
 ## BASIC INFO: EDIT  ##
 #######################
+
 
 @login_required
 @resume_bp.route("/basic_info/<string:info_id>/edit", methods=["GET", "POST"])
@@ -121,9 +133,11 @@ def edit_basic_info(info_id):
         "resume_core/basic_info/edit_basic_info.html", form=form, info_id=info_id
     )
 
+
 ########################
 ## BASIC INFO: DELETE ##
 ########################
+
 
 @login_required
 @resume_bp.route("/basic_info/<string:info_id>/delete", methods=["GET"])
@@ -146,7 +160,6 @@ def delete_basic_info(info_id):
     return redirect(url_for("resume.list_basic_info"))
 
 
-
 #######################
 ######  SUMMARY  ######
 #######################
@@ -154,6 +167,7 @@ def delete_basic_info(info_id):
 #########################
 ## SUMMARY: LIST VIEW  ##
 #########################
+
 
 @login_required
 @resume_bp.route("/summary_list", methods=["GET", "POST"])
@@ -166,6 +180,7 @@ def list_summary():
 ## SUMMARY: CREATE ##
 #####################
 
+
 @login_required
 @resume_bp.route("/summary/create", methods=["GET", "POST"])
 def create_summary():
@@ -174,21 +189,24 @@ def create_summary():
         try:
             entry_title = form.entry_title.data
             content = form.content.data
-            new_summary = Summary(entry_title=entry_title, content=content, user_id=current_user.id)
+            new_summary = Summary(
+                entry_title=entry_title, content=content, user_id=current_user.id
+            )
             db.session.add(new_summary)
             db.session.commit()
             flash("New Summary created.", "success")
         except Exception as e:
             flash(f"Error while creating Summary: {e}", "danger")
         finally:
-            return redirect(url_for('resume.list_summary'))   
-    
+            return redirect(url_for("resume.list_summary"))
+
     return render_template("resume_core/summary/create_summary.html", form=form)
 
 
 ####################
 ## SUMMARY: EDIT  ##
 ####################
+
 
 @login_required
 @resume_bp.route("/summary/<string:summary_id>/edit", methods=["GET", "POST"])
@@ -221,12 +239,14 @@ def edit_summary(summary_id):
             return redirect(url_for("resume.list_summary"))
 
     return render_template(
-        "resume_core/summary/edit_summary.html", form=form, summary_id=summary_id 
+        "resume_core/summary/edit_summary.html", form=form, summary_id=summary_id
     )
+
 
 #####################
 ## SUMMARY: DELETE ##
 #####################
+
 
 @login_required
 @resume_bp.route("/summary/<string:summary_id>/delete", methods=["GET", "POST"])
@@ -246,7 +266,6 @@ def delete_summary(summary_id):
     return redirect(url_for("resume.list_summary"))
 
 
-
 #########################
 ######  EXPERIENCE ######
 #########################
@@ -255,16 +274,20 @@ def delete_summary(summary_id):
 ## EXPERIENCE: LIST VIEW ##
 ###########################
 
+
 @login_required
 @resume_bp.route("/experience_list", methods=["GET", "POST"])
 def list_experience():
     experiences = Experience.query.filter_by(user_id=current_user.id).all()
-    return render_template("resume_core/experience/list_experience.html", experiences=experiences)
+    return render_template(
+        "resume_core/experience/list_experience.html", experiences=experiences
+    )
 
 
 ########################
 ## EXPERIENCE: CREATE ##
 ########################
+
 
 @login_required
 @resume_bp.route("/experience/create", methods=["GET", "POST"])
@@ -290,6 +313,7 @@ def create_experience():
 ########################
 ## EXPERIENCE: EDIT   ##
 ########################
+
 
 @login_required
 @resume_bp.route("/experience/<string:experience_id>/edit", methods=["GET", "POST"])
@@ -325,7 +349,9 @@ def edit_experience(experience_id):
 
     # For a GET request, render the template with the pre-filled form
     return render_template(
-        "resume_core/experience/edit_experience.html", form=form, experience_id=experience_id
+        "resume_core/experience/edit_experience.html",
+        form=form,
+        experience_id=experience_id,
     )
 
 
@@ -333,11 +359,14 @@ def edit_experience(experience_id):
 ## EXPERIENCE: DELETE ##
 ########################
 
+
 @login_required
 @resume_bp.route("/experience/<string:experience_id>/delete")
 def delete_experience(experience_id):
     try:
-        exp_to_delete = Experience.query.filter_by(id=experience_id, user_id=current_user.id).first()
+        exp_to_delete = Experience.query.filter_by(
+            id=experience_id, user_id=current_user.id
+        ).first()
         if not exp_to_delete:
             return NotFound()
         db.session.delete(exp_to_delete)
@@ -347,7 +376,6 @@ def delete_experience(experience_id):
     except Exception as e:
         flash(f"Error while deleting experience: {e}", "danger")
         return redirect(url_for("resume.list_experience"))
-    
 
 
 ###############
@@ -357,16 +385,20 @@ def delete_experience(experience_id):
 ## EDUCATION: LIST VIEW ##
 ##########################
 
+
 @login_required
 @resume_bp.route("/education_list", methods=["GET", "POST"])
 def list_education():
     educations = Education.query.filter_by(user_id=current_user.id).all()
-    return render_template("resume_core/education/list_education.html", educations=educations)
+    return render_template(
+        "resume_core/education/list_education.html", educations=educations
+    )
 
 
 #######################
 ## EDUCATION: CREATE ##
 #######################
+
 
 @login_required
 @resume_bp.route("/create_education", methods=["GET", "POST"])
@@ -379,7 +411,7 @@ def create_education():
         db.session.add(new_education)
         db.session.commit()
         flash("New education created.", "success")
-        return redirect(url_for('resume.list_education'))
+        return redirect(url_for("resume.list_education"))
     return render_template("resume_core/education/create_education.html", form=form)
 
 
@@ -387,10 +419,13 @@ def create_education():
 ## EDUCATION: EDIT ##
 #####################
 
+
 @login_required
 @resume_bp.route("/education/<string:education_id>/edit", methods=["GET", "POST"])
 def edit_education(education_id):
-    education_to_edit = Education.query.filter_by(id=education_id, user_id=current_user.id).first()
+    education_to_edit = Education.query.filter_by(
+        id=education_id, user_id=current_user.id
+    ).first()
     if not education_to_edit:
         return NotFound()
     form = EducationForm(obj=education_to_edit)
@@ -402,18 +437,26 @@ def edit_education(education_id):
         except Exception as e:
             flash(f"Error while editing education: {e}", "danger")
         finally:
-            return redirect(url_for('resume.list_education'))
-    return render_template("resume_core/education/edit_education.html", form=form, education_id=education_id)
+            return redirect(url_for("resume.list_education"))
+    return render_template(
+        "resume_core/education/edit_education.html",
+        form=form,
+        education_id=education_id,
+    )
+
 
 #######################
 ## EDUCATION: DELETE ##
 #######################
 
+
 @login_required
 @resume_bp.route("/education/<string:education_id>/delete")
 def delete_education(education_id):
     try:
-        education_to_delete = Education.query.filter_by(id=education_id, user_id=current_user.id).first()
+        education_to_delete = Education.query.filter_by(
+            id=education_id, user_id=current_user.id
+        ).first()
         if not education_to_delete:
             return NotFound()
         db.session.delete(education_to_delete)
@@ -425,23 +468,40 @@ def delete_education(education_id):
         return redirect(url_for("resume.list_education"))
 
 
-
-
 ############
 ## SKILLS ##
 ############
+##################
+## SKILLS: LIST ##
+##################
+
 
 @login_required
-@resume_bp.route("/skills", methods=["GET", "POST"])
-def skills():
-    return "<h3>Skills page</h3>"
+@resume_bp.route("/skills_list", methods=["GET", "POST"])
+def list_skills():
+    skills = []
+    return render_template("resume_core/skills/list_skills.html", skills=skills)
+
+
+####################
+## SKILLS: CREATE ##
+####################
+
+##################
+## SKILLS: EDIT ##
+##################
+
+####################
+## SKILLS: DELETE ##
+####################
 
 
 ###############
 ## LANGUAGES ##
 ###############
 
+
 @login_required
 @resume_bp.route("/languages", methods=["GET", "POST"])
-def languages():
+def list_languages():
     return "<h3>Languages page</h3>"

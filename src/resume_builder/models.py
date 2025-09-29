@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timezone 
+from datetime import datetime, timezone
 from flask_login import UserMixin
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -14,11 +14,12 @@ class GUID(TypeDecorator):
     Uses PosgreSQL's UUID type, otherwise uses
     CHAR(32), storing as stringified hex values.
     """
+
     impl = CHAR
     cache_ok = True
 
     def load_dialect_impl(self, dialect):
-        if dialect.name == 'postgresql':
+        if dialect.name == "postgresql":
             return dialect.type_descriptor(UUID())
         else:
             return dialect.type_descriptor(CHAR(32))
@@ -26,14 +27,13 @@ class GUID(TypeDecorator):
     def process_bind_param(self, value, dialect):
         if value is None:
             return value
-        elif dialect.name == 'postgresql':
+        elif dialect.name == "postgresql":
             return str(value)
         else:
             if not isinstance(value, uuid.UUID):
                 return "%.32x" % uuid.UUID(value).int
             else:
                 return "%.32x" % value.int
-
 
     def process_result_value(self, value, dialect):
         if value is None:
@@ -45,8 +45,16 @@ class GUID(TypeDecorator):
 
 
 class TimeStampMixin:
-    created_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
-    updated_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    created_at = db.Column(
+        db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+    )
+    updated_at = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
+
 
 class EntryTitleMixin:
     entry_title = db.Column(db.String(50), nullable=False)
@@ -57,9 +65,15 @@ class User(db.Model, UserMixin, TimeStampMixin):
     username = db.Column(db.String(30), unique=True, nullable=False)
     password_hash = db.Column(db.String(300), nullable=False)
 
-    basic_infos = db.relationship("BasicInfo", backref="user", lazy=True, cascade="all, delete-orphan")
-    summaries = db.relationship("Summary", backref="user", lazy=True, cascade="all, delete-orphan")
-    experiences = db.relationship("Experience", backref="user", lazy=True, cascade="all, delete-orphan")
+    basic_infos = db.relationship(
+        "BasicInfo", backref="user", lazy=True, cascade="all, delete-orphan"
+    )
+    summaries = db.relationship(
+        "Summary", backref="user", lazy=True, cascade="all, delete-orphan"
+    )
+    experiences = db.relationship(
+        "Experience", backref="user", lazy=True, cascade="all, delete-orphan"
+    )
     # TODO: Educations, Skills, Languages
 
     def set_password(self, password):
@@ -85,7 +99,7 @@ class BasicInfo(db.Model, EntryTitleMixin, TimeStampMixin):
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
 
     __table_args__ = (
-        db.UniqueConstraint('user_id', 'entry_title', name='_user_entry_title_uc'),
+        db.UniqueConstraint("user_id", "entry_title", name="_user_entry_title_uc"),
     )
 
 
@@ -96,8 +110,9 @@ class Summary(db.Model, EntryTitleMixin, TimeStampMixin):
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
 
     __table_args__ = (
-        db.UniqueConstraint('user_id', 'entry_title', name='_user_summary_title_uc'),
+        db.UniqueConstraint("user_id", "entry_title", name="_user_summary_title_uc"),
     )
+
 
 class Experience(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
@@ -108,10 +123,11 @@ class Experience(db.Model, EntryTitleMixin, TimeStampMixin):
     description = db.Column(db.Text, nullable=True, default="")
 
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
-    
+
     __table_args__ = (
-        db.UniqueConstraint('user_id', 'entry_title', name='_user_experience_title_uc'),
+        db.UniqueConstraint("user_id", "entry_title", name="_user_experience_title_uc"),
     )
+
 
 class Education(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
@@ -121,7 +137,18 @@ class Education(db.Model, EntryTitleMixin, TimeStampMixin):
     date_finished = db.Column(db.Date, nullable=True)
 
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
-    
+
     __table_args__ = (
-        db.UniqueConstraint('user_id', 'entry_title', name='_user_experience_title_uc'),
+        db.UniqueConstraint("user_id", "entry_title", name="_user_experience_title_uc"),
+    )
+
+
+class Skills(db.Model, EntryTitleMixin, TimeStampMixin):
+    id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
+    description = db.Column(db.Text, nullable=False)
+
+    user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+
+    __table_args__ = (
+        db.UniqueConstraint("user_id", "entry_title", name="_user_experience_title_uc"),
     )
