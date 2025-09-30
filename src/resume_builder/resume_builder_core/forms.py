@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import DateField, StringField, SubmitField, TextAreaField, validators
+from wtforms import DateField, SelectField, StringField, SubmitField, TextAreaField, SelectMultipleField
 from wtforms.validators import DataRequired, Email, Length, Optional
 
 
@@ -87,4 +87,11 @@ class BuildResume(FlaskForm):
     entry_title = StringField(
         "Entry Title", validators=[DataRequired(), Length(max=50)]
     )
+    basic_info = SelectField("Basic Info", validators=[DataRequired()])
+    summary = SelectField("Summary", validators=[DataRequired()])
+    experience = SelectMultipleField("Experience", validators=[DataRequired()])
+    education = SelectMultipleField("Education", validators=[DataRequired()])
+    skills = SelectMultipleField("Skills", validators=[DataRequired()])
+    languages = SelectMultipleField("Languages", validators=[DataRequired()])
+    
     submit = SubmitField("Generate Resume")

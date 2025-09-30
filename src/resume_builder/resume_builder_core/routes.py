@@ -631,7 +631,16 @@ def delete_language(language_id):
 def build_resume():
     form = BuildResume()
     
+    form.basic_info.choices = [(info.id, info.entry_title) for info in current_user.basic_infos]
+    form.summary.choices = [(summary.id, summary.entry_title) for summary in current_user.summaries]
+    form.experience.choices = [(exp.id, exp.entry_title) for exp in current_user.experiences]
+    form.education.choices = [(edu.id, edu.entry_title) for edu in current_user.education]
+    form.skills.choices = [(skill.id, skill.entry_title) for skill in current_user.skills]
+    form.languages.choices = [(lang.id, lang.entry_title) for lang in current_user.languages]
+    
     if form.validate_on_submit():
         flash("Resume created.", "success")
         return redirect(url_for("resume.home"))
-    return render_template("resume_core/build_resume/build_resume.html", form=form)
+
+    return render_template("resume_core/build_resume/build_resume.html", 
+                           form=form)
