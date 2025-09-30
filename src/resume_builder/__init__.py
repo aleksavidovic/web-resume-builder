@@ -16,6 +16,7 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
         "SQLALCHEMY_DATABASE_URI", "sqlite:///resume_builder.db"
     )
+    app.config["SQLALCHEMY_ECHO"] = True
     from .main import main_bp
     from .auth import auth_bp
     from .resume_builder_core import resume_bp

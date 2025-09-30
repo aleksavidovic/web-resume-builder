@@ -630,6 +630,7 @@ def delete_language(language_id):
 @resume_bp.route("/build_resume", methods=["GET", "POST"])
 def build_resume():
     form = BuildResume()
+    
     if form.validate_on_submit():
         flash("Resume created.", "success")
         return redirect(url_for("resume.home"))
