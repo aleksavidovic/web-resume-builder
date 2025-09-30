@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}My Resumes{% endblock %}
+
+
+{% block content %}
+<h1>My Built Resumes</h1>
+{% for resume in resumes %}
+<article>
+    <h3>{{ resume.entry_title }}</h3>
+    <a href="{{ url_for('resume.list_resume') }}"><button>Preview</button></a>
+    <a href="{{ url_for('resume.list_resume') }}"><button>Download PDF</button></a>
+    <a href="{{ url_for('resume.list_resume') }}"><button>Delete</button></a>
+</article>
+<hr>
+{% endfor %}
+{% endblock %}

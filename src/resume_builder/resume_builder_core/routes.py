@@ -622,9 +622,25 @@ def delete_language(language_id):
 
 
 
-#########################
-## RESUME BUILD ROUTES ##
-#########################
+##################
+## RESUME BUILD ##
+##################
+#############################
+## RESUME BUILD: LIST VIEW ##
+#############################
+
+
+@login_required
+@resume_bp.route("/list_resume", methods=["GET", "POST"])
+def list_resume():
+    resumes = BuiltResume.query.filter_by(user_id=current_user.id).all()
+    return render_template("resume_core/build_resume/list_resume.html", resumes=resumes)
+
+
+#################################
+## RESUME BUILD: CREATE RESUME ##
+#################################
+
 
 @login_required
 @resume_bp.route("/build_resume", methods=["GET", "POST"])
