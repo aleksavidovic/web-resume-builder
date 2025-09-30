@@ -82,3 +82,9 @@ class LanguageForm(FlaskForm):
         "Proficiency", validators=[DataRequired(), Length(max=30)]
     )
     submit = SubmitField("Save Skills")
+    
+class BuildResume(FlaskForm):
+    entry_title = StringField(
+        "Entry Title", validators=[DataRequired(), Length(max=50)]
+    )
+    submit = SubmitField("Generate Resume")
