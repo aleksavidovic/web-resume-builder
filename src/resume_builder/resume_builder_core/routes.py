@@ -12,7 +12,7 @@ from resume_builder.resume_builder_core.forms import (
 from . import resume_bp
 from flask import flash, redirect, render_template, url_for
 from flask_login import login_required, current_user
-from ..models import BasicInfo, Education, Language, Summary, Experience, Skills
+from ..models import BasicInfo, BuiltResume, Education, Language, Summary, Experience, Skills
 from .. import db
 from werkzeug.exceptions import NotFound
 
@@ -639,6 +639,30 @@ def build_resume():
     form.languages.choices = [(lang.id, lang.entry_title) for lang in current_user.languages]
     
     if form.validate_on_submit():
+        new_resume = BuiltResume(
+            entry_title=form.entry_title.data,
+            basic_info_id=form.basic_info.data,
+            summary_id=form.summary.data,
+            user_id=current_user.id,
+        )
+
+        # Populate many-to-many relationshiop tables
+        new_resume.experience = Experience.query.filter(
+            Experience.id.in_(form.experience.data)
+        ).all()
+        new_resume.education = Education.query.filter(
+            Education.id.in_(form.education.data)
+        ).all()
+        new_resume.skills= Skills.query.filter(
+            Skills.id.in_(form.skills.data)
+        ).all()
+        new_resume.languages = Language.query.filter(
+            Language.id.in_(form.languages.data)
+        ).all()
+
+        db.session.add(new_resume)
+        db.session.commit()
+
         flash("Resume created.", "success")
         return redirect(url_for("resume.home"))
 
