@@ -66,13 +66,13 @@ class User(db.Model, UserMixin, TimeStampMixin):
     password_hash = db.Column(db.String(300), nullable=False)
 
     basic_infos = db.relationship(
-        "BasicInfo", backref="user", lazy=True, cascade="all, delete-orphan"
+        "BasicInfo", backref="user", lazy="selectin", cascade="all, delete-orphan"
     )
     summaries = db.relationship(
-        "Summary", backref="user", lazy=True, cascade="all, delete-orphan"
+        "Summary", backref="user", lazy="selectin", cascade="all, delete-orphan"
     )
     experiences = db.relationship(
-        "Experience", backref="user", lazy=True, cascade="all, delete-orphan"
+        "Experience", backref="user", lazy="selectin", cascade="all, delete-orphan"
     )
     # TODO: Educations, Skills, Languages
 
@@ -168,7 +168,11 @@ class Language(db.Model, EntryTitleMixin, TimeStampMixin):
 
 class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
+
     basic_info_id = db.Column(GUID(), db.ForeignKey("basic_info.id"), nullable=False) 
+    summary_id = db.Column(GUID(), db.ForeignKey("summary.id"), nullable=False)
+
+
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
 
     __table_args__ = (
