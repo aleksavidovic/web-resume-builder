@@ -684,3 +684,22 @@ def build_resume():
 
     return render_template("resume_core/build_resume/build_resume.html", 
                            form=form)
+
+
+####################
+## RESUME: DELETE ##
+####################
+
+
+@login_required
+@resume_bp.route("/resumes/<string:resume_id>/delete", methods=["GET", "POST"])
+def delete_resume(resume_id):
+    try:
+        resume_to_delete = BuiltResume.query.filter_by(id=resume_id, user_id=current_user.id).first_or_404()
+        db.session.delete(resume_to_delete)
+        db.session.commit()
+        flash('Resume removed.', 'success')
+    except Exception as e:
+        flash(f'Error while removing Resume: {e}.', 'danger')
+    finally:
+        return redirect(url_for('resume.list_resume'))
