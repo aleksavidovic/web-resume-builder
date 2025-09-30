@@ -27,26 +27,44 @@
             <div>
                 {{ form.basic_info.label }}<br>
                 {{ form.basic_info() }}
+                {% for error in form.basic_info.errors %}
+                    <br><span class="form-error-text">{{ error }}</span>
+                {% endfor %}
             </div>
             <div>
                 {{ form.summary.label }}<br>
                 {{ form.summary() }}
+                {% for error in form.summary.errors %}
+                    <br><span class="form-error-text">{{ error }}</span>
+                {% endfor %}
             </div>
             <div>
                 {{ form.experience.label }}<br>
                 {{ form.experience() }}
+                {% for error in form.experience.errors %}
+                    <br><span class="form-error-text">{{ error }}</span>
+                {% endfor %}
             </div>
             <div>
                 {{ form.education.label }}<br>
                 {{ form.education() }}
+                {% for error in form.education.errors %}
+                    <br><span class="form-error-text">{{ error }}</span>
+                {% endfor %}
             </div>
             <div>
                 {{ form.skills.label }}<br>
                 {{ form.skills() }}
+                {% for error in form.skills.errors %}
+                    <br><span class="form-error-text">{{ error }}</span>
+                {% endfor %}
             </div>
             <div>
                 {{ form.languages.label }}<br>
                 {{ form.languages() }}
+                {% for error in form.languages.errors %}
+                    <br><span class="form-error-text">{{ error }}</span>
+                {% endfor %}
             </div>
         </fieldset>
         
