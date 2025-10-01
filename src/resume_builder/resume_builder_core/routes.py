@@ -1,5 +1,6 @@
 import uuid
 
+from weasyprint import HTML
 from resume_builder.resume_builder_core.forms import (
     BasicInfoForm,
     BuildResume,
@@ -10,7 +11,7 @@ from resume_builder.resume_builder_core.forms import (
     LanguageForm
 )
 from . import resume_bp
-from flask import flash, redirect, render_template, url_for
+from flask import flash, redirect, render_template, url_for, Response
 from flask_login import login_required, current_user
 from ..models import BasicInfo, BuiltResume, Education, Language, Summary, Experience, Skills
 from .. import db
@@ -715,3 +716,23 @@ def delete_resume(resume_id):
 def preview_resume(resume_id):
     resume_to_preview = BuiltResume.query.filter_by(id=resume_id, user_id=current_user.id).first_or_404()
     return render_template("resume_core/build_resume/preview_resume.html", resume=resume_to_preview) 
+
+
+#####################
+## RESUME: PREVIEW ##
+#####################
+
+
+@login_required
+@resume_bp.route("/resume/<string:resume_id>/download", methods=["GET"])
+def download_resume(resume_id):
+    resume_to_generate = BuiltResume.query.filter_by(id=resume_id, user_id=current_user.id).first_or_404()
+    html = render_template("resume_pdf.html", resume=resume_to_generate)
+    pdf = HTML(string=html).write_pdf()
+    return Response(
+        pdf,
+        mimetype="application/pdf",
+        headers={
+            "Content-Disposition": f"attachment;filename={resume_to_generate.entry_title.replace(' ', '_')}"
+        }
+    )
