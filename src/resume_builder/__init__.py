@@ -5,11 +5,15 @@ from dotenv import load_dotenv
 from .extensions import db, bcrypt, login_manager, migrate
 from .models import User
 
-load_dotenv()
-
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+load_dotenv(os.path.join(project_root, '.env'))
 
 def create_app():
-    app = Flask(__name__, instance_relative_config=True)
+    instance_path = os.path.join(project_root, 'instance')
+    app = Flask(__name__, 
+                instance_path=instance_path,
+                template_folder="templates", 
+                static_folder="static")
     app.config["SECRET_KEY"] = os.getenv(
         "SECRET_KEY", "ASDAJSDOIASJDOAJOISADOASJDOASIDJASODJ"
     )
@@ -36,7 +40,6 @@ def create_app():
             uuid.UUID(user_id)
         except ValueError:
             return None
-
         return User.query.get(user_id)
 
     app.register_blueprint(main_bp, url_prefix="")

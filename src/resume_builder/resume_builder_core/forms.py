@@ -43,7 +43,7 @@ class ExperienceForm(FlaskForm):
     )
     date_started = DateField("Date Started", validators=[DataRequired()])
     date_finished = DateField("Date Finished", validators=[Optional()])
-    description = TextAreaField("Description", validators=[Optional(), Length(max=500)])
+    description = TextAreaField("Description", validators=[Optional(), Length(max=2000)])
     submit = SubmitField("Save Experience")
 
 
