@@ -1,0 +1,167 @@
+/* ----------------------------------------------------------------
+   Global Styles & Variables (Dark Mode)
+   ---------------------------------------------------------------- */
+
+/* A sleek, modern dark theme palette */
+:root {
+    --primary-color: #ecf0f1;    /* Light gray for text */
+    --secondary-color: #95a5a6;  /* Muted light gray for secondary text */
+    --background-color: #1a1a1a; /* Very dark gray background */
+    --accent-color: #3498db;     /* Bright blue for highlights */
+    --border-color: #34495e;     /* Muted blue-gray for borders */
+    --header-bg: #2c3e50;        /* Dark blue-gray for the header */
+    --success-color: #2ecc71;    /* Green for success messages */
+    --error-color: #e74c3c;      /* Red for error messages */
+
+    --font-family-sans: 'Lato', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Apply a natural box layout model to all elements */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Basic body styling */
+body {
+    font-family: var(--font-family-sans);
+    line-height: 1.7;
+    color: var(--primary-color);
+    background-color: var(--background-color);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ----------------------------------------------------------------
+   Layout & Container
+   ---------------------------------------------------------------- */
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+main.container {
+    flex: 1;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+
+/* ----------------------------------------------------------------
+   Header & Navigation
+   ---------------------------------------------------------------- */
+
+.navbar {
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.25rem 0;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--accent-color);
+}
+
+/* ----------------------------------------------------------------
+   Typography
+   ---------------------------------------------------------------- */
+
+h1, h2, h3 {
+    line-height: 1.3;
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+    font-weight: 700;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+/* ----------------------------------------------------------------
+   Buttons
+   ---------------------------------------------------------------- */
+
+button, a > button, input[type="submit"] {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    border: none;
+    padding: 0.8rem 1.6rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, a > button:hover, input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+/* ----------------------------------------------------------------
+   Forms
+   ---------------------------------------------------------------- */
+
+.form-section {
+    background-color: #2c3e50;
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.form-section legend {
+    color: var(--primary-color);
+}
+
+input[type="text"], input[type="password"], textarea, select {
+    background-color: #34495e;
+    color: var(--primary-color);
+    border: 1px solid var(--border-color);
+}
+
+/* ----------------------------------------------------------------
+   Footer
+   ---------------------------------------------------------------- */
+
+.site-footer {
+    background-color: var(--header-bg);
+    color: var(--secondary-color);
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+}
+

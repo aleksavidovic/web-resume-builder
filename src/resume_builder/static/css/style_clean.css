@@ -1,0 +1,97 @@
+/* ----------------------------------------------------------------
+   Global Styles & Variables (Minimalist)
+   ---------------------------------------------------------------- */
+
+/* A clean, minimalist color palette */
+:root {
+    --primary-color: #2c3e50;    /* Dark blue for text */
+    --secondary-color: #7f8c8d;  /* Gray for secondary text */
+    --background-color: #ffffff; /* White background */
+    --accent-color: #e74c3c;     /* Soft red for accents */
+    --border-color: #ecf0f1;     /* Very light gray for borders */
+    --header-bg: #ffffff;        /* White header */
+
+    --font-family-sans: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Basic body styling */
+body {
+    font-family: var(--font-family-sans);
+    line-height: 1.6;
+    color: var(--primary-color);
+    background-color: var(--background-color);
+}
+
+/* ----------------------------------------------------------------
+   Header & Navigation
+   ---------------------------------------------------------------- */
+
+.navbar {
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 2rem 0;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.nav-links a {
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+/* ----------------------------------------------------------------
+   Buttons
+   ---------------------------------------------------------------- */
+
+button, a > button, input[type="submit"] {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px; /* Pill-shaped buttons */
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, a > button:hover, input[type="submit"]:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}
+
+/* ----------------------------------------------------------------
+   Forms
+   ---------------------------------------------------------------- */
+
+.form-section {
+    border: 1px solid var(--border-color);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-section legend {
+    padding: 0 0.5rem;
+}
+
+input[type="text"], input[type="password"], textarea, select {
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus {
+    border-color: var(--accent-color);
+    box-shadow: none;
+}
+
+/* ----------------------------------------------------------------
+   List Section
+   ---------------------------------------------------------------- */
+
+.entry_item {
+    border: 1px solid var(--border-color);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
