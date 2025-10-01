@@ -209,6 +209,9 @@ class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
     basic_info_id = db.Column(GUID(), db.ForeignKey("basic_info.id"), nullable=False) 
     summary_id = db.Column(GUID(), db.ForeignKey("summary.id"), nullable=False)
 
+    basic_info = relationship("BasicInfo")
+    summary = relationship("Summary")
+
     experience = relationship(
         "Experience", secondary=built_resume_experience, backref="built_resumes"
     )
