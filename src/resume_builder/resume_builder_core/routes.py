@@ -680,7 +680,7 @@ def build_resume():
         db.session.commit()
 
         flash("Resume created.", "success")
-        return redirect(url_for("resume.home"))
+        return redirect(url_for("resume.list_resume"))
 
     return render_template("resume_core/build_resume/build_resume.html", 
                            form=form)
