@@ -8,7 +8,7 @@
 {% for resume in resumes %}
 <article>
     <h3>{{ resume.entry_title }}</h3>
-    <a href="{{ url_for('resume.list_resume') }}"><button>Preview</button></a>
+    <a href="{{ url_for('resume.preview_resume', resume_id=resume.id) }}"><button>Preview</button></a>
     <a href="{{ url_for('resume.list_resume') }}"><button>Download PDF</button></a>
     <a href="{{ url_for('resume.delete_resume', resume_id=resume.id) }}"><button>Delete</button></a>
 </article>
