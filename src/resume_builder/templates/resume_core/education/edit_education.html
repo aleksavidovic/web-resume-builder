@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Education{% endblock %}
+
+{% block content %}
+
+<form action="{{ url_for('resume.edit_education', education_id=education_id) }}" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    <fieldset class="form-section">
+        <legend><h3>Education</h3></legend>
+        <div class="fields">
+        {{ form.entry_title.label }} <br>
+        {{ form.entry_title(size=50) }}
+        {% for error in form.entry_title.errors %}
+            <br><span class="form-error-text">{{ error }}</span>    
+        {% endfor %}
+        </div>
+    </fieldset>
+
+    <fieldset class="form-section">
+        <legend><h3>Degree & School Name</h3></legend>
+        <div class="fields">
+        {{ form.degree_name.label }} <br>
+        {{ form.degree_name(size=50) }}
+        {% for error in form.degree_name.errors %}
+            <br><span class="form-error-text">{{ error }}</span>    
+        {% endfor %}
+        </div>
+
+        <div class="fields">
+        {{ form.school_name.label }} <br>
+        {{ form.school_name(size=50) }}
+        {% for error in form.school_name.errors %}
+            <br><span class="form-error-text">{{ error }}</span>    
+        {% endfor %}
+        </div>
+    </fieldset>
+
+    <fieldset class="form-section">
+        <legend><h3>Start & End Dates</h3></legend>
+        <div class="fields">
+        {{ form.date_started.label }} <br>
+        {{ form.date_started() }}
+        {% for error in form.date_started.errors %}
+            <br><span class="form-error-text">{{ error }}</span>    
+        {% endfor %}
+        </div>
+
+        <div class="fields">
+        {{ form.date_finished.label }} <br>
+        {{ form.date_finished() }}
+        {% for error in form.date_finished.errors %}
+            <br><span class="form-error-text">{{ error }}</span>    
+        {% endfor %}
+        </div>
+    </fieldset>
+
+    <div>
+        {{ form.submit(value='Update Education') }}
+    </div>
+</form>
+
+{% endblock %}

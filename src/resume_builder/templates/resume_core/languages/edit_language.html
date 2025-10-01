@@ -1,0 +1,48 @@
+
+{% extends "base.html" %}
+
+{% block title %}Edit Language{% endblock %}
+
+{% block content %}
+
+<form action="{{ url_for('resume.edit_language', language_id=language_id) }}" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    <fieldset class="form-section">
+        <legend><h3>Language</h3></legend>
+        <div class="fields">
+            {{ form.entry_title.label }}<br>
+            {{ form.entry_title(size=50) }}
+            {% for error in form.entry_title.errors %}
+            <br><span class="form-error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </fieldset>
+
+    <fieldset class="form-section">
+        <legend><h3>Details</h3></legend>
+        <div class="fields">
+            {{ form.name.label }}<br>
+            {{ form.name(cols= 50, rows=18) }}
+            {% for error in form.name.errors %}
+            <br><span class="form-error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="fields">
+            {{ form.proficiency.label }}<br>
+            {{ form.proficiency(cols= 50, rows=18) }}
+            {% for error in form.proficiency.errors %}
+            <br><span class="form-error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </fieldset>
+
+    <fieldset class="form-section">
+        {{ form.submit(value="Update Language") }}
+        <a href="{{ url_for('resume.list_languages') }}">Cancel</a>
+    </fieldset>
+
+</form>
+
+{% endblock %}
+

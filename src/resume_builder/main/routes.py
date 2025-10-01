@@ -6,7 +6,7 @@ from . import main_bp
 @login_required
 @main_bp.route("/")
 def index():
-    return render_template("home.html")
+    return render_template("main/home.html")
 
 
 @main_bp.route("/about")

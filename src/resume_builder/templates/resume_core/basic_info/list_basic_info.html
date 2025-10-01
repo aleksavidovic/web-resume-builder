@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Basic Info List{% endblock %}
+
+{% block content %}
+<section class="basic-info-list">
+    <header class="basic-info-list-header">
+        <div>
+            <h2>Basic Info Section</h2>
+            <p>Manage your "Basic Info" entries.</p>
+        </div>
+        <a href="{{ url_for('resume.create_basic_info') }}">
+            <button>+ Create New</button>
+        </a>
+    </header>
+
+    <hr>
+
+    {% if basic_infos %}
+        <div>
+        {% for info in basic_infos %}
+            <article class="entry_item">
+                <header>
+                    <h3>{{ info.entry_title }}</h3>
+                    <p><strong>Full Name:</strong> {{ info.full_name }}</p>
+                    <p><strong>Job Title:</strong> {{ info.job_title }}</p>
+                </header>
+                
+                <h4>Contact Details</h4>
+                <ul>
+                    <li><strong>Email:</strong> {{ info.contact_email }}</li>
+                    <li><strong>Phone:</strong> {{ info.contact_phone }}</li>
+                    <li><strong>Address:</strong> {{ info.address }}</li>
+                </ul>
+
+                {% if info.linkedin_url or info.github_url %}
+                <h4>Online Profiles</h4>
+                <ul>
+                    {% if info.linkedin_url %}
+                    <li><strong>LinkedIn:</strong> <a href="{{ info.linkedin_url }}" target="_blank">{{ info.linkedin_url }}</a></li>
+                    {% endif %}
+                    {% if info.github_url %}
+                    <li><strong>GitHub:</strong> <a href="{{ info.github_url }}" target="_blank">{{ info.github_url }}</a></li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+                
+                <footer>
+                    <a href="{{url_for('resume.edit_basic_info', info_id=info.id)}}"><button>Edit</button></a>
+                    <a href="{{url_for('resume.delete_basic_info', info_id=info.id)}}"><button>Delete</button></a>
+                </footer>
+            </article>
+        {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-entries-found">
+            <h3>No "Basic Info" Sections Found</h3>
+            <p>You haven't created any sections yet. Click the button above to get started!</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

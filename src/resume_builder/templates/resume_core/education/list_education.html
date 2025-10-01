@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}My Education{% endblock %}
+
+{% block content %}
+<section class="basic-info-list">
+    <header class="basic-info-list-header">
+        <div>
+            <h2>Education Section</h2>
+            <p>Manage how your education shows up on your resume.</p>
+        </div>
+        <a href="{{ url_for('resume.create_education') }}">
+            <button>+ Create New</button>
+        </a>
+    </header>
+
+    <hr>
+
+    {% if educations %}
+        <div>
+        {% for education in educations %}
+            <article class="entry_item">
+                <header>
+                    <h3>{{ education.entry_title }}</h3>
+                </header>
+
+                <div>
+                    {{ education.degree_name }} @ <em>{{ education.school_name }}</em>
+                </div>
+
+                <div>
+                    {% if education.date_started %}
+                    <strong>From: </strong>
+                    <span>{{ education.date_started }}</span>
+                    {% endif %}
+                    {% if education.date_finished %}
+                    <strong>To: </strong>
+                    <span>{{ education.date_finished }}</span>
+                    {% else %}
+                    <strong>Ongoing</strong>
+                    {% endif %}
+                </div>
+                
+                <footer>
+                    <a href="{{ url_for('resume.edit_education', education_id=education.id) }}"><button>Edit</button></a>
+                    <a href="{{ url_for('resume.delete_education', education_id=education.id) }}"><button>Delete</button></a>
+                </footer>
+            </article>
+        {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-entries-found">
+            <h3>No Education Found</h3>
+            <p>You haven't created any education entries. Click the button above to get started!</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

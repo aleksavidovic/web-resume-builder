@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}My Experience{% endblock %}
+
+{% block content %}
+<section class="basic-info-list">
+    <header class="basic-info-list-header">
+        <div>
+            <h2>Experience Section</h2>
+            <p>Manage how your experiences show up on your resume.</p>
+            <p>You can create multiple versions of the same work experience.</p>
+        </div>
+        <a href="{{ url_for('resume.create_experience') }}">
+            <button>+ Create New</button>
+        </a>
+    </header>
+
+    <hr>
+
+    {% if experiences %}
+        <div>
+        {% for experience in experiences %}
+            <article class="entry_item">
+                <header>
+                    <h3>{{ experience.entry_title }}</h3>
+                </header>
+
+                <div>
+                    {{ experience.job_title }} @ <em>{{ experience.company_name }}</em>
+                </div>
+
+                <div>
+                    {% if experience.date_started %}
+                    <strong>From: </strong>
+                    <span>{{ experience.date_started }}</span>
+                    {% endif %}
+                    {% if experience.date_finished %}
+                    <strong>To: </strong>
+                    <span>{{ experience.date_finished }}</span>
+                    {% else %}
+                    <strong>Ongoing</strong>
+                    {% endif %}
+                </div>
+                
+                {% if experience.description %}
+                <h4>Description:</h4>
+                <p>  {{ experience.description }}</p>
+                {% endif %}
+                
+                <footer>
+                    <a href="{{ url_for('resume.edit_experience', experience_id=experience.id) }}"><button>Edit</button></a>
+                    <a href="{{ url_for('resume.delete_experience', experience_id=experience.id) }}"><button>Delete</button></a>
+                </footer>
+            </article>
+        {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-entries-found">
+            <h3>No Work Experiences Found</h3>
+            <p>You haven't created any experiences. Click the button above to get started!</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
