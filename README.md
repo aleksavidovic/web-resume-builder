@@ -62,23 +62,26 @@ Bash
 flask db upgrade
 
 Run the application:
-Bash
+```bash
+./run.sh
+```
 
-    ./run.sh
-    The application will be available at http://localhost:8080.
+The application will be available at http://localhost:8080.
 
-Project Structure
+## Project Structure
 
 The project follows a modular structure, with key components organized into Flask Blueprints:
 
-    src/resume_builder/: The main application package.
-        main/: Handles the main landing and informational pages.
-        auth/: Manages user authentication (login, registration).
-        resume_builder_core/: The core logic for creating and managing resumes.
-        models.py: Defines the SQLAlchemy database models.
-        extensions.py: Initializes Flask extensions.
-    migrations/: Contains the Alembic database migration scripts.
-    templates/: Holds all Jinja2 templates for the application.
+```
+src/resume_builder/: The main application package.
+    main/: Handles the main landing and informational pages.
+    auth/: Manages user authentication (login, registration).
+    resume_builder_core/: The core logic for creating and managing resumes.
+    models.py: Defines the SQLAlchemy database models.
+    extensions.py: Initializes Flask extensions.
+migrations/: Contains the Alembic database migration scripts.
+templates/: Holds all Jinja2 templates for the application.
+```
 
 # Future Enhancements
 
