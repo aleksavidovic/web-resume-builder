@@ -302,8 +302,10 @@ def create_experience():
     if form.validate_on_submit():
         print("Form submitted for validation")
         try:
+            from resume_builder.resume_builder_core.html_utils import render_markdown
             new_experience = Experience()
             form.populate_obj(new_experience)
+            new_experience.description = render_markdown(form.description.data)
             new_experience.user_id = current_user.id
             db.session.add(new_experience)
             db.session.commit()

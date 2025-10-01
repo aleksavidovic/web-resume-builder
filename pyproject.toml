@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "alembic>=1.16.5",
+    "bleach>=6.2.0",
     "email-validator>=2.3.0",
     "flask>=3.1.2",
     "flask-bcrypt>=1.0.1",
@@ -14,6 +15,7 @@ dependencies = [
     "flask-sqlalchemy>=3.1.1",
     "flask-wtf>=1.2.2",
     "gunicorn>=23.0.0",
+    "markdown>=3.9",
     "python-dotenv>=1.1.1",
     "weasyprint>=66.0",
     "wtforms>=3.2.1",

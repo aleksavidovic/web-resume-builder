@@ -110,7 +110,7 @@
             <div class="entry">
                 <div class="entry-header">{{ exp.job_title }} at {{ exp.company_name }}</div>
                 <div class="entry-subheader">{{ exp.date_started.strftime('%B %Y') }} – {{ exp.date_finished.strftime('%B %Y') if exp.date_finished else 'Present' }}</div>
-                <div class="entry-description">{{ exp.description }}</div>
+                <div class="entry-description">{{ exp.description | safe }}</div>
             </div>
             {% endfor %}
         </div>
