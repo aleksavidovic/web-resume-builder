@@ -91,8 +91,8 @@
         <div class="job-title">{{ resume.basic_info.job_title }}</div>
         <div class="contact-info">
             {{ resume.basic_info.address }} | {{ resume.basic_info.contact_phone }} | <a href="mailto:{{ resume.basic_info.contact_email }}">{{ resume.basic_info.contact_email }}</a>
-            {% if resume.basic_info.linkedin_url %} | <a href="{{ resume.basic_info.linkedin_url }}">LinkedIn</a>{% endif %}
-            {% if resume.basic_info.github_url %} | <a href="{{ resume.basic_info.github_url }}">GitHub</a>{% endif %}
+            {% if resume.basic_info.linkedin_url %} | <a href="{{ resume.basic_info.linkedin_url }}" target="_blank">LinkedIn</a>{% endif %}
+            {% if resume.basic_info.github_url %} | <a href="{{ resume.basic_info.github_url }}" target="_blank">GitHub</a>{% endif %}
         </div>
     </header>
 

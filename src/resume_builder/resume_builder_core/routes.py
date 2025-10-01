@@ -727,7 +727,7 @@ def preview_resume(resume_id):
 @resume_bp.route("/resume/<string:resume_id>/download", methods=["GET"])
 def download_resume(resume_id):
     resume_to_generate = BuiltResume.query.filter_by(id=resume_id, user_id=current_user.id).first_or_404()
-    html = render_template("resume_pdf.html", resume=resume_to_generate)
+    html = render_template("resume_core/build_resume/resume_pdf.html", resume=resume_to_generate)
     pdf = HTML(string=html).write_pdf()
     return Response(
         pdf,
