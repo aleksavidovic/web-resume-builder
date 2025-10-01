@@ -1,0 +1,223 @@
+/* ----------------------------------------------------------------
+   Global Styles & Variables
+   ---------------------------------------------------------------- */
+
+/* Define a modern color palette and fonts using CSS variables for easy theming */
+:root {
+    --primary-color: #0a0a0a;    /* Nearly black for text and headers */
+    --secondary-color: #5c5c5c;  /* Gray for secondary text */
+    --background-color: #ffffff; /* Clean white background */
+    --accent-color: #007bff;     /* A nice blue for links and highlights */
+    --border-color: #e1e1e1;     /* Light gray for borders and lines */
+    --header-bg: #f8f9fa;        /* Off-white for the header */
+
+    --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-family-serif: "Georgia", serif;
+}
+
+/* Apply a natural box layout model to all elements */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Basic body styling */
+body {
+    font-family: var(--font-family-sans);
+    line-height: 1.6;
+    color: var(--primary-color);
+    background-color: var(--background-color);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ----------------------------------------------------------------
+   Layout & Container
+   ---------------------------------------------------------------- */
+
+/* A centered container for content */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Main content area styling */
+main.container {
+    flex: 1; /* Ensures the main content takes up available space, pushing footer down */
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* ----------------------------------------------------------------
+   Header & Navigation
+   ---------------------------------------------------------------- */
+
+.navbar {
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+}
+
+/* Flexbox for navbar alignment */
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.5rem; /* Space between nav items */
+}
+
+.nav-links a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.2s ease-in-out;
+}
+
+.nav-links a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+
+/* ----------------------------------------------------------------
+   Typography
+   ---------------------------------------------------------------- */
+
+h1, h2, h3 {
+    line-height: 1.2;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ----------------------------------------------------------------
+   Flashed Messages (Alerts)
+   ---------------------------------------------------------------- */
+
+.flash-messages {
+    margin: 1rem 0;
+    list-style: none;
+    padding: 0;
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+/* Example category styling */
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+article.post {
+    /*
+    border: 1px solid black;
+    */
+}
+/* ----------------------------------------------------------------
+   Forms (Create & Edit)
+   ---------------------------------------------------------------- */
+.form-error-text {
+    color: red;
+    border: 1px solid red;
+}
+
+.form-section div {
+    margin-bottom: 1rem;
+}
+
+/* ----------------------------------------------------------------
+   List Section
+   ---------------------------------------------------------------- */
+.basic-info-list-header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.entry_item {
+    border: 1px solid #eee; 
+    padding: 1.5rem; 
+    margin-bottom: 1rem;
+}
+
+.no-entries-found {
+    text-align: center; 
+    padding: 2rem;
+}
+
+/* ----------------------------------------------------------------
+   Footer
+   ---------------------------------------------------------------- */
+
+.site-footer {
+    background-color: var(--primary-color);
+    color: var(--header-bg);
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: auto; /* Pushes the footer to the bottom */
+}
+
+.site-footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+
+/* ----------------------------------------------------------------
+   Responsive Design
+   ---------------------------------------------------------------- */
+
+/* Styles for screens smaller than 600px */
+@media (max-width: 600px) {
+    .navbar .container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.75rem; }
+}
