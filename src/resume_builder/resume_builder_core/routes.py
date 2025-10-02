@@ -3,7 +3,7 @@ import uuid
 from weasyprint import HTML
 from resume_builder.resume_builder_core.forms import (
     BasicInfoForm,
-    BuildResume,
+    BuildResumeForm,
     EducationForm,
     ExperienceForm,
     SkillsForm,
@@ -647,7 +647,9 @@ def list_resume():
 @login_required
 @resume_bp.route("/build_resume", methods=["GET", "POST"])
 def build_resume():
-    form = BuildResume()
+    form = BuildResumeForm()
+    breakpoint()
+    themes = ResumeTheme.query.all()
     
     form.basic_info.choices = [(info.id, info.entry_title) for info in current_user.basic_infos]
     form.summary.choices = [(summary.id, summary.entry_title) for summary in current_user.summaries]
@@ -655,6 +657,7 @@ def build_resume():
     form.education.choices = [(edu.id, edu.entry_title) for edu in current_user.education]
     form.skills.choices = [(skill.id, skill.entry_title) for skill in current_user.skills]
     form.languages.choices = [(lang.id, lang.entry_title) for lang in current_user.languages]
+    form.theme.choices = []
     
     if form.validate_on_submit():
         new_resume = BuiltResume(
@@ -810,9 +813,9 @@ DUMMY_THEME = """
 @resume_bp.route("/resume/<string:resume_id>/download", methods=["GET"])
 def download_resume(resume_id):
     resume_to_generate = BuiltResume.query.filter_by(id=resume_id, user_id=current_user.id).first_or_404()
-    theme = ResumeTheme() 
-    theme.styles = DUMMY_THEME
-    html = render_template("resume_core/build_resume/resume_pdf.html", resume=resume_to_generate, theme=theme)
+    resume_theme = ResumeTheme() 
+    resume_theme.styles = DUMMY_THEME
+    html = render_template("resume_core/build_resume/resume_pdf.html", resume=resume_to_generate, theme=resume_theme)
     pdf = HTML(string=html).write_pdf()
     return Response(
         pdf,

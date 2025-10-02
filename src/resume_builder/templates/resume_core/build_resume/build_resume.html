@@ -68,6 +68,15 @@
             </div>
         </fieldset>
         
+        <fieldset class="form-section">
+            <legend><h3>Choose a theme</h3></legend>
+            <div>
+                {{ form.theme.label }}<br>
+                {{ form.theme() }}
+                {% for error in form.theme.errors %}
+                    <br><span class="form-error-text">{{ error }}</span>
+                {% endfor %}
+            </div>
         <hr>
 
         <div>

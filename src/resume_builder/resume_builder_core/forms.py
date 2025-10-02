@@ -83,15 +83,17 @@ class LanguageForm(FlaskForm):
     )
     submit = SubmitField("Save Skills")
     
-class BuildResume(FlaskForm):
+class BuildResumeForm(FlaskForm):
     entry_title = StringField(
         "Entry Title", validators=[DataRequired(), Length(max=50)]
     )
     basic_info = SelectField("Basic Info", validators=[DataRequired()])
     summary = SelectField("Summary", validators=[DataRequired()])
+    theme = SelectField("Theme", validators=[DataRequired()])
     experience = SelectMultipleField("Experience", validators=[DataRequired()])
     education = SelectMultipleField("Education", validators=[DataRequired()])
     skills = SelectMultipleField("Skills", validators=[DataRequired()])
     languages = SelectMultipleField("Languages", validators=[DataRequired()])
+
     
     submit = SubmitField("Generate Resume")
