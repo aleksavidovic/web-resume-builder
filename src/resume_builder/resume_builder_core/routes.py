@@ -3,12 +3,12 @@ import uuid
 from weasyprint import HTML
 from resume_builder.resume_builder_core.forms import (
     BasicInfoForm,
-    BuildResumeForm,
     EducationForm,
     ExperienceForm,
     SkillsForm,
     SummaryForm,
-    LanguageForm
+    LanguageForm,
+    BuildResumeForm
 )
 from . import resume_bp
 from flask import flash, redirect, render_template, url_for, Response
