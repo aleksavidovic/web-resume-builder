@@ -230,3 +230,9 @@ class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
     __table_args__ = (
         db.UniqueConstraint("user_id", "entry_title", name="_user_built_resumes_title_uc"),
     )
+
+class ResumeTheme(db.Model, TimeStampMixin):
+    id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
+    name = db.Column(db.String(40), unique=True, nullable=False)
+    styles = db.Column(db.Text, nullable=False)
+    

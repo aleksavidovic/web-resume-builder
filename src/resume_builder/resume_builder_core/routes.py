@@ -13,7 +13,7 @@ from resume_builder.resume_builder_core.forms import (
 from . import resume_bp
 from flask import flash, redirect, render_template, url_for, Response
 from flask_login import login_required, current_user
-from ..models import BasicInfo, BuiltResume, Education, Language, Summary, Experience, Skills
+from ..models import BasicInfo, BuiltResume, Education, Language, ResumeTheme, Summary, Experience, Skills
 from .. import db
 from werkzeug.exceptions import NotFound
 
@@ -643,11 +643,12 @@ def list_resume():
 #################################
 ## RESUME BUILD: CREATE RESUME ##
 #################################
-
+DUMMY_THEME = """"""
 
 @login_required
 @resume_bp.route("/build_resume", methods=["GET", "POST"])
 def build_resume():
+    theme = DUMMY_THEME
     form = BuildResume()
     
     form.basic_info.choices = [(info.id, info.entry_title) for info in current_user.basic_infos]
@@ -720,16 +721,18 @@ def preview_resume(resume_id):
     return render_template("resume_core/build_resume/preview_resume.html", resume=resume_to_preview) 
 
 
-#####################
-## RESUME: PREVIEW ##
-#####################
+#####################################
+## RESUME: GENERATE & DOWNLOAD PDF ##
+#####################################
 
 
 @login_required
 @resume_bp.route("/resume/<string:resume_id>/download", methods=["GET"])
 def download_resume(resume_id):
     resume_to_generate = BuiltResume.query.filter_by(id=resume_id, user_id=current_user.id).first_or_404()
-    html = render_template("resume_core/build_resume/resume_pdf.html", resume=resume_to_generate)
+    theme = ResumeTheme() 
+    theme.styles = DUMMY_THEME
+    html = render_template("resume_core/build_resume/resume_pdf.html", resume=resume_to_generate, theme=theme)
     pdf = HTML(string=html).write_pdf()
     return Response(
         pdf,

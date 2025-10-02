@@ -4,6 +4,25 @@
 
 
 {% block content %}
+<div>
+    <h2>Theme selection</h2>
+    <div>
+        <input name="pdf-theme" type="radio" id="classic" value="classic" />
+        <lablel for="classic">Classic</label>
+    </div>
+
+    <div>
+        <input name="pdf-theme" type="radio" id="modern" value="modern" />
+        <lablel for="modern">Modern</label>
+    </div>
+
+    <div>
+        <input name="pdf-theme" type="radio" id="minimalist" value="minimalist" />
+        <lablel for="minimalist">Minimalist</label>
+    </div>
+</div>
+
+
 <h1>My Built Resumes</h1>
 {% if resumes %}
     {% for resume in resumes %}
