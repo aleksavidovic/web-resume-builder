@@ -202,15 +202,22 @@ class Language(db.Model, EntryTitleMixin, TimeStampMixin):
         db.UniqueConstraint("user_id", "entry_title", name="_user_language_title_uc"),
     )
 
+class ResumeTheme(db.Model, TimeStampMixin):
+    id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
+    name = db.Column(db.String(40), unique=True, nullable=False)
+    styles = db.Column(db.Text, nullable=False)
+    
 
 class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
 
     basic_info_id = db.Column(GUID(), db.ForeignKey("basic_info.id"), nullable=False) 
     summary_id = db.Column(GUID(), db.ForeignKey("summary.id"), nullable=False)
+    theme_id = db.Column(GUID(), db.ForeignKey("resume_theme.id"), nullable=False)
 
     basic_info = relationship("BasicInfo")
     summary = relationship("Summary")
+    theme = relationship("ResumeTheme")
 
     experience = relationship(
         "Experience", secondary=built_resume_experience, backref="built_resumes"
@@ -225,14 +232,10 @@ class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
         "Language", secondary=built_resume_language, backref="built_resume"
     )
 
+
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
 
     __table_args__ = (
         db.UniqueConstraint("user_id", "entry_title", name="_user_built_resumes_title_uc"),
     )
 
-class ResumeTheme(db.Model, TimeStampMixin):
-    id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    name = db.Column(db.String(40), unique=True, nullable=False)
-    styles = db.Column(db.Text, nullable=False)
-    

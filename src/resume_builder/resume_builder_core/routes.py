@@ -643,12 +643,10 @@ def list_resume():
 #################################
 ## RESUME BUILD: CREATE RESUME ##
 #################################
-DUMMY_THEME = """"""
 
 @login_required
 @resume_bp.route("/build_resume", methods=["GET", "POST"])
 def build_resume():
-    theme = DUMMY_THEME
     form = BuildResume()
     
     form.basic_info.choices = [(info.id, info.entry_title) for info in current_user.basic_infos]
@@ -725,6 +723,88 @@ def preview_resume(resume_id):
 ## RESUME: GENERATE & DOWNLOAD PDF ##
 #####################################
 
+DUMMY_THEME = """
+
+        /* A professional, clean, and print-friendly style for the PDF resume */
+        @page {
+            size: A4;
+            margin: 1in;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            margin: 0;
+            padding: 0;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: 28pt;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .job-title {
+            font-size: 16pt;
+            text-align: center;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            text-align: center;
+            font-size: 10pt;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .section-title {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #000;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .section-content p {
+            margin: 0 0 10px 0;
+        }
+        
+        .entry {
+            margin-bottom: 15px;
+        }
+
+        .entry-header {
+            font-size: 12pt;
+            font-weight: bold;
+        }
+
+        .entry-subheader {
+            font-style: italic;
+            color: #555;
+            font-size: 10pt;
+        }
+        
+        .entry-description {
+            font-size: 11pt;
+            margin-top: 5px;
+        }
+
+"""
 
 @login_required
 @resume_bp.route("/resume/<string:resume_id>/download", methods=["GET"])
