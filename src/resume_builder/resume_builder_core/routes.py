@@ -813,6 +813,7 @@ DUMMY_THEME = """
 @resume_bp.route("/resume/<string:resume_id>/download", methods=["GET"])
 def download_resume(resume_id):
     resume_to_generate = BuiltResume.query.filter_by(id=resume_id, user_id=current_user.id).first_or_404()
+    # TODO: Make theme come from db
     resume_theme = ResumeTheme() 
     resume_theme.styles = DUMMY_THEME
     html = render_template("resume_core/build_resume/resume_pdf.html", resume=resume_to_generate, theme=resume_theme)

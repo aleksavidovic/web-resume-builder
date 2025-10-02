@@ -24,6 +24,7 @@ def create_app():
     from .main import main_bp
     from .auth import auth_bp
     from .resume_builder_core import resume_bp
+    from .admin import admin_bp
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -45,4 +46,5 @@ def create_app():
     app.register_blueprint(main_bp, url_prefix="")
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(resume_bp, url_prefix="/resume")
+    app.register_blueprint(admin_bp, url_prefix="/admin")
     return app
