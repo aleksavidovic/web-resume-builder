@@ -1,6 +1,6 @@
 from flask import flash, render_template, url_for, redirect
 
-from resume_builder.models import ResumeTheme
+from ..models import ResumeTheme
 from . import admin_bp 
 from .forms import ThemeForm
 from ..extensions import db

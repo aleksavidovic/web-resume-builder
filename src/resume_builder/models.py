@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, timezone
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship
-from . import db
+from .extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Table, Column, ForeignKey, TypeDecorator, CHAR
 from sqlalchemy.dialects.postgresql import UUID

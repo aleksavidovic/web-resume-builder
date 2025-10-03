@@ -656,7 +656,7 @@ def build_resume():
     form.education.choices = [(edu.id, edu.entry_title) for edu in current_user.education]
     form.skills.choices = [(skill.id, skill.entry_title) for skill in current_user.skills]
     form.languages.choices = [(lang.id, lang.entry_title) for lang in current_user.languages]
-    form.theme.choices = []
+    form.theme.choices = [(theme.id, theme.name) for theme in themes]
     
     if form.validate_on_submit():
         new_resume = BuiltResume(
@@ -810,8 +810,7 @@ h1 {
 @resume_bp.route("/resume/<string:resume_id>/download", methods=["GET"])
 def download_resume(resume_id):
     resume_to_generate = BuiltResume.query.filter_by(id=resume_id, user_id=current_user.id).first_or_404()
-    # TODO: Make theme come from db
-    resume_themes = ResumeTheme.query.all()
+    resume_themes = ResumeTheme.query.filter_by().all()
     html = render_template("resume_core/build_resume/resume_pdf.html", resume=resume_to_generate, theme=resume_themes[0])
     pdf = HTML(string=html).write_pdf()
     return Response(
