@@ -4,19 +4,40 @@
 
 
 {% block content %}
-<h1>My Built Resumes</h1>
-{% if resumes %}
-    {% for resume in resumes %}
-    <article>
-      <h3>{{ resume.entry_title }}</h3>
-      <p>Theme: {{ resume.theme.name }}</p>
-        <a href="{{ url_for('resume.preview_resume', resume_id=resume.id) }}"><button>Preview</button></a>
-        <a href="{{ url_for('resume.download_resume', resume_id=resume.id) }}"><button>Download PDF</button></a>
-        <a href="{{ url_for('resume.delete_resume', resume_id=resume.id) }}"><button>Delete</button></a>
-    </article>
-    <hr>
-    {% endfor %}
-{% else %}
-<p>No resumes found. Click the link to <a href="{{ url_for('resume.build_resume') }}">build one</a></p>
-{% endif %}
+<section class="basic-info-list">
+  <header class="basic-info-list-header">
+    <div>
+      <h2>My Resumes</h2>
+      <p>Manage and download your resumes.</p>
+    </div>
+    <a href="{{ url_for('resume.build_resume') }}">
+      <button>+ Create New</button>
+    </a>
+  </header>
+
+  <hr>
+  <br>
+
+  {% if resumes %}
+      {% for resume in resumes %}
+        <article class="entry_item">
+          <header>
+            <h3>{{ resume.entry_title }}</h3>
+            <p>Theme: {{ resume.theme.name }}</p>
+          </header>
+
+
+          <footer>
+            <a href="{{ url_for('resume.preview_resume', resume_id=resume.id) }}"><button>Preview</button></a>
+            <a href="{{ url_for('resume.download_resume', resume_id=resume.id) }}"><button>Download PDF</button></a>
+            <a href="{{ url_for('resume.delete_resume', resume_id=resume.id) }}"><button>Delete</button></a>
+          </footer>
+        </article>
+        <hr>
+      {% endfor %}
+  {% else %}
+    <p>No resumes found. Click the link to <a href="{{ url_for('resume.build_resume') }}">build one</a></p>
+  {% endif %}
+
+</section>
 {% endblock %}

@@ -27,3 +27,14 @@ def create_theme():
             return redirect(url_for("admin.list_themes"))
     return render_template("/admin/create_theme.html", form=form)
 
+@admin_bp.route("/themes/<string:theme_id>/delete", methods=["GET"])
+def delete_theme(theme_id):
+    try:
+        theme_to_delete = ResumeTheme.query.filter_by(id=theme_id).first_or_404()
+        db.session.delete(theme_to_delete)
+        db.session.commit()
+        flash("Theme deleted.", "success")
+    except Exception as e:
+        flash(f"Error while deleting theme: {e}.", "success")
+    finally:
+        return redirect(url_for('admin.list_themes'))

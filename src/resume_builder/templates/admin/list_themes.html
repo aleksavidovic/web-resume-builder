@@ -3,16 +3,37 @@
 {% block title %}Manage Resume Themes{% endblock %}
 
 {% block content %}
-<p>Manage resume themes. Create a theme <a href="{{ url_for('admin.create_theme') }}">here</a>.</p>
+<section>
+      <header class="basic-info-list-header">
+        <div>
+            <h2>Manage Themes</h2>
+            <p>Manage themes that users can use for their resumes.</p>
+        </div>
+        <a href="{{ url_for('admin.create_theme') }}">
+            <button>+ Create New</button>
+        </a>
+    </header>
+
+    <hr>
 
 {% if themes %}
-{% for theme in themes %}
-<div>
-    <h3>{{ theme.name }}</h3>
-    <p>{{ theme.styles }}</p>
-    <a href="{{ url_for('admin.delete_theme', theme_id=theme.id) }}"><button></button>
-</div>
-{% endfor %}
+  <div>
+  {% for theme in themes %}
+    <article class="entry_item">
+      <header>
+        <h3>{{ theme.name }}</h3>
+      </header>
+      <div>
+        <span>{{ theme.styles[:200] }}...</span>
+      </div>
+      <footer>
+        <a href=""><button>Edit</button></a>
+        <a href="{{ url_for('admin.delete_theme', theme_id=theme.id) }}"><button class="">Delete</button></a>
+      </footer>
+    </article>
+  {% endfor %}
+  </div>
 {% endif %}
 
+</section>
 {% endblock %}
