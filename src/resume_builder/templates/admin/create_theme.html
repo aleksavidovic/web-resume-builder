@@ -4,5 +4,29 @@
 
 {% block content %}
 <h1>Create new resume theme</h1>
+<form action="{{ url_for('admin.create_theme') }}" method="POST" novalidate>
+    {{ form.hidden_tag() }}
 
+    <fieldset class="form-section">
+        <legend><h3>Theme Details</h3></legend>
+        <div>
+            {{ form.name.label }}<br>
+            {{ form.name() }}
+            {% for error in form.name.errors %}
+                <br><span class="form-error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.styles.label }}<br>
+            {{ form.styles() }}
+            {% for error in form.styles.errors %}
+                <br><span class="form-error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </fieldset>
+    <fieldset>
+        {{ form.submit() }}
+    </fieldset>
+
+</form>
 {% endblock %}

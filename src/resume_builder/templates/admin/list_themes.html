@@ -3,6 +3,16 @@
 {% block title %}Manage Resume Themes{% endblock %}
 
 {% block content %}
-Manage resume themes.
+
+{% if themes %}
+{% for theme in themes %}
+<div>
+    <h3>{{ theme.name }}</h3>
+    <p>{{ theme.styles }}</p>
+</div>
+{% endfor %}
+{% else %}
+<p>Manage resume themes. Create a theme <a href="{{ url_for('admin.create_theme') }}">here</a>.</p>
+{% endif %}
 
 {% endblock %}
