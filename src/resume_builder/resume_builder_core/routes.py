@@ -43,7 +43,7 @@ def home():
 ##########################
 
 ###########################
-## BASIC INFO: LIST VIEW ##
+## BASIC_INFO: LIST VIEW ##
 ###########################
 
 
@@ -57,7 +57,7 @@ def list_basic_info():
 
 
 ########################
-## BASIC INFO: CREATE ##
+## BASIC_INFO: CREATE ##
 ########################
 
 
@@ -99,7 +99,7 @@ def create_basic_info():
 
 
 #######################
-## BASIC INFO: EDIT  ##
+## BASIC_INFO: EDIT  ##
 #######################
 
 
@@ -141,7 +141,7 @@ def edit_basic_info(info_id):
 
 
 ########################
-## BASIC INFO: DELETE ##
+## BASIC_INFO: DELETE ##
 ########################
 
 
@@ -664,6 +664,7 @@ def build_resume():
             basic_info_id=form.basic_info.data,
             summary_id=form.summary.data,
             user_id=current_user.id,
+            theme_id=form.theme.data,
         )
 
         # Populate many-to-many relationshiop tables
@@ -679,6 +680,7 @@ def build_resume():
         new_resume.languages = Language.query.filter(
             Language.id.in_(form.languages.data)
         ).all()
+        
 
         db.session.add(new_resume)
         db.session.commit()
@@ -810,8 +812,8 @@ h1 {
 @resume_bp.route("/resume/<string:resume_id>/download", methods=["GET"])
 def download_resume(resume_id):
     resume_to_generate = BuiltResume.query.filter_by(id=resume_id, user_id=current_user.id).first_or_404()
-    resume_themes = ResumeTheme.query.filter_by().all()
-    html = render_template("resume_core/build_resume/resume_pdf.html", resume=resume_to_generate, theme=resume_themes[0])
+    resume_theme = resume_to_generate.theme
+    html = render_template("resume_core/build_resume/resume_pdf.html", resume=resume_to_generate, theme=resume_theme)
     pdf = HTML(string=html).write_pdf()
     return Response(
         pdf,
