@@ -5,6 +5,14 @@ from . import admin_bp
 from .forms import ThemeForm
 from ..extensions import db
 
+@admin_bp.route("/")
+def admin_home():
+    return redirect(url_for("admin.dashboard"))
+
+@admin_bp.route("/dashboard")
+def dashboard():
+    return render_template("/admin/dashboard.html")
+
 @admin_bp.route("/list_themes", methods=["GET"])
 def list_themes():
     themes = ResumeTheme.query.all()

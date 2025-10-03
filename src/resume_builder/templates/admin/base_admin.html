@@ -20,7 +20,6 @@
             <nav>
                 <ul class="nav-links">
                     <li><a href="{{ url_for('main.index') }}">Home</a></li>
-                    <li><a href="{{ url_for('main.about') }}">About</a></li>
                     <li><a href="{{ url_for('admin.list_themes') }}">Admin Dashboard</a></li>
                     {% if not current_user.is_authenticated %}
                     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
@@ -36,7 +35,7 @@
     <nav class="admin-nav">
         <div class="container">
             <ul>
-                <li><a href="#">Dashboard</a></li>
+              <li><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
                 <li><a href="#">Users</a></li>
                 <li><a href="#">Content</a></li>
                 <li><a href="{{ url_for('admin.list_themes') }}">Themes</a></li>
