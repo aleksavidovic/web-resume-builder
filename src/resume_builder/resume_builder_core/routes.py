@@ -777,7 +777,8 @@ def delete_resume(resume_id):
 @resume_bp.route("resumes/<string:resume_id>/preview", methods=["GET"])
 def preview_resume(resume_id):
     resume_to_preview = BuiltResume.query.filter_by(id=resume_id, user_id=current_user.id).first_or_404()
-    return render_template("resume_core/build_resume/preview_resume.html", resume=resume_to_preview) 
+    preview_html = render_template("resume_core/build_resume/resume_pdf.html", resume=resume_to_preview, theme=resume_to_preview.theme)
+    return render_template("resume_core/build_resume/preview_resume.html", resume=resume_to_preview, resume_html=preview_html)
 
 
 #####################################
