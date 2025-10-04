@@ -5,8 +5,11 @@
 {% block content %}
 
 <section>
-  {{ resume_html | safe }}
+  <div class="container">
+    {{ resume_html | safe }}
+  </div>
 </section>
-
+<hr>
+<br>
 <a href="{{ url_for('resume.download_resume', resume_id=resume.id) }}"><button>Download as PDF</button></a>
 {% endblock %}
