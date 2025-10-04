@@ -11,7 +11,7 @@ from resume_builder.resume_builder_core.forms import (
     BuildResumeForm
 )
 from . import resume_bp
-from flask import flash, redirect, render_template, url_for, Response
+from flask import flash, redirect, render_template, url_for, Response, request
 from flask_login import login_required, current_user
 from ..models import BasicInfo, BuiltResume, Education, Language, ResumeTheme, Summary, Experience, Skills
 from .. import db
@@ -702,19 +702,52 @@ def build_resume():
 def edit_resume(resume_id):
     resume_to_edit = BuiltResume.query.filter_by(id=resume_id, user_id=current_user.id).first_or_404()
     form = BuildResumeForm()
+    themes = ResumeTheme.query.all()
+
+    # --- Populate choices using STRINGS for the IDs ---
+    form.basic_info.choices = [(str(info.id), info.entry_title) for info in current_user.basic_infos]
+    form.summary.choices = [(str(summary.id), summary.entry_title) for summary in current_user.summaries]
+    form.experience.choices = [(str(exp.id), exp.entry_title) for exp in current_user.experiences]
+    form.education.choices = [(str(edu.id), edu.entry_title) for edu in current_user.education]
+    form.skills.choices = [(str(skill.id), skill.entry_title) for skill in current_user.skills]
+    form.languages.choices = [(str(lang.id), lang.entry_title) for lang in current_user.languages]
+    form.theme.choices = [(str(theme.id), theme.name) for theme in themes]
+
     if form.validate_on_submit():
+        # --- Handle POST Request (This part remains largely the same) ---
         try:
-            form.populate_obj(resume_to_edit)
+            resume_to_edit.entry_title = form.entry_title.data
+            resume_to_edit.basic_info_id = form.basic_info.data
+            resume_to_edit.summary_id = form.summary.data
+            resume_to_edit.theme_id = form.theme.data
+            
+            resume_to_edit.experience = Experience.query.filter(Experience.id.in_(form.experience.data)).all()
+            resume_to_edit.education = Education.query.filter(Education.id.in_(form.education.data)).all()
+            resume_to_edit.skills = Skills.query.filter(Skills.id.in_(form.skills.data)).all()
+            resume_to_edit.languages = Language.query.filter(Language.id.in_(form.languages.data)).all()
+
             db.session.commit()
-            flash("Resume updated.", "success")
+            flash("Resume updated successfully!", "success")
         except Exception as e:
-            flash("Error while updating resume: {}", "danger")
+            db.session.rollback()
+            flash(f"Error while updating resume: {e}", "danger")
         finally:
             return redirect(url_for("resume.list_resume"))
-    form = BuildResumeForm(obj=resume_to_edit)
-    # TODO: Map values and selected status from BuiltResume object
-    return render_template("resume_core/build_resume/edit_resume.html", form=form)
+    
+    # --- Handle GET Request (Populating the form for editing using STRINGS) ---
+    if request.method == 'GET':
+        form.entry_title.data = resume_to_edit.entry_title
+        form.basic_info.data = str(resume_to_edit.basic_info_id)
+        form.summary.data = str(resume_to_edit.summary_id)
+        form.theme.data = str(resume_to_edit.theme_id)
+        
+        # For multi-value fields, set data to a list of STRING IDs
+        form.experience.data = [str(exp.id) for exp in resume_to_edit.experience]
+        form.education.data = [str(edu.id) for edu in resume_to_edit.education]
+        form.skills.data = [str(skill.id) for skill in resume_to_edit.skills]
+        form.languages.data = [str(lang.id) for lang in resume_to_edit.languages]
 
+    return render_template("resume_core/build_resume/edit_resume.html", form=form, resume_id=resume_id)
 
 ####################
 ## RESUME: DELETE ##

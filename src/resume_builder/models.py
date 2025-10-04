@@ -112,6 +112,9 @@ class User(db.Model, UserMixin, TimeStampMixin):
     languages = db.relationship(
         "Language", backref="user", lazy="selectin", cascade="all, delete-orphan"
     )
+    resumes = db.relationship(
+        "BuiltResume", backref="user", lazy="selectin", cascade="all, delete-orphan"
+    )
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

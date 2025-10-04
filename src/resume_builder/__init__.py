@@ -3,7 +3,7 @@ import uuid
 from flask import Flask
 from dotenv import load_dotenv
 from .extensions import db, bcrypt, login_manager, migrate
-from .models import User
+from .models import User, BasicInfo, Summary, Experience, Education, Skills, Language, BuiltResume, ResumeTheme
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 load_dotenv(os.path.join(project_root, '.env'))
@@ -47,4 +47,21 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(resume_bp, url_prefix="/resume")
     app.register_blueprint(admin_bp, url_prefix="/admin")
+
+    @app.shell_context_processor
+    def make_shell_context():
+        """Returns a dictionary of variables to be made available in the shell."""
+        return {
+            "db": db,
+            "User": User,
+            "BasicInfo": BasicInfo,
+            "Summary": Summary,
+            "Experience": Experience,
+            "Education": Education,
+            "Skills": Skills,
+            "Language": Language,
+            "ResumeTheme": ResumeTheme,
+            "BuiltResume": BuiltResume,
+        }
+
     return app
