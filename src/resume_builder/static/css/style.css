@@ -262,6 +262,38 @@ input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:f
 }
 
 /* ----------------------------------------------------------------
+   Checkbox Grid for Build Resume Form
+   ---------------------------------------------------------------- */
+
+.checkbox-grid ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.checkbox-grid li {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+}
+
+.checkbox-grid input[type="checkbox"] {
+    margin-right: 0.75rem;
+    width: auto; /* Override the 100% width from the general form styles */
+}
+
+.checkbox-grid label {
+    font-weight: 500;
+    margin-bottom: 0; /* Override default margin */
+}
+
+/* ----------------------------------------------------------------
    Footer
    ---------------------------------------------------------------- */
 

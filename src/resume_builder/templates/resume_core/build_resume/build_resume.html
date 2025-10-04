@@ -40,34 +40,34 @@
             </div>
             <div>
                 {{ form.experience.label }}<br>
-                {{ form.experience() }}
+                <div class="checkbox-grid">{{ form.experience() }}</div>
                 {% for error in form.experience.errors %}
                     <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
             <div>
                 {{ form.education.label }}<br>
-                {{ form.education() }}
+                <div class="checkbox-grid">{{ form.education() }}</div>
                 {% for error in form.education.errors %}
                     <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
             <div>
                 {{ form.skills.label }}<br>
-                {{ form.skills() }}
+                <div class="checkbox-grid">{{ form.skills() }}</div>
                 {% for error in form.skills.errors %}
                     <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
             <div>
                 {{ form.languages.label }}<br>
-                {{ form.languages() }}
+                <div class="checkbox-grid">{{ form.languages() }}</div>
                 {% for error in form.languages.errors %}
                     <br><span class="form-error-text">{{ error }}</span>
                 {% endfor %}
             </div>
         </fieldset>
-        
+
         <fieldset class="form-section">
             <legend><h3>Choose a theme</h3></legend>
             <div>
