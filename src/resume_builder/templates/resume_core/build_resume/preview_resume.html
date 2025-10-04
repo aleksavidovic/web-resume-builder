@@ -47,4 +47,6 @@
 {% endfor %}
     </pre>
 </section>
+
+<a href="{{ url_for('resume.download_resume', resume_id=resume.id) }}"><button>Download as PDF</button></a>
 {% endblock %}

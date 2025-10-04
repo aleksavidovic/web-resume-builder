@@ -692,6 +692,30 @@ def build_resume():
                            form=form)
 
 
+###############################
+## RESUME BUILD: EDIT RESUME ##
+###############################
+
+
+@login_required
+@resume_bp.route("/resumes/<string:resume_id>/edit", methods=["GET", "POST"])
+def edit_resume(resume_id):
+    resume_to_edit = BuiltResume.query.filter_by(id=resume_id, user_id=current_user.id).first_or_404()
+    form = BuildResumeForm()
+    if form.validate_on_submit():
+        try:
+            form.populate_obj(resume_to_edit)
+            db.session.commit()
+            flash("Resume updated.", "success")
+        except Exception as e:
+            flash("Error while updating resume: {}", "danger")
+        finally:
+            return redirect(url_for("resume.list_resume"))
+    form = BuildResumeForm(obj=resume_to_edit)
+    # TODO: Map values and selected status from BuiltResume object
+    return render_template("resume_core/build_resume/edit_resume.html", form=form)
+
+
 ####################
 ## RESUME: DELETE ##
 ####################

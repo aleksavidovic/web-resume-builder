@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Edit a Resume{% endblock %}
+
+{% block content %}
+<section>
+  <h2>Edit a Resume: {{ form.entry_title.data }}</h2>
+  <p>Select the sections you want to include in your new resume.</p>
+  <hr>
+
+  <form method="POST" action="{{ url_for('resume.build_resume') }}" novalidate>
+    {{ form.hidden_tag() }}
+
+    <fieldset class="form-section">
+      <legend><h3>Resume Details</h3></legend>
+      <div>
+        {{ form.entry_title.label }}<br>
+        {{ form.entry_title(size=50) }}
+        {% for error in form.entry_title.errors %}
+          <br><span class="form-error-text">{{ error }}</span>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <fieldset class="form-section">
+      <legend><h3>Select Sections</h3></legend>
+      <div>
+        {{ form.basic_info.label }}<br>
+        {{ form.basic_info() }}
+        {% for error in form.basic_info.errors %}
+          <br><span class="form-error-text">{{ error }}</span>
+        {% endfor %}
+      </div>
+      <div>
+        {{ form.summary.label }}<br>
+        {{ form.summary() }}
+        {% for error in form.summary.errors %}
+          <br><span class="form-error-text">{{ error }}</span>
+        {% endfor %}
+      </div>
+      <div>
+        {{ form.experience.label }}<br>
+        <div class="checkbox-grid">{{ form.experience() }}</div>
+        {% for error in form.experience.errors %}
+          <br><span class="form-error-text">{{ error }}</span>
+        {% endfor %}
+      </div>
+      <div>
+          {{ form.education.label }}<br>
+          <div class="checkbox-grid">{{ form.education() }}</div>
+          {% for error in form.education.errors %}
+              <br><span class="form-error-text">{{ error }}</span>
+          {% endfor %}
+      </div>
+      <div>
+          {{ form.skills.label }}<br>
+          <div class="checkbox-grid">{{ form.skills() }}</div>
+          {% for error in form.skills.errors %}
+              <br><span class="form-error-text">{{ error }}</span>
+          {% endfor %}
+      </div>
+      <div>
+          {{ form.languages.label }}<br>
+          <div class="checkbox-grid">{{ form.languages() }}</div>
+          {% for error in form.languages.errors %}
+              <br><span class="form-error-text">{{ error }}</span>
+          {% endfor %}
+      </div>
+    </fieldset>
+
+    <fieldset class="form-section">
+      <legend><h3>Choose a theme</h3></legend>
+      <div>
+        {{ form.theme.label }}<br>
+        {{ form.theme() }}
+        {% for error in form.theme.errors %}
+          <br><span class="form-error-text">{{ error }}</span>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <div>
+        {{ form.submit(value="Update Resume") }}
+    </div>
+  </form>
+</section>
+{% endblock %}

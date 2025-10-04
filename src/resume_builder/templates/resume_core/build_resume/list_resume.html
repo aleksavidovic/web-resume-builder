@@ -28,8 +28,8 @@
 
 
           <footer>
-            <a href="{{ url_for('resume.preview_resume', resume_id=resume.id) }}"><button>Preview</button></a>
-            <a href="{{ url_for('resume.download_resume', resume_id=resume.id) }}"><button>Download PDF</button></a>
+            <a href="{{ url_for('resume.edit_resume', resume_id=resume.id) }}"><button>Edit</button></a>
+            <a href="{{ url_for('resume.preview_resume', resume_id=resume.id) }}"><button>Preview & Download</button></a>
             <a href="{{ url_for('resume.delete_resume', resume_id=resume.id) }}"><button>Delete</button></a>
           </footer>
         </article>
