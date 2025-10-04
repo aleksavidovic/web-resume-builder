@@ -58,7 +58,7 @@ class TimeStampMixin:
 
 
 class EntryTitleMixin:
-    entry_title = db.Column(db.String(50), nullable=False)
+    entry_title = db.Column(db.String(255), nullable=False)
 
 # Association Tables
 built_resume_experience = Table(
@@ -91,7 +91,7 @@ built_resume_language = Table(
 
 class User(db.Model, UserMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    username = db.Column(db.String(30), unique=True, nullable=False)
+    username = db.Column(db.String(70), unique=True, nullable=False)
     password_hash = db.Column(db.String(300), nullable=False)
 
     basic_infos = db.relationship(
@@ -125,13 +125,13 @@ class User(db.Model, UserMixin, TimeStampMixin):
 
 class BasicInfo(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    full_name = db.Column(db.String(50), nullable=False)
-    job_title = db.Column(db.String(50), nullable=False)
-    address = db.Column(db.String(50), nullable=False)
-    contact_email = db.Column(db.String(30), nullable=False)
-    contact_phone = db.Column(db.String(30), nullable=False)
-    linkedin_url = db.Column(db.String(100), nullable=True)
-    github_url = db.Column(db.String(100), nullable=True)
+    full_name = db.Column(db.String(100), nullable=False)
+    job_title = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(255), nullable=False)
+    contact_email = db.Column(db.String(255), nullable=False)
+    contact_phone = db.Column(db.String(50), nullable=False)
+    linkedin_url = db.Column(db.String(255), nullable=True)
+    github_url = db.Column(db.String(255), nullable=True)
 
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
 
@@ -168,8 +168,8 @@ class Experience(db.Model, EntryTitleMixin, TimeStampMixin):
 
 class Education(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    degree_name = db.Column(db.String(50), nullable=False)
-    school_name = db.Column(db.String(50), nullable=False)
+    degree_name = db.Column(db.String(255), nullable=False)
+    school_name = db.Column(db.String(255), nullable=False)
     date_started = db.Column(db.Date, nullable=False)
     date_finished = db.Column(db.Date, nullable=True)
 
@@ -182,6 +182,7 @@ class Education(db.Model, EntryTitleMixin, TimeStampMixin):
 
 class Skills(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
+    skill_group_title = db.Column(db.String(128))
     description = db.Column(db.Text, nullable=False)
 
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
@@ -193,8 +194,8 @@ class Skills(db.Model, EntryTitleMixin, TimeStampMixin):
 
 class Language(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    name = db.Column(db.String(30), nullable=False)
-    proficiency = db.Column(db.String(30), nullable=False)
+    name = db.Column(db.String(128), nullable=False)
+    proficiency = db.Column(db.String(128), nullable=False)
 
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
 
@@ -204,9 +205,10 @@ class Language(db.Model, EntryTitleMixin, TimeStampMixin):
 
 class ResumeTheme(db.Model, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    name = db.Column(db.String(40), unique=True, nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+    description = db.Column(db.String(200), nullable=True)
     styles = db.Column(db.Text, nullable=False)
-    
+
 
 class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)

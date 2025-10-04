@@ -11,12 +11,12 @@ def admin_home():
 
 @admin_bp.route("/dashboard")
 def dashboard():
-    return render_template("/admin/dashboard.html")
+    return render_template("/admin/dashboard/dashboard.html")
 
 @admin_bp.route("/list_themes", methods=["GET"])
 def list_themes():
     themes = ResumeTheme.query.all()
-    return render_template("/admin/list_themes.html", themes=themes)
+    return render_template("/admin/themes/list_themes.html", themes=themes)
 
 
 @admin_bp.route("/create_theme", methods=["GET", "POST"])
@@ -33,7 +33,24 @@ def create_theme():
             flash(f"Error while adding new theme: {e}.", "danger")
         finally:
             return redirect(url_for("admin.list_themes"))
-    return render_template("/admin/create_theme.html", form=form)
+    return render_template("/admin/themes/create_theme.html", form=form)
+
+
+@admin_bp.route("/themes/<string:theme_id>/edit", methods=["GET", "POST"])
+def edit_theme(theme_id):
+    theme_to_edit = ResumeTheme.query.filter_by(id=theme_id).first_or_404()
+    form = ThemeForm(obj=theme_to_edit)
+    if form.validate_on_submit():
+        try:
+            form.populate_obj(theme_to_edit)
+            db.session.commit()
+            flash("Theme updated.", "success")
+        except Exception as e:
+            flash(f"Error while editing theme: {e}.", "danger")
+        finally:
+            return redirect(url_for("admin.list_themes"))
+    return render_template("/admin/themes/edit_theme.html", form=form, theme_id=theme_id)
+
 
 @admin_bp.route("/themes/<string:theme_id>/delete", methods=["GET"])
 def delete_theme(theme_id):

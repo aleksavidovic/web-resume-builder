@@ -23,11 +23,13 @@
       <header>
         <h3>{{ theme.name }}</h3>
       </header>
-      <div>
-        <span>{{ theme.styles[:200] }}...</span>
-      </div>
+      {% if theme.description %}
+        <div>
+          <span>{{ theme.description }}</span>
+        </div>
+      {% endif %}
       <footer>
-        <a href=""><button>Edit</button></a>
+        <a href="{{ url_for('admin.edit_theme', theme_id=theme.id) }}"><button>Edit</button></a>
         <a href="{{ url_for('admin.delete_theme', theme_id=theme.id) }}"><button class="">Delete</button></a>
       </footer>
     </article>

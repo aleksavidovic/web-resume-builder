@@ -1,10 +1,11 @@
+
 {% extends "admin/base_admin.html" %}
 
-{% block title %}Create Resume Theme{% endblock %}
+{% block title %}Edit Resume Theme{% endblock %}
 
 {% block content %}
-<h1>Create new resume theme</h1>
-<form action="{{ url_for('admin.create_theme') }}" method="POST" novalidate>
+<h1>Edit theme: {{form.name.data}}</h1>
+<form action="{{ url_for('admin.edit_theme', theme_id=theme_id) }}" method="POST" novalidate>
     {{ form.hidden_tag() }}
 
     <fieldset class="form-section">
@@ -17,6 +18,13 @@
             {% endfor %}
         </div>
         <div>
+            {{ form.description.label }}<br>
+            {{ form.description() }}
+            {% for error in form.description.errors %}
+                <br><span class="form-error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
             {{ form.styles.label }}<br>
             {{ form.styles() }}
             {% for error in form.styles.errors %}
@@ -24,8 +32,9 @@
             {% endfor %}
         </div>
     </fieldset>
-    <fieldset>
-        {{ form.submit() }}
+    <fieldset class="form-section">
+      {{ form.submit(value="Update Theme") }}
+      <a href="{{ url_for('admin.list_themes') }}"><button>Cancel</button></a>  
     </fieldset>
 
 </form>
