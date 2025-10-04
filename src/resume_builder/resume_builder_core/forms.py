@@ -1,7 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import DateField, SelectField, StringField, SubmitField, TextAreaField, SelectMultipleField
+from wtforms import DateField, SelectField, StringField, SubmitField, TextAreaField, SelectMultipleField, widgets
 from wtforms.validators import DataRequired, Email, Length, Optional
 
+class MutiCheckboxField(SelectMultipleField):
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
 
 class BasicInfoForm(FlaskForm):
     entry_title = StringField(
@@ -90,10 +93,10 @@ class BuildResumeForm(FlaskForm):
     basic_info = SelectField("Basic Info", validators=[DataRequired()])
     summary = SelectField("Summary", validators=[DataRequired()])
     theme = SelectField("Theme", validators=[DataRequired()])
-    experience = SelectMultipleField("Experience", validators=[DataRequired()])
-    education = SelectMultipleField("Education", validators=[DataRequired()])
-    skills = SelectMultipleField("Skills", validators=[DataRequired()])
-    languages = SelectMultipleField("Languages", validators=[DataRequired()])
+    experience = MutiCheckboxField("Experience", validators=[DataRequired()])
+    education = MutiCheckboxField("Education", validators=[DataRequired()])
+    skills = MutiCheckboxField("Skills", validators=[DataRequired()])
+    languages = MutiCheckboxField("Languages", validators=[DataRequired()])
 
     
     submit = SubmitField("Generate Resume")
