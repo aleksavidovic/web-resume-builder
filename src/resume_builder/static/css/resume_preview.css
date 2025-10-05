@@ -1,0 +1,30 @@
+/* ----------------------------------------------------------------
+   Resume Preview Page
+   ---------------------------------------------------------------- */
+
+.resume-preview-section .preview-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.resume-preview-container {
+    background-color: var(--secondary-color); /* A neutral backdrop */
+    padding: 2rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+}
+
+.resume-paper {
+    background-color: #ffffff;
+    width: 210mm; /* A4 width */
+    height: 297mm; /* A4 height */
+    padding: 1in;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    overflow: hidden; /* Hide anything that overflows the "paper" */
+}
+
+.preview-actions {
+    text-align: center;
+    margin-top: 2rem;
+}

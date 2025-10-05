@@ -2,14 +2,26 @@
 
 {% block title %}Resume Preview{% endblock %}
 
-{% block content %}
+{% block header %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/resume_preview.css') }}">
+{% endblock %}
 
-<section>
-  <div class="container">
-    {{ resume_html | safe }}
-  </div>
+{% block content %}
+<section class="resume-preview-section">
+    <header class="preview-header">
+        <h2>Preview: {{ resume.entry_title }}</h2>
+        <p>This is how your resume will look. You can download it as a PDF or go back to edit it.</p>
+    </header>
+
+    <div class="resume-preview-container">
+        <div class="resume-paper">
+            {{ resume_html | safe }}
+        </div>
+    </div>
+
+    <div class="preview-actions">
+        <a href="{{ url_for('resume.download_resume', resume_id=resume.id) }}" class="button-primary"><button>Download as PDF</button></a>
+        <a href="{{ url_for('resume.edit_resume', resume_id=resume.id) }}" class="button-secondary"><button>Edit Resume</button></a>
+    </div>
 </section>
-<hr>
-<br>
-<a href="{{ url_for('resume.download_resume', resume_id=resume.id) }}"><button>Download as PDF</button></a>
 {% endblock %}
