@@ -193,11 +193,8 @@ def create_summary():
     form = SummaryForm()
     if form.validate_on_submit():
         try:
-            entry_title = form.entry_title.data
-            content = form.content.data
-            new_summary = Summary(
-                entry_title=entry_title, content=content, user_id=current_user.id
-            )
+            new_summary = Summary()
+            form.populate_obj(new_summary)
             db.session.add(new_summary)
             db.session.commit()
             flash("New Summary created.", "success")
