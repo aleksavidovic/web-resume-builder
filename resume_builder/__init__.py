@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from .extensions import db, bcrypt, login_manager, migrate
 from .models import User, BasicInfo, Summary, Experience, Education, Skills, Language, BuiltResume, ResumeTheme
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 load_dotenv(os.path.join(project_root, '.env'))
 
 def create_app():
@@ -14,13 +14,11 @@ def create_app():
                 instance_path=instance_path,
                 template_folder="templates", 
                 static_folder="static")
-    app.config["SECRET_KEY"] = os.getenv(
-        "SECRET_KEY", "ASDAJSDOIASJDOAJOISADOASJDOASIDJASODJ"
-    )
+    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
         "SQLALCHEMY_DATABASE_URI", "sqlite:///resume_builder.db"
     )
-    app.config["SQLALCHEMY_ECHO"] = True
+    app.config["SQLALCHEMY_ECHO"] = os.getenv("SQLALCHEMY_ECHO", False)
     from .main import main_bp
     from .auth import auth_bp
     from .resume_builder_core import resume_bp
