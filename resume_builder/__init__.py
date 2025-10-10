@@ -6,7 +6,8 @@ from .extensions import db, bcrypt, login_manager, migrate
 from .models import User, BasicInfo, Summary, Experience, Education, Skills, Language, BuiltResume, ResumeTheme
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-load_dotenv(os.path.join(project_root, '.env'))
+# load_dotenv(join(project_root, '.env'))
+load_dotenv()
 
 def create_app():
     instance_path = os.path.join(project_root, 'instance')
