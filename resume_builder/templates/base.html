@@ -24,7 +24,9 @@
                     <li><a href="{{ url_for('resume.home') }}">Resume Data</a></li>
                     <li><a href="{{ url_for('resume.list_resume') }}">My Resumes</a></li>
                     {% endif %}
+                    {% if current_user.is_admin %}
                     <li><a href="{{ url_for('admin.list_themes') }}">Admin Dashboard</a></li>
+                    {% endif %}
                     {% if not current_user.is_authenticated %}
                     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
                     <li><a href="{{ url_for('auth.login') }}">Login</a></li>
