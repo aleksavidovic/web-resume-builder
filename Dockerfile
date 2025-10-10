@@ -51,6 +51,13 @@ COPY --from=builder /app/requirements.txt .
 
 # Install Python dependencies using uv pip sync for maximum speed
 RUN uv pip sync --system --no-cache requirements.txt
+#
+# Create a cache directory and set ownership for the app user
+RUN mkdir -p /home/app/.cache/fontconfig && \
+    chown -R app:app /home/app
+
+# Set the HOME environment variable so fontconfig knows where to look
+ENV HOME=/home/app
 
 # Copy the rest of the application code
 COPY ./resume_builder ./resume_builder
