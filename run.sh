@@ -1,1 +1,1 @@
-uv run gunicorn -b localhost:8080 wsgi:app --reload
+uv run gunicorn -b 0.0.0.0:8000 wsgi:app --reload
