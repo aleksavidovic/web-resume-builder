@@ -62,6 +62,7 @@ ENV HOME=/home/app
 # Copy the rest of the application code
 COPY ./resume_builder ./resume_builder
 COPY wsgi.py .
+COPY manage.py .
 COPY entrypoint.sh .
 COPY ./migrations ./migrations
 
