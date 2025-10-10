@@ -93,7 +93,7 @@ class User(db.Model, UserMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
     username = db.Column(db.String(70), unique=True, nullable=False)
     password_hash = db.Column(db.String(300), nullable=False)
-
+    is_admin = db.Column(db.Boolean, nullable=False, default=False) 
     basic_infos = db.relationship(
         "BasicInfo", backref="user", lazy="selectin", cascade="all, delete-orphan"
     )
