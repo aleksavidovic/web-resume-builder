@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./src/resume_builder ./resume_builder
+COPY ./resume_builder ./resume_builder
 COPY wsgi.py .
 COPY entrypoint.sh .
 COPY ./migrations ./migrations
