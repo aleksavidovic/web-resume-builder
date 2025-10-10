@@ -32,7 +32,7 @@
     <section>
         <div class="section-title">Experience</div>
         <div class="section-content">
-            {% for exp in resume.experience %}
+            {% for exp in resume.experience|sort(attribute='date_started', reverse=True) %}
             <div class="entry">
                 <div class="entry-header">{{ exp.job_title }} at {{ exp.company_name }}</div>
                 <div class="entry-subheader">{{ exp.date_started.strftime('%B %Y') }} – {{ exp.date_finished.strftime('%B %Y') if exp.date_finished else 'Present' }}</div>

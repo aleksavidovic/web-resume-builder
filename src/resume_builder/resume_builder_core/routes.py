@@ -668,7 +668,7 @@ def build_resume():
         # Populate many-to-many relationshiop tables
         new_resume.experience = Experience.query.filter(
             Experience.id.in_(form.experience.data)
-        ).order_by(Experience.date_started.desc()).all()
+        ).all()
         new_resume.education = Education.query.filter(
             Education.id.in_(form.education.data)
         ).all()
@@ -719,7 +719,7 @@ def edit_resume(resume_id):
             resume_to_edit.summary_id = form.summary.data
             resume_to_edit.theme_id = form.theme.data
             
-            resume_to_edit.experience = Experience.query.filter(Experience.id.in_(form.experience.data)).order_by(Experience.date_started.desc()).all()
+            resume_to_edit.experience = Experience.query.filter(Experience.id.in_(form.experience.data)).all()
             resume_to_edit.education = Education.query.filter(Education.id.in_(form.education.data)).all()
             resume_to_edit.skills = Skills.query.filter(Skills.id.in_(form.skills.data)).all()
             resume_to_edit.languages = Language.query.filter(Language.id.in_(form.languages.data)).all()
