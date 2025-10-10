@@ -1,7 +1,7 @@
 import uuid
 
 from weasyprint import HTML
-from resume_builder.resume_builder_core.forms import (
+from .forms import (
     BasicInfoForm,
     EducationForm,
     ExperienceForm,
@@ -195,6 +195,7 @@ def create_summary():
         try:
             new_summary = Summary()
             form.populate_obj(new_summary)
+            new_summary.user_id = current_user.id
             db.session.add(new_summary)
             db.session.commit()
             flash("New Summary created.", "success")
@@ -299,7 +300,7 @@ def create_experience():
     if form.validate_on_submit():
         print("Form submitted for validation")
         try:
-            from resume_builder.resume_builder_core.html_utils import render_markdown
+            from .html_utils import render_markdown
             new_experience = Experience()
             form.populate_obj(new_experience)
             new_experience.description = render_markdown(form.description.data)
@@ -667,7 +668,7 @@ def build_resume():
         # Populate many-to-many relationshiop tables
         new_resume.experience = Experience.query.filter(
             Experience.id.in_(form.experience.data)
-        ).all()
+        ).order_by(Experience.date_started.desc()).all()
         new_resume.education = Education.query.filter(
             Education.id.in_(form.education.data)
         ).all()
@@ -718,7 +719,7 @@ def edit_resume(resume_id):
             resume_to_edit.summary_id = form.summary.data
             resume_to_edit.theme_id = form.theme.data
             
-            resume_to_edit.experience = Experience.query.filter(Experience.id.in_(form.experience.data)).all()
+            resume_to_edit.experience = Experience.query.filter(Experience.id.in_(form.experience.data)).order_by(Experience.date_started.desc()).all()
             resume_to_edit.education = Education.query.filter(Education.id.in_(form.education.data)).all()
             resume_to_edit.skills = Skills.query.filter(Skills.id.in_(form.skills.data)).all()
             resume_to_edit.languages = Language.query.filter(Language.id.in_(form.languages.data)).all()

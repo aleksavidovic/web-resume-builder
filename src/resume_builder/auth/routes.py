@@ -1,4 +1,4 @@
-from resume_builder.auth.forms import LoginForm
+from .forms import LoginForm
 from . import auth_bp
 from flask import render_template, url_for, redirect, flash
 from flask_login import current_user, login_required, login_user, logout_user

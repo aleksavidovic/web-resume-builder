@@ -168,6 +168,10 @@ class Experience(db.Model, EntryTitleMixin, TimeStampMixin):
         db.UniqueConstraint("user_id", "entry_title", name="_user_experience_title_uc"),
     )
 
+    def __repr__(self):
+        return f"Experience('{self.company_name} | {self.date_started} | {self.date_finished}')"
+
+
 
 class Education(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
