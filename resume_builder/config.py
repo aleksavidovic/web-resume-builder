@@ -9,6 +9,7 @@ class Config:
     }
     TESTING = False
     SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI", "sqlite:///resume_builder.db")
+    SQLALCHEMY_ECHO = os.getenv("SQLALCHEMY_ECHO", False)
     SECRET_KEY = os.getenv("SECRET_KEY")
     if not SECRET_KEY:
         raise ConfigMissingSecretKey
@@ -19,6 +20,7 @@ class ProductionConfig(Config):
     FEATURE_FLAGS.update({
         "registration_enabled": False
     })
+    SQLALCHEMY_ECHO = False
     FLASK_DEBUG = False
 
 
