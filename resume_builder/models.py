@@ -95,9 +95,11 @@ class InviteCode(db.Model, TimeStampMixin):
     code = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
     redeemed = db.Column(db.Boolean, nullable=False, default=False)
+    user_id = db.Column(GUID(), db.ForeignKey("user.id"), unique=True, nullable=True)
+    user = db.relationship('User', back_populates="redeemed_code")
 
     def __repr__(self):
-        return f"InviteCode:\nCode:\'{self.code}\'\nDesc: \'{self.description}\'"
+        return f"InviteCode:\nCode:\'{self.code}\'\nDesc: \'{self.description}\'\nReedemed: {'Yes' if self.redeemed else 'No'}\nUser: {self.user}"
 
 class User(db.Model, UserMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
@@ -124,6 +126,9 @@ class User(db.Model, UserMixin, TimeStampMixin):
     )
     resumes = db.relationship(
         "BuiltResume", backref="user", lazy="selectin", cascade="all, delete-orphan"
+    )
+    redeemed_code = db.relationship(
+        "InviteCode", back_populates="user", uselist=False
     )
 
     def set_password(self, password):
