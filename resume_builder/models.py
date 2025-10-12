@@ -90,22 +90,24 @@ built_resume_language = Table(
     Column("language_id", GUID(), ForeignKey("language.id"), primary_key=True),
 )
 
+
 class InviteCode(db.Model, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
     code = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
     redeemed = db.Column(db.Boolean, nullable=False, default=False)
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), unique=True, nullable=True)
-    user = db.relationship('User', back_populates="redeemed_code")
+    user = db.relationship("User", back_populates="redeemed_code")
 
     def __repr__(self):
-        return f"InviteCode:\nCode:\'{self.code}\'\nDesc: \'{self.description}\'\nReedemed: {'Yes' if self.redeemed else 'No'}\nUser: {self.user}"
+        return f"InviteCode:\nCode:'{self.code}'\nDesc: '{self.description}'\nReedemed: {'Yes' if self.redeemed else 'No'}\nUser: {self.user}"
+
 
 class User(db.Model, UserMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
     username = db.Column(db.String(70), unique=True, nullable=False)
     password_hash = db.Column(db.String(300), nullable=False)
-    is_admin = db.Column(db.Boolean, nullable=False, default=False) 
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)
     basic_infos = db.relationship(
         "BasicInfo", backref="user", lazy="selectin", cascade="all, delete-orphan"
     )
@@ -127,9 +129,7 @@ class User(db.Model, UserMixin, TimeStampMixin):
     resumes = db.relationship(
         "BuiltResume", backref="user", lazy="selectin", cascade="all, delete-orphan"
     )
-    redeemed_code = db.relationship(
-        "InviteCode", back_populates="user", uselist=False
-    )
+    redeemed_code = db.relationship("InviteCode", back_populates="user", uselist=False)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -187,7 +187,6 @@ class Experience(db.Model, EntryTitleMixin, TimeStampMixin):
         return f"Experience('{self.company_name} | {self.date_started} | {self.date_finished}')"
 
 
-
 class Education(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
     degree_name = db.Column(db.String(255), nullable=False)
@@ -225,6 +224,7 @@ class Language(db.Model, EntryTitleMixin, TimeStampMixin):
         db.UniqueConstraint("user_id", "entry_title", name="_user_language_title_uc"),
     )
 
+
 class ResumeTheme(db.Model, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String(50), unique=True, nullable=False)
@@ -235,7 +235,7 @@ class ResumeTheme(db.Model, TimeStampMixin):
 class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
 
-    basic_info_id = db.Column(GUID(), db.ForeignKey("basic_info.id"), nullable=False) 
+    basic_info_id = db.Column(GUID(), db.ForeignKey("basic_info.id"), nullable=False)
     summary_id = db.Column(GUID(), db.ForeignKey("summary.id"), nullable=False)
     theme_id = db.Column(GUID(), db.ForeignKey("resume_theme.id"), nullable=False)
 
@@ -256,10 +256,10 @@ class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
         "Language", secondary=built_resume_language, backref="built_resume"
     )
 
-
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
 
     __table_args__ = (
-        db.UniqueConstraint("user_id", "entry_title", name="_user_built_resumes_title_uc"),
+        db.UniqueConstraint(
+            "user_id", "entry_title", name="_user_built_resumes_title_uc"
+        ),
     )
-

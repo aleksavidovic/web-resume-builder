@@ -1,10 +1,20 @@
 from flask_wtf import FlaskForm
-from wtforms import DateField, SelectField, StringField, SubmitField, TextAreaField, SelectMultipleField, widgets
+from wtforms import (
+    DateField,
+    SelectField,
+    StringField,
+    SubmitField,
+    TextAreaField,
+    SelectMultipleField,
+    widgets,
+)
 from wtforms.validators import DataRequired, Email, Length, Optional
+
 
 class MutiCheckboxField(SelectMultipleField):
     widget = widgets.ListWidget(prefix_label=False)
     option_widget = widgets.CheckboxInput()
+
 
 class BasicInfoForm(FlaskForm):
     entry_title = StringField(
@@ -46,7 +56,9 @@ class ExperienceForm(FlaskForm):
     )
     date_started = DateField("Date Started", validators=[DataRequired()])
     date_finished = DateField("Date Finished", validators=[Optional()])
-    description = TextAreaField("Description", validators=[Optional(), Length(max=2000)])
+    description = TextAreaField(
+        "Description", validators=[Optional(), Length(max=2000)]
+    )
     submit = SubmitField("Save Experience")
 
 
@@ -63,7 +75,7 @@ class EducationForm(FlaskForm):
     date_started = DateField("Date Started", validators=[DataRequired()])
     date_finished = DateField("Date Finished", validators=[Optional()])
     submit = SubmitField("Save Education")
-    
+
 
 class SkillsForm(FlaskForm):
     entry_title = StringField(
@@ -74,18 +86,18 @@ class SkillsForm(FlaskForm):
     )
     submit = SubmitField("Save Skills")
 
+
 class LanguageForm(FlaskForm):
     entry_title = StringField(
         "Entry Title", validators=[DataRequired(), Length(max=50)]
     )
-    name = StringField(
-        "Name", validators=[DataRequired(), Length(max=30)]
-    )
+    name = StringField("Name", validators=[DataRequired(), Length(max=30)])
     proficiency = StringField(
         "Proficiency", validators=[DataRequired(), Length(max=30)]
     )
     submit = SubmitField("Save Skills")
-    
+
+
 class BuildResumeForm(FlaskForm):
     entry_title = StringField(
         "Entry Title", validators=[DataRequired(), Length(max=50)]
@@ -98,5 +110,4 @@ class BuildResumeForm(FlaskForm):
     skills = MutiCheckboxField("Skills", validators=[DataRequired()])
     languages = MutiCheckboxField("Languages", validators=[DataRequired()])
 
-    
     submit = SubmitField("Generate Resume")

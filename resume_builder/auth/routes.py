@@ -11,7 +11,7 @@ from .. import db
 def register():
     if not current_app.config["FEATURE_FLAGS"]["registration_enabled"]:
         flash("Registration is currently disabled.", "danger")
-        return redirect(url_for('main.index'))
+        return redirect(url_for("main.index"))
     if current_user.is_authenticated:
         return redirect(url_for("main.home"))
     form = RegistrationForm()
@@ -33,7 +33,7 @@ def register():
 def register_with_invite_code():
     if not current_app.config["FEATURE_FLAGS"]["register_with_invite_code"]:
         flash("Registration with Invite Code is currently disabled.", "danger")
-        return redirect(url_for('main.index'))
+        return redirect(url_for("main.index"))
     if current_user.is_authenticated:
         return redirect(url_for("main.home"))
     form = RegistrationWithInviteCodeForm()
@@ -49,7 +49,11 @@ def register_with_invite_code():
         db.session.commit()
         flash("Your account has been created! You are now able to log in", "success")
         return redirect(url_for("auth.login"))
-    return render_template("auth/register_with_invite_code.html", title="Register using Invitation Code", form=form)
+    return render_template(
+        "auth/register_with_invite_code.html",
+        title="Register using Invitation Code",
+        form=form,
+    )
 
 
 @auth_bp.route("/login", methods=["GET", "POST"])

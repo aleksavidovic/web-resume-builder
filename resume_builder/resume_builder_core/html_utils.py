@@ -12,12 +12,11 @@ ALLOWED_ATTRIBUTES = {
     "pre": ["class"],
 }
 
+
 def render_markdown(raw_text):
     html = markdown.markdown(
         raw_text,
-        extensions=["fenced_code", "codehilite"]  # Highlighting enabled
+        extensions=["fenced_code", "codehilite"],  # Highlighting enabled
     )
     clean_html = bleach.clean(html, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRIBUTES)
     return bleach.linkify(clean_html)
-
-

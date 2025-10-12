@@ -3,19 +3,20 @@ from flask import flash, render_template, url_for, redirect
 from flask_login import current_user, login_required
 
 from ..models import ResumeTheme
-from . import admin_bp 
+from . import admin_bp
 from .forms import ThemeForm
 from ..extensions import db
+
 
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated or not current_user.is_admin:
             flash("The requested page is accessible only to administrator.")
-            return redirect(url_for('main.index'))
+            return redirect(url_for("main.index"))
         return f(*args, **kwargs)
-    return decorated_function
 
+    return decorated_function
 
 
 @admin_bp.route("/")
@@ -24,11 +25,13 @@ def admin_required(f):
 def admin_home():
     return redirect(url_for("admin.dashboard"))
 
+
 @admin_bp.route("/dashboard")
 @login_required
 @admin_required
 def dashboard():
     return render_template("/admin/dashboard/dashboard.html")
+
 
 @admin_bp.route("/list_themes", methods=["GET"])
 @login_required
@@ -44,7 +47,7 @@ def list_themes():
 def create_theme():
     form = ThemeForm()
     if form.validate_on_submit():
-        try: 
+        try:
             new_theme = ResumeTheme()
             form.populate_obj(new_theme)
             db.session.add(new_theme)
@@ -72,7 +75,9 @@ def edit_theme(theme_id):
             flash(f"Error while editing theme: {e}.", "danger")
         finally:
             return redirect(url_for("admin.list_themes"))
-    return render_template("/admin/themes/edit_theme.html", form=form, theme_id=theme_id)
+    return render_template(
+        "/admin/themes/edit_theme.html", form=form, theme_id=theme_id
+    )
 
 
 @admin_bp.route("/themes/<string:theme_id>/delete", methods=["GET"])
@@ -87,4 +92,4 @@ def delete_theme(theme_id):
     except Exception as e:
         flash(f"Error while deleting theme: {e}.", "success")
     finally:
-        return redirect(url_for('admin.list_themes'))
+        return redirect(url_for("admin.list_themes"))
