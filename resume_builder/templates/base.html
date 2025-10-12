@@ -31,6 +31,9 @@
                     {% if features.registration_enabled %}
                     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
                     {% endif %}
+                    {% if features.register_with_invite_code %}
+                    <li><a href="{{ url_for('auth.register_with_invite_code') }}">Register with Invitation Code</a></li>
+                    {% endif %}
                     <li><a href="{{ url_for('auth.login') }}">Login</a></li>
                     {% else %}
                     <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>

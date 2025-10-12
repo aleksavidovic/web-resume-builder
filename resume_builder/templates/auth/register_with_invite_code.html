@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="POST" action="{{ url_for('auth.register_with_invite_code') }}">
+{{ form.hidden_tag() }}
+<p>{{ form.invite_code.label }}<br>{{ form.invite_code }}</p>
+<p>{{ form.username.label }}<br>{{ form.username }}</p>
+<p>{{ form.password.label }}<br>{{ form.password }}</p>
+<p>{{ form.confirm_password.label }}<br>{{ form.confirm_password }}</p>
+<p>{{ form.submit }}</p>
+</form>
+{% endblock %}

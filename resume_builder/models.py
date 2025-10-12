@@ -60,6 +60,7 @@ class TimeStampMixin:
 class EntryTitleMixin:
     entry_title = db.Column(db.String(255), nullable=False)
 
+
 # Association Tables
 built_resume_experience = Table(
     "built_resume_experience",
@@ -88,6 +89,15 @@ built_resume_language = Table(
     Column("built_resume_id", GUID(), ForeignKey("built_resume.id"), primary_key=True),
     Column("language_id", GUID(), ForeignKey("language.id"), primary_key=True),
 )
+
+class InviteCode(db.Model, TimeStampMixin):
+    id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
+    code = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    redeemed = db.Column(db.Boolean, nullable=False, default=False)
+
+    def __repr__(self):
+        return f"InviteCode:\nCode:\'{self.code}\'\nDesc: \'{self.description}\'"
 
 class User(db.Model, UserMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)

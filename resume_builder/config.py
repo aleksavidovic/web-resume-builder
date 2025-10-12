@@ -5,7 +5,8 @@ class ConfigMissingSecretKey(Exception):
 
 class Config:
     FEATURE_FLAGS = {
-        "registration_enabled": True
+        "registration_enabled": True,
+        "registration_with_invite_code": False
     }
     TESTING = False
     SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI", "sqlite:///resume_builder.db")
@@ -18,7 +19,8 @@ class Config:
 class ProductionConfig(Config):
     FEATURE_FLAGS = Config.FEATURE_FLAGS.copy()
     FEATURE_FLAGS.update({
-        "registration_enabled": False
+        "registration_enabled": False,
+        "registration_with_invite_code": os.getenv("REGISTRATION_WITH_INVITE_CODE", "True").lower() == "true" 
     })
     SQLALCHEMY_ECHO = False
     FLASK_DEBUG = False
@@ -28,7 +30,8 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
     FEATURE_FLAGS = Config.FEATURE_FLAGS.copy()
     FEATURE_FLAGS.update({
-        "registration_enabled": os.getenv("REGISTRATION_ENABLED", "True").lower() == "true"
+        "registration_enabled": os.getenv("REGISTRATION_ENABLED", "True").lower() == "true",
+        "register_with_invite_code": os.getenv("REGISTRATION_WITH_INVITE_CODE", "True").lower() == "true" 
     })
     FLASK_DEBUG = os.getenv("FLASK_DEBUG", "True").lower() == "true"
 

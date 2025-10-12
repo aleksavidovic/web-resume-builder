@@ -3,7 +3,7 @@ import uuid
 from flask import Flask
 from dotenv import load_dotenv
 from .extensions import db, bcrypt, login_manager, migrate
-from .models import User, BasicInfo, Summary, Experience, Education, Skills, Language, BuiltResume, ResumeTheme
+from .models import User, BasicInfo, Summary, Experience, Education, Skills, Language, BuiltResume, ResumeTheme, InviteCode
 
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -19,9 +19,6 @@ def create_app():
                 static_folder="static")
     flask_env = os.getenv("FLASK_ENV", "development")
     app.config.from_object(config_by_env[flask_env])
-
-    app.config["SQLALCHEMY_ECHO"] = os.getenv("SQLALCHEMY_ECHO", False)
-    # Load feature flags
 
     @app.context_processor
     def inject_feature_flags():
@@ -68,6 +65,7 @@ def create_app():
             "Language": Language,
             "ResumeTheme": ResumeTheme,
             "BuiltResume": BuiltResume,
+            "InviteCode": InviteCode
         }
 
     return app
