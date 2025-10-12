@@ -28,7 +28,9 @@
                     <li><a href="{{ url_for('admin.list_themes') }}">Admin Dashboard</a></li>
                     {% endif %}
                     {% if not current_user.is_authenticated %}
+                    {% if features.registration_enabled %}
                     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                    {% endif %}
                     <li><a href="{{ url_for('auth.login') }}">Login</a></li>
                     {% else %}
                     <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
