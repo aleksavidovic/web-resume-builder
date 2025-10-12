@@ -20,7 +20,7 @@ class ProductionConfig(Config):
     FEATURE_FLAGS = Config.FEATURE_FLAGS.copy()
     FEATURE_FLAGS.update({
         "registration_enabled": False,
-        "registration_with_invite_code": os.getenv("REGISTRATION_WITH_INVITE_CODE", "True").lower() == "true" 
+        "register_with_invite_code": os.getenv("REGISTRATION_WITH_INVITE_CODE", "True").lower() == "true" 
     })
     SQLALCHEMY_ECHO = False
     FLASK_DEBUG = False
