@@ -120,3 +120,13 @@ def create_invite_code():
         flash("Code added.", "success")
         return redirect(url_for("admin.list_invite_codes"))
     return render_template("/admin/invite_codes/create_invite_code.html", form=form)
+
+
+@admin_bp.route("/invite_codes/<string:code_id>/delete", methods=["GET", "POST"])
+@login_required
+@admin_required
+def delete_invite_code(code_id):
+    code_to_delete = InviteCode.query.filter_by(id=code_id).first_or_404()
+    db.session.delete(code_to_delete)
+    db.session.commit()
+    return redirect(url_for("admin.list_invite_codes"))
