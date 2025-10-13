@@ -50,10 +50,12 @@ def register_with_invite_code():
 
         if existing:
             flash("Username already taken.", "danger")
-            return redirect(url_for("auth.register"))
+            return redirect(url_for("auth.register_with_invite_code"))
 
         user = User(username=form.username.data)
         user.set_password(form.password.data)
+        invite_code.redeemed = True
+        invite_code.user = user
         db.session.add(user)
         db.session.commit()
         flash("Your account has been created! You are now able to log in", "success")
