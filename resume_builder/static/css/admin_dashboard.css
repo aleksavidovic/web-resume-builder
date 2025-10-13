@@ -31,3 +31,48 @@
     color: var(--accent-color);
     border-bottom: 2px solid var(--accent-color); /* Underline on hover */
 }
+
+/* ----------------------------------------------------------------
+   Admin Tables
+   ---------------------------------------------------------------- */
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden; /* Ensures the rounded corners are applied to the table */
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table thead th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.admin-table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.admin-table a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.admin-table a:hover {
+    text-decoration: underline;
+}
+
+/* Add this class to your table in the HTML */
+/* e.g. <table class="admin-table"> */
