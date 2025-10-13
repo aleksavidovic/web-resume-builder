@@ -3,23 +3,22 @@
 {% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
-<h1>Dashboard</h1>
 <h2>Users Stats</h2>
 <table class="admin-table">
   <tr>
     <td>Total users</td>
-    <td>420</td>
+    <td>{{ analytics.total_users}}</td>
   </tr>
   <tr>
     <td>New users this month</td>
-    <td>69</td>
+    <td></td>
   </tr>
 </table>
 <h2>Activity Stats</h2>
 <table class="admin-table">
   <tr>
     <td>Total Resumes created:</td>
-    <td>777</td>
+    <td>{{ analytics.total_resumes }}</td>
   </tr>
 </table>
 {% endblock %}

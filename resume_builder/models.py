@@ -4,7 +4,7 @@ from flask_login import UserMixin
 from sqlalchemy.orm import relationship
 from .extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import Table, Column, ForeignKey, TypeDecorator, CHAR
+from sqlalchemy import Table, Column, ForeignKey, TypeDecorator, CHAR, select, func
 from sqlalchemy.dialects.postgresql import UUID
 
 
@@ -138,6 +138,12 @@ class User(db.Model, UserMixin, TimeStampMixin):
     def check_password(self, password) -> bool:
         return check_password_hash(self.password_hash, password)
 
+    @classmethod
+    def get_active_count(cls):
+        """ Returns the count of active users """
+        count_stmt = select(func.count(cls.id)).where(cls.is_active == True)
+        return db.session.scalar(count_stmt)
+
     def __repr__(self):
         return f"User('{self.username}')"
 
@@ -264,3 +270,8 @@ class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
             "user_id", "entry_title", name="_user_built_resumes_title_uc"
         ),
     )
+
+    @classmethod
+    def get_active_count(cls):
+        count_stmt = select(func.count(cls.id))
+        return db.session.scalar(count_stmt)

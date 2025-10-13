@@ -2,7 +2,7 @@ from functools import wraps
 from flask import flash, render_template, url_for, redirect
 from flask_login import current_user, login_required
 
-from ..models import ResumeTheme, InviteCode, User
+from ..models import ResumeTheme, InviteCode, User, BuiltResume
 from . import admin_bp
 from .forms import ThemeForm, CreateInviteCodeForm
 from ..extensions import db
@@ -30,12 +30,13 @@ def admin_home():
 @login_required
 @admin_required
 def dashboard():
-    total_resumes = BuiltResume.query.count()
-    total_users = User.query.count()
+    total_users = User.get_active_count()
+    total_resumes = BuiltResume.get_active_count()
     analytics = {
-        "total_resumes": total_resumes
+        "total_resumes": total_resumes,
+        "total_users": total_users
     }
-    return render_template("/admin/dashboard/dashboard.html")
+    return render_template("/admin/dashboard/dashboard.html", analytics=analytics)
 
 
 @admin_bp.route("/list_themes", methods=["GET"])
