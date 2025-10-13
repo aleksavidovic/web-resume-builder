@@ -37,6 +37,7 @@ def register_with_invite_code():
     if current_user.is_authenticated:
         return redirect(url_for("main.home"))
     form = RegistrationWithInviteCodeForm()
+
     if form.validate_on_submit():
         invite_code = InviteCode.query.filter_by(code=form.invite_code.data).first()
         if not invite_code:
@@ -46,9 +47,11 @@ def register_with_invite_code():
             flash("Invitation Code already redeemed.", "danger")
             return redirect(url_for("auth.register_with_invite_code"))
         existing = User.query.filter_by(username=form.username.data).first()
+
         if existing:
             flash("Username already taken.", "danger")
             return redirect(url_for("auth.register"))
+
         user = User(username=form.username.data)
         user.set_password(form.password.data)
         db.session.add(user)

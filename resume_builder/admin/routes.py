@@ -2,9 +2,9 @@ from functools import wraps
 from flask import flash, render_template, url_for, redirect
 from flask_login import current_user, login_required
 
-from ..models import ResumeTheme
+from ..models import ResumeTheme, InviteCode
 from . import admin_bp
-from .forms import ThemeForm
+from .forms import ThemeForm, CreateInviteCodeForm
 from ..extensions import db
 
 
@@ -93,3 +93,30 @@ def delete_theme(theme_id):
         flash(f"Error while deleting theme: {e}.", "success")
     finally:
         return redirect(url_for("admin.list_themes"))
+
+
+@admin_bp.route("/invite_codes", methods=["GET"])
+@login_required
+@admin_required
+def list_invite_codes():
+    inv_codes = InviteCode.query.all()
+    return render_template("/admin/invite_codes/list_invite_codes.html", invite_codes=inv_codes)
+
+
+@admin_bp.route("/invite_codes/create", methods=["GET", "POST"])
+@login_required
+@admin_required
+def create_invite_code():
+    form = CreateInviteCodeForm()
+    if form.validate_on_submit():
+        existing_code = InviteCode.query.filter_by(code=form.code.data).first()
+        if existing_code:
+            flash("Code already exists.", "danger")
+            return redirect(url_for("admin.list_invite_codes"))
+        new_code = InviteCode()
+        form.populate_obj(new_code)
+        db.session.add(new_code)
+        db.session.commit()
+        flash("Code added.", "success")
+        return redirect(url_for("admin.list_invite_codes"))
+    return render_template("/admin/invite_codes/create_invite_code.html", form=form)

@@ -1,0 +1,35 @@
+
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Manage Invitation Codes{% endblock %}
+
+{% block content %}
+<section>
+      <header class="basic-info-list-header">
+        <div>
+            <h2>Manage Invitation Codes</h2>
+            <p>Manage invitation codes used for new user registration.</p>
+        </div>
+        <a href="{{ url_for('admin.create_invite_code') }}">
+            <button>+ Create New</button>
+        </a>
+    </header>
+
+    <hr>
+
+{% if invite_codes %}
+<table>
+<tr><th>Code</th><th>Description</th><th>Redeemed?</th><th>User</th></tr>
+{% for inv_code in invite_codes %}
+<tr>
+  <td>{{inv_code.code}}</td>
+  <td>{{inv_code.description}}</td>
+  <td>{{'Yes' if inv_code.redeemed else 'No'}}</td>
+  <td>{{inv_code.user if inv_code.user else '/'}}</td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+
+</section>
+{% endblock %}

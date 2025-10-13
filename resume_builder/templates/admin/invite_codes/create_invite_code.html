@@ -1,0 +1,32 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Create Invitation Code{% endblock %}
+
+{% block content %}
+<h1>Create new Invitation Code</h1>
+<form action="{{ url_for('admin.create_invite_code') }}" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    <fieldset class="form-section">
+        <legend><h3>Theme Details</h3></legend>
+        <div>
+            {{ form.code.label }}<br>
+            {{ form.code() }}
+            {% for error in form.code.errors %}
+                <br><span class="form-error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.description.label }}<br>
+            {{ form.description() }}
+            {% for error in form.description.errors %}
+                <br><span class="form-error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </fieldset>
+    <fieldset>
+        {{ form.submit() }}
+    </fieldset>
+
+</form>
+{% endblock %}
