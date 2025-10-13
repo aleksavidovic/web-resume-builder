@@ -3,6 +3,168 @@
 {% block title %}Home - Resume Builder{% endblock %}
 
 {% block content %}
-<h1>Resume Builder Homepage</h1>
-<p>This web app helps you create different versions of your resume.</p>
+<style>
+    .hero {
+        text-align: center;
+        padding: 4rem 1rem;
+        background-color: #ffffff;
+        border-radius: 8px;
+        margin-bottom: 3rem;
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero p {
+        font-size: 1.25rem;
+        color: var(--secondary-color);
+        max-width: 600px;
+        margin: 0 auto 2rem auto;
+    }
+
+    .hero .cta-button {
+        font-size: 1.2rem;
+        padding: 1rem 2rem;
+    }
+
+    .how-it-works {
+        text-align: center;
+        padding: 3rem 1rem;
+        background-color: #ffffff;
+        border-radius: 8px;
+        margin-bottom: 3rem;
+    }
+
+    .how-it-works h2 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .steps {
+        display: flex;
+        justify-content: space-around;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .step {
+        flex: 1;
+        padding: 1.5rem;
+    }
+
+    .step .step-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+        border: 2px solid var(--accent-color);
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        line-height: 56px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .step h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .features {
+        padding: 3rem 1rem;
+        background-color: #ffffff;
+        border-radius: 8px;
+        margin-bottom: 3rem;
+    }
+
+    .features h2 {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+
+    .feature-item {
+        background-color: var(--background-color);
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+    }
+
+    .feature-item h3 {
+        font-size: 1.25rem;
+        margin-top: 0;
+    }
+
+</style>
+
+<div class="hero">
+    <h1>Build Your Perfect Resume, Effortlessly</h1>
+    <p>Create, manage, and customize multiple versions of your professional resume to land your dream job.</p>
+    {% if not current_user.is_authenticated %}
+    <a href="{{ url_for('auth.register') }}" class="cta-button"><button>Get Started for Free</button></a>
+    {% else %}
+    <a href="{{ url_for('resume.home') }}" class="cta-button"><button>Go to Your Dashboard</button></a>
+    {% endif %}
+</div>
+
+<div class="how-it-works">
+    <h2>How It Works</h2>
+    <div class="steps">
+        <div class="step">
+            <div class="step-number">1</div>
+            <h3>Add Your Data</h3>
+            <p>Easily add and manage all your professional details—from work experience to skills—in one centralized place.</p>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <h3>Assemble Your Resume</h3>
+            <p>Select the specific entries you want to include for a particular job application. Tailor your resume in seconds.</p>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <h3>Download & Apply</h3>
+            <p>Choose a professional template, preview your resume, and download it as a PDF, ready to impress employers.</p>
+        </div>
+    </div>
+</div>
+
+<div class="features">
+    <h2>Key Features</h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <h3>Dynamic Resume Sections</h3>
+            <p>Create and manage distinct entries for different parts of your resume, including basic info, summaries, work experience, education, skills, and languages.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Custom Resume Assembly</h3>
+            <p>Build unique resume versions by selecting from your stored entries. This allows for easy customization for different job applications.</p>
+        </div>
+        <div class="feature-item">
+            <h3>PDF Generation</h3>
+            <p>Convert your assembled resumes into professional, downloadable PDF documents with a single click.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Secure User Authentication</h3>
+            <p>A secure user registration and login system to keep your resume data private and organized.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Markdown Support</h3>
+            <p>Use Markdown in your descriptions for easy formatting and a clean, professional look.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Theme Customization</h3>
+            <p>Choose from a selection of themes to find the style that best fits your personality and the job you're applying for.</p>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
