@@ -1,40 +1,125 @@
 {% extends "base.html" %}
 
-{% block title %}Resume Editor{% endblock %}
-
+{% block title %}Resume Data{% endblock %}
 
 {% block content %}
+<style>
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
 
-<h1> Resume sections </h1>
+    .card {
+        background-color: #ffffff;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+    }
 
-<a href="{{url_for('resume.list_basic_info')}}"><h2>Basic Info</h2></a>
-{% for info in basic_info %}
-    <p> - <strong>{{ info.entry_title }}</strong> - {{ info.job_title }}</p>
-{% endfor %}
+    .card-header {
+        margin-bottom: 1rem;
+    }
 
-<a href="{{url_for('resume.list_summary')}}"><h2>Summary</h2></a>
-{% for summary in summaries %}
-    <p> - <strong>{{ summary.entry_title }}</strong>: {{ summary.content[:30] }}...</p>
-{% endfor %}
+    .card-header h2 {
+        margin-top: 0;
+        font-size: 1.5rem;
+    }
 
-<a href="{{url_for('resume.list_experience')}}"><h2>Experience</h2></a>
-{% for experience in experiences %}
-    <p> - <strong>{{ experience.entry_title }}</strong>: {{ experience.description[:30] }}...</p>
-{% endfor %}
+    .card-body {
+        flex-grow: 1;
+    }
 
-<a href="{{url_for('resume.list_education')}}"><h2>Education</h2></a>
-{% for education in educations %}
-    <p> - <strong>{{ education.degree_name }}</strong> @ <em>{{ education.school_name }}</em></p>
-{% endfor %}
+    .card-footer {
+        margin-top: 1.5rem;
+        display: flex;
+        gap: 1rem;
+    }
+</style>
 
-<a href="{{url_for('resume.list_skills')}}"><h2>Skills</h2></a>
-{% for skill in skills %}
-    <p> - <strong>{{ skill.entry_title }}</strong>: <em>{{ skill.description }}</em></p>
-{% endfor %}
+<h1>Resume Data</h1>
+<p>Manage the different sections of your resume. Create and edit entries for each category below.</p>
 
-<a href="{{url_for('resume.list_languages')}}"><h2>Languages</h2></a>
-{% for language in languages %}
-<p> - <strong>{{ language.entry_title }}</strong>: <em>{{ language.name }} ({{ language.proficiency }})</em></p>
-{% endfor %}
+<div class="card-grid">
+    <div class="card">
+        <div class="card-header">
+            <h2>Basic Info</h2>
+        </div>
+        <div class="card-body">
+            <p>Manage your personal and contact information.</p>
+        </div>
+        <div class="card-footer">
+            <a href="{{url_for('resume.list_basic_info')}}"><button>View All</button></a>
+            <a href="{{url_for('resume.create_basic_info')}}"><button class="button-secondary">Add New</button></a>
+        </div>
+    </div>
 
+    <div class="card">
+        <div class="card-header">
+            <h2>Summary</h2>
+        </div>
+        <div class="card-body">
+            <p>Create and manage your professional summaries.</p>
+        </div>
+        <div class="card-footer">
+            <a href="{{url_for('resume.list_summary')}}"><button>View All</button></a>
+            <a href="{{url_for('resume.create_summary')}}"><button class="button-secondary">Add New</button></a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Experience</h2>
+        </div>
+        <div class="card-body">
+            <p>Detail your work history and professional experience.</p>
+        </div>
+        <div class="card-footer">
+            <a href="{{url_for('resume.list_experience')}}"><button>View All</button></a>
+            <a href="{{url_for('resume.create_experience')}}"><button class="button-secondary">Add New</button></a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Education</h2>
+        </div>
+        <div class="card-body">
+            <p>List your academic qualifications and achievements.</p>
+        </div>
+        <div class="card-footer">
+            <a href="{{url_for('resume.list_education')}}"><button>View All</button></a>
+            <a href="{{url_for('resume.create_education')}}"><button class="button-secondary">Add New</button></a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Skills</h2>
+        </div>
+        <div class="card-body">
+            <p>Highlight your technical and soft skills.</p>
+        </div>
+        <div class="card-footer">
+            <a href="{{url_for('resume.list_skills')}}"><button>View All</button></a>
+            <a href="{{url_for('resume.create_skills')}}"><button class="button-secondary">Add New</button></a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Languages</h2>
+        </div>
+        <div class="card-body">
+            <p>Showcase your language proficiency.</p>
+        </div>
+        <div class="card-footer">
+            <a href="{{url_for('resume.list_languages')}}"><button>View All</button></a>
+            <a href="{{url_for('resume.create_language')}}"><button class="button-secondary">Add New</button></a>
+        </div>
+    </div>
+</div>
 {% endblock %}
