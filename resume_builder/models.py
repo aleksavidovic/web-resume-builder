@@ -108,6 +108,7 @@ class User(db.Model, UserMixin, TimeStampMixin):
     username = db.Column(db.String(70), unique=True, nullable=False)
     password_hash = db.Column(db.String(300), nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
+    is_active = db.Column(db.Boolean, default=True)
     basic_infos = db.relationship(
         "BasicInfo", backref="user", lazy="selectin", cascade="all, delete-orphan"
     )

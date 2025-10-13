@@ -30,6 +30,11 @@ def admin_home():
 @login_required
 @admin_required
 def dashboard():
+    total_resumes = BuiltResume.query.count()
+    total_users = User.query.count()
+    analytics = {
+        "total_resumes": total_resumes
+    }
     return render_template("/admin/dashboard/dashboard.html")
 
 
