@@ -41,7 +41,7 @@ class SummaryForm(FlaskForm):
         "Entry Title", validators=[DataRequired(), Length(max=50)]
     )
     content = TextAreaField(
-        "Summary Content", validators=[DataRequired(), Length(max=500)]
+        "Summary Content", validators=[DataRequired(), Length(max=5000)]
     )
     submit = SubmitField("Save Summary")
 
