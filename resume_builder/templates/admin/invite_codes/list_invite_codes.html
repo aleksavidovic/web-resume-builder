@@ -14,11 +14,10 @@
             <button>+ Create New</button>
         </a>
     </header>
-
     <hr>
 
 {% if invite_codes %}
-<table>
+<table class="admin-table">
 <tr><th>Code</th><th>Description</th><th>Redeemed?</th><th>User</th><th>Actions</th></tr>
 {% for inv_code in invite_codes %}
 <tr>
