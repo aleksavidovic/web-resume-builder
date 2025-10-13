@@ -2,7 +2,7 @@ from functools import wraps
 from flask import flash, render_template, url_for, redirect
 from flask_login import current_user, login_required
 
-from ..models import ResumeTheme, InviteCode
+from ..models import ResumeTheme, InviteCode, User
 from . import admin_bp
 from .forms import ThemeForm, CreateInviteCodeForm
 from ..extensions import db
@@ -130,3 +130,11 @@ def delete_invite_code(code_id):
     db.session.delete(code_to_delete)
     db.session.commit()
     return redirect(url_for("admin.list_invite_codes"))
+
+
+@admin_bp.route("/users", methods=["GET"])
+@login_required
+@admin_required
+def list_users():
+    users = User.query.all()
+    return render_template("/admin/users/list_users.html", users=users)

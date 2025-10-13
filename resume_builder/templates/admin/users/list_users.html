@@ -1,0 +1,42 @@
+
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Manage Resume Themes{% endblock %}
+
+{% block content %}
+<section>
+      <header class="basic-info-list-header">
+        <div>
+            <h2>Manage Users</h2>
+            <p>Manage themes that users can use for their resumes.</p>
+        </div>
+        <a href="">
+            <button>+ Create New</button>
+        </a>
+    </header>
+
+    <hr>
+
+{% if users %}
+  <div>
+    <table>
+      <tr>
+        <td>username</td>
+        <td>admin</td>
+        <td>edit</td>
+        <td>delete</td>
+      </tr>
+      {% for user in users %} 
+      <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ 'Yes' if user.is_admin else 'No'}}</td>
+        <td><a href="">edit</a></td>
+        <td><a href="">X</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+{% endif %}
+
+</section>
+{% endblock %}
