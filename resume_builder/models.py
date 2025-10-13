@@ -100,7 +100,7 @@ class InviteCode(db.Model, TimeStampMixin):
     user = db.relationship("User", back_populates="redeemed_code")
 
     def __repr__(self):
-        return f"InviteCode:\nCode:'{self.code}'\nDesc: '{self.description}'\nReedemed: {'Yes' if self.redeemed else 'No'}\nUser: {self.user}"
+        return f"InviteCode:\nCode: '{self.code}'\nDesc: '{self.description}'\nReedemed: {'Yes' if self.redeemed else 'No'}\nUser: {self.user}"
 
 
 class User(db.Model, UserMixin, TimeStampMixin):
