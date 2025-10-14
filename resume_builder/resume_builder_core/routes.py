@@ -82,7 +82,7 @@ def create_basic_info():
     if form.validate_on_submit():
         try:
             service = BasicInfoService(db.session)
-            service.create_basic_info(current_user.id, form)
+            service.create_basic_info(current_user.id, form.data)
             flash("New Basic Info Created!", "success")
             return redirect(url_for("resume.list_basic_info"))
         except Exception as e:
@@ -114,7 +114,7 @@ def edit_basic_info(info_id):
 
     if form.validate_on_submit():
         try:
-            service.update_basic_info(current_user.id, info_id, form)
+            service.update_basic_info(current_user.id, info_id, form.data)
             flash("Your 'Basic Info' section has been updated!", "success")
         except EntryNotFoundError:
             abort(404)

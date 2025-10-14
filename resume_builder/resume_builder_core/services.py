@@ -6,21 +6,18 @@ class BasicInfoService:
         self.db_session = db_session
 
     def create_basic_info(self, user_id: str, new_basic_info_data: dict):
-        try:
-            new_basic_info = BasicInfo()
-            new_basic_info.entry_title = new_basic_info_data["entry_title"].data
-            new_basic_info.full_name = new_basic_info_data["full_name"].data
-            new_basic_info.job_title = new_basic_info_data["job_title"].data
-            new_basic_info.address = new_basic_info_data["address"].data
-            new_basic_info.contact_email = new_basic_info_data["contact_email"].data
-            new_basic_info.contact_phone = new_basic_info_data["contact_phone"].data
-            new_basic_info.linkedin_url = new_basic_info_data["linkedin_url"].data
-            new_basic_info.github_url = new_basic_info_data["github_url"].data
-            new_basic_info.user_id = user_id
-            self.db_session.add(new_basic_info)
-            self.db_session.commit()
-        except Exception as e:
-            raise e
+        new_basic_info = BasicInfo()
+        new_basic_info.entry_title = new_basic_info_data["entry_title"]
+        new_basic_info.full_name = new_basic_info_data["full_name"]
+        new_basic_info.job_title = new_basic_info_data["job_title"]
+        new_basic_info.address = new_basic_info_data["address"]
+        new_basic_info.contact_email = new_basic_info_data["contact_email"]
+        new_basic_info.contact_phone = new_basic_info_data["contact_phone"]
+        new_basic_info.linkedin_url = new_basic_info_data["linkedin_url"]
+        new_basic_info.github_url = new_basic_info_data["github_url"]
+        new_basic_info.user_id = user_id
+        self.db_session.add(new_basic_info)
+        self.db_session.commit()
 
     def get_basic_info_by_id(self, user_id: str, entry_id: str) -> BasicInfo:
         basic_info = BasicInfo.query.filter_by(id=entry_id).first()
@@ -40,14 +37,14 @@ class BasicInfoService:
             raise EntryNotFoundError("No basic info entry for provided id")
         if basic_info_to_update.user_id != user_id:
             raise AuthorizationError("You are not authorized to modify this entry.")
-        basic_info_to_update.entry_title = updated_basic_info_data["entry_title"].data
-        basic_info_to_update.full_name = updated_basic_info_data["full_name"].data
-        basic_info_to_update.job_title = updated_basic_info_data["job_title"].data
-        basic_info_to_update.address = updated_basic_info_data["address"].data
-        basic_info_to_update.contact_email = updated_basic_info_data["contact_email"].data
-        basic_info_to_update.contact_phone = updated_basic_info_data["contact_phone"].data
-        basic_info_to_update.linkedin_url = updated_basic_info_data["linkedin_url"].data
-        basic_info_to_update.github_url = updated_basic_info_data["github_url"].data
+        basic_info_to_update.entry_title = updated_basic_info_data["entry_title"]
+        basic_info_to_update.full_name = updated_basic_info_data["full_name"]
+        basic_info_to_update.job_title = updated_basic_info_data["job_title"]
+        basic_info_to_update.address = updated_basic_info_data["address"]
+        basic_info_to_update.contact_email = updated_basic_info_data["contact_email"]
+        basic_info_to_update.contact_phone = updated_basic_info_data["contact_phone"]
+        basic_info_to_update.linkedin_url = updated_basic_info_data["linkedin_url"]
+        basic_info_to_update.github_url = updated_basic_info_data["github_url"]
         self.db_session.commit()
         return basic_info_to_update
 
@@ -55,5 +52,7 @@ class BasicInfoService:
         basic_info_to_delete = BasicInfo.query.filter_by(id=basic_info_id).first()
         if not basic_info_to_delete:
             raise EntryNotFoundError("No basic info entry for provided id")
+        if basic_info_to_delete.user_id != user_id:
+            raise AuthorizationError("You are not authorized to delete this entry.")
         self.db_session.delete(basic_info_to_delete)
         self.db_session.commit()
