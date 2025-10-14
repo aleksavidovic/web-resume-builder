@@ -104,17 +104,17 @@ def edit_basic_info(info_id):
     """
     service = BasicInfoService(db.session)
     try:
-        info_to_edit = service.get_basic_info_by_id(info_id)
+        info_to_edit = service.get_basic_info_by_id(current_user.id, info_id)
     except EntryNotFoundError:
         abort(404)
     except AuthorizationError:
         abort(403)
 
-    form = BasicInfoForm(obj=info_to_edit)
+    form = BasicInfoForm()
 
     if form.validate_on_submit():
         try:
-            service.update_basic_info(info_id, form)
+            service.update_basic_info(current_user.id, info_id, form)
             flash("Your 'Basic Info' section has been updated!", "success")
         except EntryNotFoundError:
             abort(404)
@@ -123,7 +123,7 @@ def edit_basic_info(info_id):
         finally:
             return redirect(url_for("resume.list_basic_info"))
 
-    # For a GET request, render the template with the pre-filled form
+    form = BasicInfoForm(obj=info_to_edit)
     return render_template(
         "resume_core/basic_info/edit_basic_info.html", form=form, info_id=info_id
     )
