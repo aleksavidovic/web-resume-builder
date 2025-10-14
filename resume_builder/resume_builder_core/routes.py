@@ -11,8 +11,9 @@ from .forms import (
     BuildResumeForm,
 )
 from .services import BasicInfoService
+from .exceptions import AuthorizationError, EntryNotFoundError
 from . import resume_bp
-from flask import flash, redirect, render_template, url_for, Response, request
+from flask import flash, redirect, render_template, url_for, Response, request, abort
 from flask_login import login_required, current_user
 from ..models import (
     BasicInfo,
@@ -81,7 +82,7 @@ def create_basic_info():
     if form.validate_on_submit():
         try:
             service = BasicInfoService(db.session)
-            service.create_basic_info(form)
+            service.create_basic_info(current_user.id, form)
             flash("New Basic Info Created!", "success")
             return redirect(url_for("resume.list_basic_info"))
         except Exception as e:
@@ -102,7 +103,12 @@ def edit_basic_info(info_id):
     Handles editing an existing BasicInfo entry.
     """
     service = BasicInfoService(db.session)
-    info_to_edit = service.get_basic_info_by_id(info_id)
+    try:
+        info_to_edit = service.get_basic_info_by_id(info_id)
+    except EntryNotFoundError:
+        abort(404)
+    except AuthorizationError:
+        abort(403)
 
     form = BasicInfoForm(obj=info_to_edit)
 
@@ -110,9 +116,10 @@ def edit_basic_info(info_id):
         try:
             service.update_basic_info(info_id, form)
             flash("Your 'Basic Info' section has been updated!", "success")
-        except Exception as e:
-            db.session.rollback()
-            flash(f"An error occurred while updating basic info entry: {e}", "danger")
+        except EntryNotFoundError:
+            abort(404)
+        except AuthorizationError:
+            abort(403)
         finally:
             return redirect(url_for("resume.list_basic_info"))
 
@@ -135,10 +142,12 @@ def delete_basic_info(info_id):
     """
     service = BasicInfoService(db.session)
     try:
-        service.delete_basic_info_by_id(info_id)
+        service.delete_basic_info_by_id(current_user.id, info_id)
         flash("Successfully deleted Basic Info entry.", "danger")
-    except Exception as e:
-        flash(f"Error while deleting Basic Info entry: {e}", "danger")
+    except EntryNotFoundError:
+        abort(404)
+    except AuthorizationError:
+        abort(403)
     return redirect(url_for("resume.list_basic_info"))
 
 
