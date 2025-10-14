@@ -10,6 +10,7 @@ from .forms import (
     LanguageForm,
     BuildResumeForm,
 )
+from .services import BasicInfoService
 from . import resume_bp
 from flask import flash, redirect, render_template, url_for, Response, request
 from flask_login import login_required, current_user
@@ -30,7 +31,7 @@ from werkzeug.exceptions import NotFound
 @login_required
 @resume_bp.route("/", methods=["GET", "POST"])
 def home():
-    basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
+    basic_info = BasicInfoService(db.session).get_basic_infos_by_user_id(current_user.id)
     summaries = Summary.query.filter_by(user_id=current_user.id).all()
     experiences = Experience.query.filter_by(user_id=current_user.id).all()
     educations = Education.query.filter_by(user_id=current_user.id).all()
@@ -59,7 +60,7 @@ def home():
 @login_required
 @resume_bp.route("/basic_info_list", methods=["GET", "POST"])
 def list_basic_info():
-    users_basic_info = BasicInfo.query.filter_by(user_id=current_user.id).all()
+    users_basic_info = BasicInfoService(db.session).get_basic_infos_by_user_id(current_user.id)
     return render_template(
         "resume_core/basic_info/list_basic_info.html", basic_infos=users_basic_info
     )
@@ -73,37 +74,19 @@ def list_basic_info():
 @login_required
 @resume_bp.route("/basic_info/create", methods=["GET", "POST"])
 def create_basic_info():
+    """
+    Handle creating new basic info entry.
+    """
     form = BasicInfoForm()
     if form.validate_on_submit():
-        print("Form submitted for validation")
         try:
-            entry_title = form.entry_title.data
-            full_name = form.full_name.data
-            job_title = form.job_title.data
-            address = form.address.data
-            contact_email = form.contact_email.data
-            contact_phone = form.contact_phone.data
-            linkedin_url = form.linkedin_url.data
-            github_url = form.github_url.data
-            new_basic_info = BasicInfo(
-                entry_title=entry_title,
-                full_name=full_name,
-                job_title=job_title,
-                address=address,
-                contact_email=contact_email,
-                contact_phone=contact_phone,
-                linkedin_url=linkedin_url,
-                github_url=github_url,
-                user_id=current_user.id,
-            )
-            db.session.add(new_basic_info)
-            db.session.commit()
+            service = BasicInfoService(db.session)
+            service.create_basic_info(form)
             flash("New Basic Info Created!", "success")
             return redirect(url_for("resume.list_basic_info"))
         except Exception as e:
             flash(f"Error while saving Basic Info: {e}")
             return redirect(url_for("resume.create_basic_info"))
-
     return render_template("resume_core/basic_info/create_basic_info.html", form=form)
 
 
@@ -118,24 +101,14 @@ def edit_basic_info(info_id):
     """
     Handles editing an existing BasicInfo entry.
     """
-    try:
-        info_id_uuid = uuid.UUID(info_id)
-    except ValueError:
-        raise NotFound()
-
-    info_to_edit = BasicInfo.query.filter_by(
-        id=info_id, user_id=current_user.id
-    ).first()
-    if not info_to_edit:
-        raise NotFound()
+    service = BasicInfoService(db.session)
+    info_to_edit = service.get_basic_info_by_id(info_id)
 
     form = BasicInfoForm(obj=info_to_edit)
 
     if form.validate_on_submit():
         try:
-            # Update the object's attributes from the submitted form data
-            form.populate_obj(info_to_edit)
-            db.session.commit()
+            service.update_basic_info(info_id, form)
             flash("Your 'Basic Info' section has been updated!", "success")
         except Exception as e:
             db.session.rollback()
@@ -160,18 +133,12 @@ def delete_basic_info(info_id):
     """
     Handles deleting an existing BasicInfo entry.
     """
+    service = BasicInfoService(db.session)
     try:
-        info_to_delete = BasicInfo.query.filter_by(
-            id=info_id, user_id=current_user.id
-        ).first()
-        if not info_to_delete:
-            raise NotFound()
-        db.session.delete(info_to_delete)
-        db.session.commit()
+        service.delete_basic_info_by_id(info_id)
         flash("Successfully deleted Basic Info entry.", "danger")
     except Exception as e:
         flash(f"Error while deleting Basic Info entry: {e}", "danger")
-
     return redirect(url_for("resume.list_basic_info"))
 
 
