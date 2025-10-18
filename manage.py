@@ -30,5 +30,52 @@ def create_admin():
         print("Admin created.")
 
 
+@app.cli.command("create-test-user")
+def create_test_user():
+    """
+    Creates test user from environment variables.
+    Checks if the user already exists.
+    """
+    test_user_username = os.environ.get("TEST_USERNAME")
+    test_user_password = os.environ.get("TEST_PASSWORD")
+    if test_user_username is None or test_user_password is None:
+        print(
+            "ERROR: TEST_USERNAME and TEST_PASSWORD environment variables must be set."
+        )
+        return
+    with app.app_context():
+        if User.query.filter_by(username=test_user_password).first():
+            print("ERROR: Test user already exists.")
+            return
+        test_user = User(username=test_user_username, is_admin=False)
+        test_user.set_password(test_user_password)
+        db.session.add(test_user)
+        db.session.commit()
+        print("Test user created.")
+
+
+@app.cli.command("delete-test-user")
+def delete_test_user():
+    """
+    Deletes test user (username=$TEST_USERNAME).
+    Checks if the user exists before deleting.
+    """
+    test_user_username = os.environ.get("TEST_USERNAME")
+    if not test_user_username:
+        print(
+            "ERROR: TEST_USERNAME environment variable must be set."
+        )
+        return
+    with app.app_context():
+        test_user = User.query.filter_by(username=test_user_username).first()
+        if not test_user:
+            print(
+                "ERROR: Test user does not exist."
+            )
+            return
+        db.session.delete(test_user)
+        db.session.commit()
+
+
 if __name__ == "__main__":
     app.run()
