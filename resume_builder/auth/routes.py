@@ -3,6 +3,7 @@ from . import auth_bp
 from flask import render_template, url_for, redirect, flash, current_app
 from flask_login import current_user, login_required, login_user, logout_user
 from .forms import RegistrationForm, RegistrationWithInviteCodeForm
+from .exceptions import UserNotFoundError
 from ..models import User, InviteCode
 from .. import db
 
@@ -73,12 +74,18 @@ def login():
         return redirect(url_for("main.index"))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user:
-            if user.check_password(form.password.data):
-                flash("Login successful")
-                login_user(user, remember=form.remember.data)
-                return redirect(url_for("main.index"))
+        try:
+            user = User.query.filter_by(username=form.username.data).first()
+            if user:
+                if user.check_password(form.password.data):
+                    flash("Login successful")
+                    login_user(user, remember=form.remember.data)
+                    return redirect(url_for("main.index"))
+            else:
+                raise UserNotFoundError(f"No user found with username: {form.username.data}")
+        except Exception as e:
+            flash(f"Error while trying to log in: {e}")
+            return render_template("auth/login.html", title="Login", form=form)
     return render_template("auth/login.html", title="Login", form=form)
 
 
