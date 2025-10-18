@@ -90,7 +90,6 @@ This project has a solid foundation with several exciting possibilities for futu
 - [x] **Template Customization**: Offer a variety of professional resume templates for users to choose from.
 - [ ] **Enhanced UI/UX**: Improve the user interface with a more modern frontend framework like React or Vue.js.
 
-```
 ## Database Schema
 
 Here is the Entity-Relationship Diagram for the database:
@@ -273,4 +272,5 @@ erDiagram
     %% built_resume_education (built_resume_id PK, FK | education_id PK, FK)
     %% built_resume_skills (built_resume_id PK, FK | skills_id PK, FK)
     %% built_resume_language (built_resume_id PK, FK | language_id PK, FK)
-
+```
+```
