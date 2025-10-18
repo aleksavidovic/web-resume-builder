@@ -3,26 +3,39 @@ import uuid
 from flask import Flask
 from dotenv import load_dotenv
 from .extensions import db, bcrypt, login_manager, migrate
-from .models import User, BasicInfo, Summary, Experience, Education, Skills, Language, BuiltResume, ResumeTheme, InviteCode
+from .models import (
+    User,
+    BasicInfo,
+    Summary,
+    Experience,
+    Education,
+    Skills,
+    Language,
+    BuiltResume,
+    ResumeTheme,
+    InviteCode,
+)
 
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-load_dotenv(os.path.join(project_root, '.env'))
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+load_dotenv(os.path.join(project_root, ".env"))
 from .config import config_by_env
 
 
 def create_app():
-    instance_path = os.path.join(project_root, 'instance')
-    app = Flask(__name__, 
-                instance_path=instance_path,
-                template_folder="templates", 
-                static_folder="static")
+    instance_path = os.path.join(project_root, "instance")
+    app = Flask(
+        __name__,
+        instance_path=instance_path,
+        template_folder="templates",
+        static_folder="static",
+    )
     flask_env = os.getenv("FLASK_ENV", "development")
     app.config.from_object(config_by_env[flask_env])
 
     @app.context_processor
     def inject_feature_flags():
-        return dict(features=app.config.get('FEATURE_FLAGS', {}))
+        return dict(features=app.config.get("FEATURE_FLAGS", {}))
 
     from .main import main_bp
     from .auth import auth_bp
@@ -65,7 +78,7 @@ def create_app():
             "Language": Language,
             "ResumeTheme": ResumeTheme,
             "BuiltResume": BuiltResume,
-            "InviteCode": InviteCode
+            "InviteCode": InviteCode,
         }
 
     return app

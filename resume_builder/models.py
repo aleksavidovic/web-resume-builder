@@ -140,7 +140,7 @@ class User(db.Model, UserMixin, TimeStampMixin):
 
     @classmethod
     def get_active_count(cls):
-        """ Returns the count of active users """
+        """Returns the count of active users"""
         count_stmt = select(func.count(cls.id)).where(cls.is_active == True)
         return db.session.scalar(count_stmt)
 

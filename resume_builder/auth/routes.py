@@ -82,7 +82,9 @@ def login():
                     login_user(user, remember=form.remember.data)
                     return redirect(url_for("main.index"))
             else:
-                raise UserNotFoundError(f"No user found with username: {form.username.data}")
+                raise UserNotFoundError(
+                    f"No user found with username: {form.username.data}"
+                )
         except Exception as e:
             flash(f"Error while trying to log in: {e}")
             return render_template("auth/login.html", title="Login", form=form)

@@ -32,10 +32,7 @@ def admin_home():
 def dashboard():
     total_users = User.get_active_count()
     total_resumes = BuiltResume.get_active_count()
-    analytics = {
-        "total_resumes": total_resumes,
-        "total_users": total_users
-    }
+    analytics = {"total_resumes": total_resumes, "total_users": total_users}
     return render_template("/admin/dashboard/dashboard.html", analytics=analytics)
 
 
@@ -106,7 +103,9 @@ def delete_theme(theme_id):
 @admin_required
 def list_invite_codes():
     inv_codes = InviteCode.query.all()
-    return render_template("/admin/invite_codes/list_invite_codes.html", invite_codes=inv_codes)
+    return render_template(
+        "/admin/invite_codes/list_invite_codes.html", invite_codes=inv_codes
+    )
 
 
 @admin_bp.route("/invite_codes/create", methods=["GET", "POST"])

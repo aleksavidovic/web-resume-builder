@@ -10,7 +10,6 @@ class ThemeForm(FlaskForm):
     submit = SubmitField("Create Theme")
 
 
-
 class CreateInviteCodeForm(FlaskForm):
     code = StringField("Code", validators=[DataRequired()])
     description = StringField("Descritpion", validators=[Length(max=200)])

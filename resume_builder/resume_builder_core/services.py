@@ -1,6 +1,7 @@
 from ..models import BasicInfo
 from .exceptions import AuthorizationError, EntryNotFoundError
 
+
 class BasicInfoService:
     def __init__(self, db_session):
         self.db_session = db_session
@@ -31,7 +32,9 @@ class BasicInfoService:
         basic_infos = BasicInfo.query.filter_by(user_id=user_id).all()
         return basic_infos
 
-    def update_basic_info(self, user_id: str, entry_id: str, updated_basic_info_data: dict):
+    def update_basic_info(
+        self, user_id: str, entry_id: str, updated_basic_info_data: dict
+    ):
         basic_info_to_update = BasicInfo.query.filter_by(id=entry_id).first()
         if not basic_info_to_update:
             raise EntryNotFoundError("No basic info entry for provided id")
@@ -48,7 +51,7 @@ class BasicInfoService:
         self.db_session.commit()
         return basic_info_to_update
 
-    def delete_basic_info_by_id(self, user_id:str, basic_info_id: str) -> None:
+    def delete_basic_info_by_id(self, user_id: str, basic_info_id: str) -> None:
         basic_info_to_delete = BasicInfo.query.filter_by(id=basic_info_id).first()
         if not basic_info_to_delete:
             raise EntryNotFoundError("No basic info entry for provided id")

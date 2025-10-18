@@ -16,7 +16,6 @@ from . import resume_bp
 from flask import flash, redirect, render_template, url_for, Response, request, abort
 from flask_login import login_required, current_user
 from ..models import (
-    BasicInfo,
     BuiltResume,
     Education,
     Language,
@@ -32,7 +31,9 @@ from werkzeug.exceptions import NotFound
 @login_required
 @resume_bp.route("/", methods=["GET", "POST"])
 def home():
-    basic_info = BasicInfoService(db.session).get_basic_infos_by_user_id(current_user.id)
+    basic_info = BasicInfoService(db.session).get_basic_infos_by_user_id(
+        current_user.id
+    )
     summaries = Summary.query.filter_by(user_id=current_user.id).all()
     experiences = Experience.query.filter_by(user_id=current_user.id).all()
     educations = Education.query.filter_by(user_id=current_user.id).all()
@@ -61,7 +62,9 @@ def home():
 @login_required
 @resume_bp.route("/basic_info_list", methods=["GET", "POST"])
 def list_basic_info():
-    users_basic_info = BasicInfoService(db.session).get_basic_infos_by_user_id(current_user.id)
+    users_basic_info = BasicInfoService(db.session).get_basic_infos_by_user_id(
+        current_user.id
+    )
     return render_template(
         "resume_core/basic_info/list_basic_info.html", basic_infos=users_basic_info
     )

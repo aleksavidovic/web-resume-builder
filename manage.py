@@ -62,16 +62,12 @@ def delete_test_user():
     """
     test_user_username = os.environ.get("TEST_USERNAME")
     if not test_user_username:
-        print(
-            "ERROR: TEST_USERNAME environment variable must be set."
-        )
+        print("ERROR: TEST_USERNAME environment variable must be set.")
         return
     with app.app_context():
         test_user = User.query.filter_by(username=test_user_username).first()
         if not test_user:
-            print(
-                "ERROR: Test user does not exist."
-            )
+            print("ERROR: Test user does not exist.")
             return
         db.session.delete(test_user)
         db.session.commit()

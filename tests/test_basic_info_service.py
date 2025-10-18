@@ -3,7 +3,7 @@ from resume_builder.resume_builder_core.services import BasicInfoService
 from resume_builder.models import BasicInfo
 
 from resume_builder import db
-import uuid
+
 
 def test_create_basic_info(test_app, new_user):
     """
@@ -21,14 +21,15 @@ def test_create_basic_info(test_app, new_user):
             "contact_email": "test@example.com",
             "contact_phone": "1234567890",
             "linkedin_url": "linkedin.com/test",
-            "github_url": "github.com/test"
+            "github_url": "github.com/test",
         }
         service.create_basic_info(new_user.id, basic_info_data)
-        
+
         basic_info = BasicInfo.query.filter_by(entry_title="Test Entry").first()
         assert basic_info is not None
         assert basic_info.full_name == "Test User"
         assert basic_info.user_id == new_user.id
+
 
 def test_create_basic_info_missing_required_field_raises_exception(test_app, new_user):
     """
@@ -45,11 +46,12 @@ def test_create_basic_info_missing_required_field_raises_exception(test_app, new
             "contact_email": "invalid_email_value",
             "contact_phone": "1234567890",
             "linkedin_url": "linkedin.com/test",
-            "github_url": "github.com/test"
+            "github_url": "github.com/test",
         }
         with pytest.raises(KeyError):
             created_basic_info = service.create_basic_info(new_user.id, basic_info_data)
-         
+
+
 def test_create_basic_info_missing_optional_field_success(test_app, new_user):
     with test_app.app_context():
         service = BasicInfoService(db.session)
