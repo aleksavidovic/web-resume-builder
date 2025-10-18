@@ -119,7 +119,7 @@ erDiagram
     USER ||--o{ JOB_APPLICATION : "has"
     JOB_APPLICATION ||--o{ APPLICATION_NOTE : "has"
     JOB_APPLICATION ||--|| APPLICATION_STAGE : "is at"
-    JOB_APPLICATION ||--o| BUILT_RESUME : "used"  // Optional relationship
+    JOB_APPLICATION ||--o| BUILT_RESUME : "used"
 
     %% --- Entity Definitions ---
 
