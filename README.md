@@ -88,7 +88,9 @@ templates/: Holds all Jinja2 templates for the application.
 This project has a solid foundation with several exciting possibilities for future development:
 - [x] **PDF Generation**: Implement a feature to convert the markdown previews into downloadable PDF resumes.
 - [x] **Template Customization**: Offer a variety of professional resume templates for users to choose from.
-- [ ] **Enhanced UI/UX**: Improve the user interface with a more modern frontend framework like React or Vue.js.
+- [x] **Enhanced UI/UX**: Improve the user interface with a more modern frontend framework like React or Vue.js.
+- [ ] **Job Application Tracking**: Enable user to manage the entire lifecycle of their Job Applications, from initial contact to contract
+- [ ] **Building Resumes tailored to tracked Jobs**: Gives the user the tools necessary for building the perfect resume for a tracked job
 
 ## Database Schema
 
