@@ -11,3 +11,8 @@ class UserNotFoundError(AuthenticationError):
 class UserAlreadyExistsError(AuthenticationError):
     """Error raised when trying to register a user with a username that is taken."""
     pass
+
+
+class IncorrectPasswordError(AuthenticationError):
+    """Error raised when trying to log in with an incorrect password."""
+    pass

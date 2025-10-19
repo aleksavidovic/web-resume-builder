@@ -5,7 +5,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 from .forms import RegistrationForm, RegistrationWithInviteCodeForm
 from ..decorators import anonymous_user_required, feature_flag_required
 from .services import AuthenticationService
-from .exceptions import UserNotFoundError
+from .exceptions import UserNotFoundError, IncorrectPasswordError, UserAlreadyExistsError
 from ..models import User, InviteCode
 from .. import db
 
@@ -14,7 +14,6 @@ from .. import db
 @feature_flag_required("registration_enabled")
 @anonymous_user_required
 def register():
-
     form = RegistrationForm()
     if form.validate_on_submit():
         try:
@@ -34,7 +33,6 @@ def register():
 @anonymous_user_required
 def register_with_invite_code():
     form = RegistrationWithInviteCodeForm()
-
     if form.validate_on_submit():
         invite_code = InviteCode.query.filter_by(code=form.invite_code.data).first()
         if not invite_code:
@@ -45,7 +43,7 @@ def register_with_invite_code():
             return redirect(url_for("auth.register_with_invite_code"))
         existing = User.query.filter_by(username=form.username.data).first()
 
-        if existing:
+        if existing: # Revisit these checks and how they should come as exceptions from the service
             flash("Username already taken.", "danger")
             return redirect(url_for("auth.register_with_invite_code"))
 
@@ -70,24 +68,25 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         try:
-            user = User.query.filter_by(username=form.username.data).first()
-            if user:
-                if user.check_password(form.password.data):
-                    flash("Login successful")
-                    login_user(user, remember=form.remember.data)
-                    return redirect(url_for("main.index"))
-            else:
-                raise UserNotFoundError(
-                    f"No user found with username: {form.username.data}"
-                )
-        except Exception as e:
-            flash(f"Error while trying to log in: {e}")
+            auth_service = AuthenticationService(db.session)
+            auth_service.login(form.data)
+        except IncorrectPasswordError:
+            flash("Incorrect password.", "danger")
             return render_template("auth/login.html", title="Login", form=form)
+        except UserNotFoundError:
+            flash("No account exists with the provided username.", "danger")
+            return render_template("auth/login.html", title="Login", form=form)
+        except Exception as e:
+            flash(f"Unexpected Error while trying to log in: {e}")
+            return render_template("auth/login.html", title="Login", form=form)
+        else:
+            flash("Login successful.", "success")
+            return redirect(url_for("main.index"))
     return render_template("auth/login.html", title="Login", form=form)
 
 
-@login_required
 @auth_bp.route("/logout")
+@login_required
 def logout():
     logout_user()
     flash("Logout successful.")
