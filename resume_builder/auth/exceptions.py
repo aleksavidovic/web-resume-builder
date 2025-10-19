@@ -16,3 +16,8 @@ class UserAlreadyExistsError(AuthenticationError):
 class IncorrectPasswordError(AuthenticationError):
     """Error raised when trying to log in with an incorrect password."""
     pass
+
+
+class InviteCodeNotFoundError(AuthenticationError):
+    """Error raised when an invitation code cannot be found using the provided lookup criteria."""
+    pass
