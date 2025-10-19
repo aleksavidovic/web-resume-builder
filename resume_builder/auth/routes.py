@@ -5,7 +5,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 from .forms import RegistrationForm, RegistrationWithInviteCodeForm
 from ..decorators import anonymous_user_required, feature_flag_required
 from .services import AuthenticationService
-from .exceptions import UserNotFoundError, IncorrectPasswordError, UserAlreadyExistsError
+from .exceptions import UserNotFoundError, IncorrectPasswordError, UserAlreadyExistsError, InviteCodeRedeemedError, InviteCodeNotFoundError
 from ..models import User, InviteCode
 from .. import db
 
@@ -34,27 +34,22 @@ def register():
 def register_with_invite_code():
     form = RegistrationWithInviteCodeForm()
     if form.validate_on_submit():
-        invite_code = InviteCode.query.filter_by(code=form.invite_code.data).first()
-        if not invite_code:
+        try:
+            auth_service = AuthenticationService(db.session)
+            auth_service.register_user_with_invite_code(form.data)
+        except InviteCodeNotFoundError:
             flash("Invalid Invitation Code.", "danger")
             return redirect(url_for("auth.register_with_invite_code"))
-        if invite_code.redeemed:
+        except InviteCodeRedeemedError:
             flash("Invitation Code already redeemed.", "danger")
             return redirect(url_for("auth.register_with_invite_code"))
-        existing = User.query.filter_by(username=form.username.data).first()
-
-        if existing: # Revisit these checks and how they should come as exceptions from the service
+        except UserAlreadyExistsError as e:
             flash("Username already taken.", "danger")
             return redirect(url_for("auth.register_with_invite_code"))
+        else:
+            flash("Your account has been created! You can now log in.", "success")
+            return redirect(url_for("auth.login"))
 
-        user = User(username=form.username.data)
-        user.set_password(form.password.data)
-        invite_code.redeemed = True
-        invite_code.user = user
-        db.session.add(user)
-        db.session.commit()
-        flash("Your account has been created! You are now able to log in", "success")
-        return redirect(url_for("auth.login"))
     return render_template(
         "auth/register_with_invite_code.html",
         title="Register using Invitation Code",

@@ -1,5 +1,5 @@
 from ..models import User, InviteCode
-from .exceptions import UserAlreadyExistsError, UserNotFoundError, IncorrectPasswordError, InviteCodeNotFoundError
+from .exceptions import UserAlreadyExistsError, UserNotFoundError, IncorrectPasswordError, InviteCodeNotFoundError, InviteCodeRedeemedError
 from flask_login import login_user
 
 class AuthenticationService:
@@ -21,14 +21,21 @@ class AuthenticationService:
         return new_user
 
     def register_user_with_invite_code(self, user_details: dict) -> User:
-        invite_code = InviteCode.query.filter_by(code=user_details.get("invite_code"))
+        invite_code = InviteCode.query.filter_by(code=user_details.get("invite_code")).first()
         if not invite_code:
             raise InviteCodeNotFoundError
+        if invite_code.redeemed:
+            raise InviteCodeRedeemedError
         existing = User.query.filter_by(username=user_details.get('username')).first()
         if existing:
-            raise UserAlreadyExistsError(f"ERROR: User with username `{user_details.get('username')}` already exists.")
+            raise UserAlreadyExistsError
+
         new_user = User(username=user_details.get("username"))
         new_user.set_password(user_details.get("password"))
+
+        invite_code.redeemed = True
+        invite_code.user = new_user
+
         self.db_session.add(new_user)
         self.db_session.commit()
         return new_user

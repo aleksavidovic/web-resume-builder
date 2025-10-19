@@ -21,3 +21,8 @@ class IncorrectPasswordError(AuthenticationError):
 class InviteCodeNotFoundError(AuthenticationError):
     """Error raised when an invitation code cannot be found using the provided lookup criteria."""
     pass
+
+
+class InviteCodeRedeemedError(AuthenticationError):
+    """Error raised during registration with invitaion code when an invitation code has already been used for user registration."""
+    pass
