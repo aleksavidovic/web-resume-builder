@@ -1,12 +1,17 @@
 from .forms import LoginForm
 from . import auth_bp
-from flask import render_template, url_for, redirect, flash, current_app
-from flask_login import current_user, login_required, login_user, logout_user
+from flask import render_template, url_for, redirect, flash
+from flask_login import login_required, logout_user
 from .forms import RegistrationForm, RegistrationWithInviteCodeForm
 from ..decorators import anonymous_user_required, feature_flag_required
 from .services import AuthenticationService
-from .exceptions import UserNotFoundError, IncorrectPasswordError, UserAlreadyExistsError, InviteCodeRedeemedError, InviteCodeNotFoundError
-from ..models import User, InviteCode
+from .exceptions import (
+    UserNotFoundError,
+    IncorrectPasswordError,
+    UserAlreadyExistsError,
+    InviteCodeRedeemedError,
+    InviteCodeNotFoundError,
+)
 from .. import db
 
 
@@ -43,7 +48,7 @@ def register_with_invite_code():
         except InviteCodeRedeemedError:
             flash("Invitation Code already redeemed.", "danger")
             return redirect(url_for("auth.register_with_invite_code"))
-        except UserAlreadyExistsError as e:
+        except UserAlreadyExistsError:
             flash("Username already taken.", "danger")
             return redirect(url_for("auth.register_with_invite_code"))
         else:

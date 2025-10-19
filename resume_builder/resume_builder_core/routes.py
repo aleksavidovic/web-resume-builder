@@ -31,22 +31,20 @@ from werkzeug.exceptions import NotFound
 @login_required
 @resume_bp.route("/", methods=["GET", "POST"])
 def home():
-    basic_info = BasicInfoService(db.session).get_basic_infos_by_user_id(
-        current_user.id
-    )
-    summaries = Summary.query.filter_by(user_id=current_user.id).all()
-    experiences = Experience.query.filter_by(user_id=current_user.id).all()
-    educations = Education.query.filter_by(user_id=current_user.id).all()
-    skills = Skills.query.filter_by(user_id=current_user.id).all()
-    languages = Language.query.filter_by(user_id=current_user.id).all()
+    basic_info_count = len(current_user.basic_infos)
+    summary_count = len(current_user.summaries)
+    experience_count = len(current_user.experiences)
+    education_count = len(current_user.education)
+    skill_count = len(current_user.skills)
+    language_count = len(current_user.languages)
     return render_template(
         "resume_core/home.html",
-        basic_info=basic_info,
-        summaries=summaries,
-        experiences=experiences,
-        educations=educations,
-        skills=skills,
-        languages=languages,
+        basic_info_count=basic_info_count,
+        summary_count=summary_count,
+        experience_count=experience_count,
+        education_count=education_count,
+        skill_count=skill_count,
+        language_count=language_count,
     )
 
 
