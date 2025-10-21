@@ -65,29 +65,29 @@ class EntryTitleMixin:
 built_resume_experience = Table(
     "built_resume_experience",
     db.Model.metadata,
-    Column("built_resume_id", GUID(), ForeignKey("built_resume.id"), primary_key=True),
-    Column("experience_id", GUID(), ForeignKey("experience.id"), primary_key=True),
+    Column("built_resume_id", GUID(), ForeignKey("built_resume.id", ondelete="CASCADE"), primary_key=True),
+    Column("experience_id", GUID(), ForeignKey("experience.id", ondelete="CASCADE"), primary_key=True),
 )
 
 built_resume_education = Table(
     "built_resume_education",
     db.Model.metadata,
-    Column("built_resume_id", GUID(), ForeignKey("built_resume.id"), primary_key=True),
-    Column("education_id", GUID(), ForeignKey("education.id"), primary_key=True),
+    Column("built_resume_id", GUID(), ForeignKey("built_resume.id", ondelete="CASCADE"), primary_key=True),
+    Column("education_id", GUID(), ForeignKey("education.id", ondelete="CASCADE"), primary_key=True),
 )
 
 built_resume_skills = Table(
     "built_resume_skills",
     db.Model.metadata,
-    Column("built_resume_id", GUID(), ForeignKey("built_resume.id"), primary_key=True),
-    Column("skills_id", GUID(), ForeignKey("skills.id"), primary_key=True),
+    Column("built_resume_id", GUID(), ForeignKey("built_resume.id", ondelete="CASCADE"), primary_key=True),
+    Column("skills_id", GUID(), ForeignKey("skills.id", ondelete="CASCADE"), primary_key=True),
 )
 
 built_resume_language = Table(
     "built_resume_language",
     db.Model.metadata,
-    Column("built_resume_id", GUID(), ForeignKey("built_resume.id"), primary_key=True),
-    Column("language_id", GUID(), ForeignKey("language.id"), primary_key=True),
+    Column("built_resume_id", GUID(), ForeignKey("built_resume.id", ondelete="CASCADE"), primary_key=True),
+    Column("language_id", GUID(), ForeignKey("language.id", ondelete="CASCADE"), primary_key=True),
 )
 
 
@@ -96,7 +96,12 @@ class InviteCode(db.Model, TimeStampMixin):
     code = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
     redeemed = db.Column(db.Boolean, nullable=False, default=False)
-    user_id = db.Column(GUID(), db.ForeignKey("user.id"), unique=True, nullable=True)
+    user_id = db.Column(
+        GUID(),
+        db.ForeignKey("user.id", ondelete="SET NULL"),
+        unique=True,
+        nullable=True
+    )
     user = db.relationship("User", back_populates="redeemed_code")
 
     def __repr__(self):
@@ -110,31 +115,36 @@ class User(db.Model, UserMixin, TimeStampMixin):
     is_admin = db.Column(db.Boolean, default=False)
     is_active = db.Column(db.Boolean, default=True)
     basic_infos = db.relationship(
-        "BasicInfo", backref="user", lazy="selectin", cascade="all, delete-orphan"
+        "BasicInfo", backref="user", lazy="selectin", cascade="all, delete-orphan", passive_deletes=True
     )
     summaries = db.relationship(
-        "Summary", backref="user", lazy="selectin", cascade="all, delete-orphan"
+        "Summary", backref="user", lazy="selectin", cascade="all, delete-orphan", passive_deletes=True
     )
     experiences = db.relationship(
-        "Experience", backref="user", lazy="selectin", cascade="all, delete-orphan"
+        "Experience", backref="user", lazy="selectin", cascade="all, delete-orphan", passive_deletes=True
     )
     education = db.relationship(
-        "Education", backref="user", lazy="selectin", cascade="all, delete-orphan"
+        "Education", backref="user", lazy="selectin", cascade="all, delete-orphan", passive_deletes=True
     )
     skills = db.relationship(
-        "Skills", backref="user", lazy="selectin", cascade="all, delete-orphan"
+        "Skills", backref="user", lazy="selectin", cascade="all, delete-orphan", passive_deletes=True
     )
     languages = db.relationship(
-        "Language", backref="user", lazy="selectin", cascade="all, delete-orphan"
+        "Language", backref="user", lazy="selectin", cascade="all, delete-orphan", passive_deletes=True
     )
     resumes = db.relationship(
-        "BuiltResume", backref="user", lazy="selectin", cascade="all, delete-orphan"
+        "BuiltResume", backref="user", lazy="selectin", cascade="all, delete-orphan", passive_deletes=True
     )
     redeemed_code = db.relationship("InviteCode", back_populates="user", uselist=False)
 
     job_applications = db.relationship(
-        "JobApplication", back_populates="user", lazy="selectin", cascade="all, delete-orphan"
+        "JobApplication",
+        back_populates="user",
+        lazy="selectin",
+        cascade="all, delete-orphan",
+        passive_deletes=True
     )
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -161,7 +171,7 @@ class BasicInfo(db.Model, EntryTitleMixin, TimeStampMixin):
     linkedin_url = db.Column(db.String(255), nullable=True)
     github_url = db.Column(db.String(255), nullable=True)
 
-    user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(GUID(), db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
 
     __table_args__ = (
         db.UniqueConstraint("user_id", "entry_title", name="_user_entry_title_uc"),
@@ -172,7 +182,7 @@ class Summary(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
     content = db.Column(db.Text, nullable=True, default="")
 
-    user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(GUID(), db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
 
     __table_args__ = (
         db.UniqueConstraint("user_id", "entry_title", name="_user_summary_title_uc"),
@@ -187,7 +197,7 @@ class Experience(db.Model, EntryTitleMixin, TimeStampMixin):
     date_finished = db.Column(db.Date, nullable=True)
     description = db.Column(db.Text, nullable=True, default="")
 
-    user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(GUID(), db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
 
     __table_args__ = (
         db.UniqueConstraint("user_id", "entry_title", name="_user_experience_title_uc"),
@@ -204,7 +214,7 @@ class Education(db.Model, EntryTitleMixin, TimeStampMixin):
     date_started = db.Column(db.Date, nullable=False)
     date_finished = db.Column(db.Date, nullable=True)
 
-    user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(GUID(), db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
 
     __table_args__ = (
         db.UniqueConstraint("user_id", "entry_title", name="_user_education_title_uc"),
@@ -216,7 +226,7 @@ class Skills(db.Model, EntryTitleMixin, TimeStampMixin):
     skill_group_title = db.Column(db.String(128))
     description = db.Column(db.Text, nullable=False)
 
-    user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(GUID(), db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
 
     __table_args__ = (
         db.UniqueConstraint("user_id", "entry_title", name="_user_skills_title_uc"),
@@ -228,7 +238,7 @@ class Language(db.Model, EntryTitleMixin, TimeStampMixin):
     name = db.Column(db.String(128), nullable=False)
     proficiency = db.Column(db.String(128), nullable=False)
 
-    user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(GUID(), db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
 
     __table_args__ = (
         db.UniqueConstraint("user_id", "entry_title", name="_user_language_title_uc"),
@@ -245,9 +255,13 @@ class ResumeTheme(db.Model, TimeStampMixin):
 class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
 
-    basic_info_id = db.Column(GUID(), db.ForeignKey("basic_info.id"), nullable=False)
-    summary_id = db.Column(GUID(), db.ForeignKey("summary.id"), nullable=False)
-    theme_id = db.Column(GUID(), db.ForeignKey("resume_theme.id"), nullable=False)
+    basic_info_id = db.Column(
+        GUID(),
+        db.ForeignKey("basic_info.id", ondelete="RESTRICT"),
+        nullable=False
+    )
+    summary_id = db.Column(GUID(), db.ForeignKey("summary.id", ondelete="RESTRICT"), nullable=False)
+    theme_id = db.Column(GUID(), db.ForeignKey("resume_theme.id", ondelete="RESTRICT"), nullable=False)
 
     basic_info = relationship("BasicInfo")
     summary = relationship("Summary")
@@ -260,13 +274,17 @@ class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
         "Education", secondary=built_resume_education, backref="built_resumes"
     )
     skills = relationship(
-        "Skills", secondary=built_resume_skills, backref="built_resume"
+        "Skills", secondary=built_resume_skills, backref="built_resumes"
     )
     languages = relationship(
         "Language", secondary=built_resume_language, backref="built_resume"
     )
 
-    user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(
+        GUID(),
+        db.ForeignKey("user.id", ondelete="CASCADE"),
+        nullable=False
+    )
 
     __table_args__ = (
         db.UniqueConstraint(
@@ -284,7 +302,11 @@ class ApplicationStage(db.Model, TimeStampMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
 
-    job_applications = relationship("JobApplication", back_populates="stage")
+    job_applications = relationship(
+        "JobApplication", 
+        back_populates="stage",
+        passive_deletes=True
+    )
 
     def __repr__(self):
         return f"ApplicationStage({self.id}: {self.name})"
@@ -302,10 +324,19 @@ class JobApplication(db.Model, TimeStampMixin):
     job_url = db.Column(db.String, nullable=True)
     application_source = db.Column(db.String, nullable=False)
 
-    application_stage_id = db.Column(db.Integer, db.ForeignKey("application_stage.id"), nullable=False)
+    application_stage_id = db.Column(
+        db.Integer, 
+        db.ForeignKey("application_stage.id", ondelete="RESTRICT"), 
+        nullable=False
+    )
     stage = relationship("ApplicationStage", back_populates="job_applications")
 
-    user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(
+        GUID(), 
+        db.ForeignKey("user.id", ondelete="CASCADE"), 
+        nullable=False
+    )
+    user = relationship("User", back_populates="job_applications")
 
     def __repr__(self):
         return f"JobApplication({self.job_title} @{self.company_name})"
