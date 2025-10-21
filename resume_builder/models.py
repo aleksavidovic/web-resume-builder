@@ -99,10 +99,14 @@ class InviteCode(db.Model, TimeStampMixin):
     user_id = db.Column(
         GUID(),
         db.ForeignKey("user.id", ondelete="SET NULL"),
-        unique=True,
+        # unique=True,  <-- REMOVED
         nullable=True
     )
     user = db.relationship("User", back_populates="redeemed_code")
+
+    __table_args__ = (
+        db.UniqueConstraint('user_id', name='_invitecode_user_id_uc'),
+    )
 
     def __repr__(self):
         return f"InviteCode:\nCode: '{self.code}'\nDesc: '{self.description}'\nReedemed: {'Yes' if self.redeemed else 'No'}\nUser: {self.user}"
@@ -110,11 +114,11 @@ class InviteCode(db.Model, TimeStampMixin):
 
 class User(db.Model, UserMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    username = db.Column(db.String(70), unique=True, nullable=False)
+    username = db.Column(db.String(70), nullable=False) # <-- REMOVED unique=True
     password_hash = db.Column(db.String(300), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     is_active = db.Column(db.Boolean, default=True)
-    
+
     basic_infos = db.relationship(
         "BasicInfo",
         back_populates="user",
@@ -174,6 +178,10 @@ class User(db.Model, UserMixin, TimeStampMixin):
         passive_deletes=True
     )
 
+    __table_args__ = (
+        db.UniqueConstraint('username', name='_user_username_uc'),
+    )
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -203,6 +211,8 @@ class BasicInfo(db.Model, EntryTitleMixin, TimeStampMixin):
     user_id = db.Column(GUID(), db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
     user = db.relationship("User", back_populates="basic_infos")
 
+    built_resumes = db.relationship("BuiltResume", back_populates="basic_info")
+
     __table_args__ = (
         db.UniqueConstraint("user_id", "entry_title", name="_user_entry_title_uc"),
     )
@@ -214,6 +224,8 @@ class Summary(db.Model, EntryTitleMixin, TimeStampMixin):
 
     user_id = db.Column(GUID(), db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
     user = db.relationship("User", back_populates="summaries")
+
+    built_resumes = db.relationship("BuiltResume", back_populates="summary")
 
     __table_args__ = (
         db.UniqueConstraint("user_id", "entry_title", name="_user_summary_title_uc"),
@@ -306,9 +318,15 @@ class Language(db.Model, EntryTitleMixin, TimeStampMixin):
 
 class ResumeTheme(db.Model, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    name = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(50), nullable=False) # <-- REMOVED unique=True
     description = db.Column(db.String(200), nullable=True)
     styles = db.Column(db.Text, nullable=False)
+
+    built_resumes = db.relationship("BuiltResume", back_populates="theme")
+
+    __table_args__ = (
+        db.UniqueConstraint('name', name='_resumetheme_name_uc'),
+    )
 
 
 class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
@@ -322,9 +340,9 @@ class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
     summary_id = db.Column(GUID(), db.ForeignKey("summary.id", ondelete="RESTRICT"), nullable=False)
     theme_id = db.Column(GUID(), db.ForeignKey("resume_theme.id", ondelete="RESTRICT"), nullable=False)
 
-    basic_info = relationship("BasicInfo")
-    summary = relationship("Summary")
-    theme = relationship("ResumeTheme")
+    basic_info = relationship("BasicInfo", back_populates="built_resumes")
+    summary = relationship("Summary", back_populates="built_resumes")
+    theme = relationship("ResumeTheme", back_populates="built_resumes")
 
     experience = relationship(
         "Experience", secondary=built_resume_experience, back_populates="built_resumes"
