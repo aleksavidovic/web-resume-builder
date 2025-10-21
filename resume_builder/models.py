@@ -275,3 +275,31 @@ class BuiltResume(db.Model, EntryTitleMixin, TimeStampMixin):
     def get_active_count(cls):
         count_stmt = select(func.count(cls.id))
         return db.session.scalar(count_stmt)
+
+
+class ApplicationStage(db.Model, TimeStampMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+
+    def __repr__(self):
+        return f"ApplicationStage({self.id}: {self.name})"
+
+
+class JobApplication(db.Model, TimeStampMixin):
+    id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
+
+    job_title = db.Column(db.String, nullable=False)
+    company_name = db.Column(db.String, nullable=False)
+    location = db.Column(db.String, nullable=True)
+
+    application_date = db.Column(db.Date, nullable=True)
+
+    job_url = db.Column(db.String, nullable=True)
+    application_source = db.Column(db.String, nullable=False)
+    application_stage_id = db.Column(db.Integer, db.ForeignKey("application_stage.id"), nullable=False)
+
+    user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
+
+    def __repr__(self):
+        return f"JobApplication({self.job_title} @{self.company_name})"
+
