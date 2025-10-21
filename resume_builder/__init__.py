@@ -41,6 +41,7 @@ def create_app():
     from .auth import auth_bp
     from .resume_builder_core import resume_bp
     from .admin import admin_bp
+    from .job_application_tracker import job_app_tracker_bp
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -63,6 +64,7 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(resume_bp, url_prefix="/resume")
     app.register_blueprint(admin_bp, url_prefix="/admin")
+    app.register_blueprint(job_app_tracker_bp, url_prefix="/application_tracker")
 
     @app.shell_context_processor
     def make_shell_context():

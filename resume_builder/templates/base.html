@@ -23,6 +23,7 @@
                     {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('resume.home') }}">Resume Data</a></li>
                     <li><a href="{{ url_for('resume.list_resume') }}">My Resumes</a></li>
+                    <li><a href="{{ url_for('job_app_tracker.home') }}">Job Application Tracker</a></li>
                     {% endif %}
                     {% if current_user.is_admin %}
                     <li><a href="{{ url_for('admin.dashboard') }}">Admin Dashboard</a></li>
