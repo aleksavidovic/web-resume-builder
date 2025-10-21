@@ -99,7 +99,6 @@ class InviteCode(db.Model, TimeStampMixin):
     user_id = db.Column(
         GUID(),
         db.ForeignKey("user.id", ondelete="SET NULL"),
-        # unique=True,  <-- REMOVED
         nullable=True
     )
     user = db.relationship("User", back_populates="redeemed_code")
@@ -114,9 +113,9 @@ class InviteCode(db.Model, TimeStampMixin):
 
 class User(db.Model, UserMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    username = db.Column(db.String(70), nullable=False) # <-- REMOVED unique=True
+    username = db.Column(db.String(70), nullable=False)
     password_hash = db.Column(db.String(300), nullable=False)
-    is_admin = db.Column(db.Boolean, default=False)
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)
     is_active = db.Column(db.Boolean, default=True)
 
     basic_infos = db.relationship(
@@ -318,7 +317,7 @@ class Language(db.Model, EntryTitleMixin, TimeStampMixin):
 
 class ResumeTheme(db.Model, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    name = db.Column(db.String(50), nullable=False) # <-- REMOVED unique=True
+    name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(200), nullable=True)
     styles = db.Column(db.Text, nullable=False)
 
