@@ -132,6 +132,9 @@ class User(db.Model, UserMixin, TimeStampMixin):
     )
     redeemed_code = db.relationship("InviteCode", back_populates="user", uselist=False)
 
+    job_applications = db.relationship(
+        "JobApplication", back_populates="user", lazy="selectin", cascade="all, delete-orphan"
+    )
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -281,6 +284,8 @@ class ApplicationStage(db.Model, TimeStampMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
 
+    job_applications = relationship("JobApplication", back_populates="stage")
+
     def __repr__(self):
         return f"ApplicationStage({self.id}: {self.name})"
 
@@ -296,7 +301,9 @@ class JobApplication(db.Model, TimeStampMixin):
 
     job_url = db.Column(db.String, nullable=True)
     application_source = db.Column(db.String, nullable=False)
+
     application_stage_id = db.Column(db.Integer, db.ForeignKey("application_stage.id"), nullable=False)
+    stage = relationship("ApplicationStage", back_populates="job_applications")
 
     user_id = db.Column(GUID(), db.ForeignKey("user.id"), nullable=False)
 
