@@ -93,7 +93,7 @@ built_resume_language = Table(
 
 class InviteCode(db.Model, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    code = db.Column(db.String(50), nullable=False)
+    code = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     redeemed = db.Column(db.Boolean, nullable=False, default=False)
     user_id = db.Column(
@@ -114,7 +114,7 @@ class InviteCode(db.Model, TimeStampMixin):
 class User(db.Model, UserMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
     username = db.Column(db.String(70), nullable=False)
-    password_hash = db.Column(db.String(300), nullable=False)
+    password_hash = db.Column(db.String(), nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
     is_active = db.Column(db.Boolean, default=True)
 
@@ -199,11 +199,11 @@ class User(db.Model, UserMixin, TimeStampMixin):
 
 class BasicInfo(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    full_name = db.Column(db.String(100), nullable=False)
-    job_title = db.Column(db.String(100), nullable=False)
+    full_name = db.Column(db.String(150), nullable=False)
+    job_title = db.Column(db.String(150), nullable=False)
     address = db.Column(db.String(255), nullable=False)
     contact_email = db.Column(db.String(255), nullable=False)
-    contact_phone = db.Column(db.String(50), nullable=False)
+    contact_phone = db.Column(db.String(100), nullable=False)
     linkedin_url = db.Column(db.String(255), nullable=True)
     github_url = db.Column(db.String(255), nullable=True)
 
@@ -233,8 +233,8 @@ class Summary(db.Model, EntryTitleMixin, TimeStampMixin):
 
 class Experience(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
-    job_title = db.Column(db.String(50), nullable=False, default="")
-    company_name = db.Column(db.String(50), nullable=False, default="")
+    job_title = db.Column(db.String(200), nullable=False, default="")
+    company_name = db.Column(db.String(80), nullable=False, default="")
     date_started = db.Column(db.Date, nullable=False)
     date_finished = db.Column(db.Date, nullable=True)
     description = db.Column(db.Text, nullable=True, default="")
@@ -299,7 +299,7 @@ class Skills(db.Model, EntryTitleMixin, TimeStampMixin):
 class Language(db.Model, EntryTitleMixin, TimeStampMixin):
     id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String(128), nullable=False)
-    proficiency = db.Column(db.String(128), nullable=False)
+    proficiency = db.Column(db.String(300), nullable=False)
 
     user_id = db.Column(GUID(), db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
     user = db.relationship("User", back_populates="languages")
